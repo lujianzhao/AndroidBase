@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="PagerSlidingTabStrip">
+        <attr name="pstsIndicatorColor" format="color" />
+        <attr name="pstsUnderlineColor" format="color" />
+        <attr name="pstsDividerColor" format="color" />
+        <attr name="pstsIndicatorHeight" format="dimension" />
+        <attr name="pstsUnderlineHeight" format="dimension" />
+        <attr name="pstsDividerPadding" format="dimension" />
+        <attr name="pstsTabPaddingLeftRight" format="dimension" />
+        <attr name="pstsScrollOffset" format="dimension" />
+        <attr name="pstsTabBackground" format="reference" />
+        <attr name="pstsShouldExpand" format="boolean" />
+        <attr name="pstsTextAllCaps" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="LoadProgressLayout">
+        <attr name="emptyView" format="reference" />
+        <attr name="errorView" format="reference" />
+        <attr name="loadingView" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="Topbar">
+        <attr name="topTitle" format="string" />                           <!--中间文字，类型字符串-->
+        <attr name="topTitleTextSize" format="dimension" />                   <!--字体大小，类型为数字-->
+        <attr name="topTitleTextColor" format="color"/>                       <!--字体颜色，类型为颜色-->
+        <attr name="titleBackgroundColor" format="color"/>                       <!--字体颜色，类型为颜色-->
+        <!--<attr name="titleBackground" format="reference|color" />-->
+
+        <attr name="topLeftTextColor" format="color"/>                        <!--左侧字体颜色，类型为颜色-->
+        <attr name="topLeftBackground" format="reference|color" />            <!--左侧背景颜色，类型为图片和颜色-->
+        <attr name="topLeftDrawableLeft" format="reference" />
+        <attr name="topLeftDrawableRight" format="reference" />
+        <attr name="topLeftDrawablePadding" format="dimension" />
+        <attr name="topLeftText" format="string" />                           <!--左侧文字-->
+        <attr name="topLeftTextSize" format="dimension" />
+
+        <attr name="topRightTextColor" format="color"/>                        <!--左侧字体颜色，类型为颜色-->
+        <attr name="topRightBackground" format="reference|color" />            <!--左侧背景颜色，类型为图片和颜色-->
+        <attr name="topRightDrawableLeft" format="reference" />
+        <attr name="topRightDrawablePadding" format="dimension" />
+        <attr name="topRightText" format="string" />                           <!--左侧文字-->
+
+        <attr name="topLeftIsVisiable" format="boolean" />                           <!--左侧按钮是否显示-->
+        <attr name="topRightIsVisiable" format="boolean" />                           <!--右侧按钮是否显示-->
+    </declare-styleable>
+
+    <declare-styleable name="FamiliarRecyclerView">
+        <attr name="frv_divider" format="reference|color" />
+        <attr name="frv_dividerVertical" format="reference|color" />
+        <attr name="frv_dividerHorizontal" format="reference|color" />
+        <attr name="frv_dividerHeight" format="dimension" />
+        <attr name="frv_dividerVerticalHeight" format="dimension" />
+        <attr name="frv_dividerHorizontalHeight" format="dimension" />
+        <attr name="frv_itemViewBothSidesMargin" format="dimension" />
+        <attr name="frv_layoutManager" format="enum">
+            <enum name="linear" value="0" />
+            <enum name="grid" value="1" />
+            <enum name="staggeredGrid" value="2" />
+        </attr>
+        <attr name="frv_layoutManagerOrientation" format="enum">
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+        </attr>
+        <attr name="frv_spanCount" format="integer" />
+        <attr name="frv_isReverseLayout" format="boolean" />
+        <attr name="frv_headerDividersEnabled" format="boolean" />
+        <attr name="frv_footerDividersEnabled" format="boolean" />
+        <attr name="frv_isNotShowGridEndDivider" format="boolean" />
+    </declare-styleable>
+
+    <color name="default_color">#00000000</color>
+
+    <declare-styleable name="SelectorInjection">
+        <!-- 普通状态的颜色 -->
+        <attr name="normalColor" format="color" />
+        <!-- 按下后的颜色 -->
+        <attr name="pressedColor" format="color" />
+        <!-- 选中后的颜色 -->
+        <attr name="checkedColor" format="color" />
+
+        <!-- 常规状态下-->
+        <attr name="normalDrawable" format="reference" />
+        <!-- 按下/获得焦点 -->
+        <attr name="pressedDrawable" format="reference" />
+        <!-- 选中时 -->
+        <attr name="checkedDrawable" format="reference" />
+
+        <!-- 正常的描边 -->
+        <attr name="normalStrokeColor" format="color" />
+        <attr name="normalStrokeWidth" format="dimension" />
+        <!-- 按下后的描边 -->
+        <attr name="pressedStrokeColor" format="color" />
+        <attr name="pressedStrokeWidth" format="dimension" />
+        <!-- 选中后的描边 -->
+        <attr name="checkedStrokeColor" format="color" />
+        <attr name="checkedStrokeWidth" format="dimension" />
+
+        <!-- 是否是自动计算按下颜色的的 -->
+        <attr name="isSmart" format="boolean" />
+
+        <!-- 是否将图片设置到src中（仅仅对ImageButton有效） -->
+        <attr name="isSrc" format="boolean" />
+
+        <!-- 是否显示水波纹（Android5.0以上有效）由于targetSdkVersion过低,所以临时关闭-->
+        <!--<attr name="showRipple" format="boolean" />-->
+    </declare-styleable>
+
+    <declare-styleable name="ConvenientBanner">
+        <attr name="canLoop" format="boolean" />
+        <attr name="pointPadding" format="dimension" />
+    </declare-styleable>
+
+</resources>
