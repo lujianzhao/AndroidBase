@@ -3,7 +3,7 @@ package com.android.base.http;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.apkfuns.logutils.LogUtils;
+import com.android.base.common.logutils.LogUtils;
 
 import java.io.IOException;
 
@@ -19,7 +19,7 @@ import okio.Buffer;
 public class LoggerInterceptor implements Interceptor {
     public static final String TAG = "OkHttpUtils";
     private String tag = TAG;
-    private boolean showLog = LogUtils.configAllowLog;
+    private boolean showLog = LogUtils.isEnable();
 
     public LoggerInterceptor(String tag) {
         this(tag, false);

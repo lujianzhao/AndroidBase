@@ -2,8 +2,8 @@ package com.android.base.db;
 
 import android.content.Context;
 
+import com.android.base.common.logutils.LogUtils;
 import com.android.base.db.impl.DaoOperation;
-import com.apkfuns.logutils.LogUtils;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.misc.TransactionManager;
 import com.j256.ormlite.stmt.DeleteBuilder;

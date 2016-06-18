@@ -3,6 +3,7 @@ package com.android.base.widget;
 /**
  * Created by lujianzhao on 2015/11/27 0027.
  */
+
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
@@ -12,7 +13,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.apkfuns.logutils.LogUtils;
+import com.android.base.common.logutils.LogUtils;
+
 
 public class SideLayout extends LinearLayout implements Animator.AnimatorListener {
     private ObjectAnimator showAnimator, hideAnimator;

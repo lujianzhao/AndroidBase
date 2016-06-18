@@ -1,7 +1,7 @@
 package com.android.base.common.utils;
 
 import com.android.base.common.assist.Check;
-import com.apkfuns.logutils.LogUtils;
+import com.android.base.common.logutils.LogUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -36,9 +36,7 @@ public class CpuUtil {
      */
     public static String printCpuInfo() {
         String info = FileUtil.getFileOutputString(CPU_INFO_PATH);
-        if (LogUtils.configAllowLog) {
-            LogUtils.i("_______  CPU :   \n" + info);
-        }
+        LogUtils.i("_______  CPU :   \n" + info);
         return info;
     }
 
@@ -100,9 +98,7 @@ public class CpuUtil {
             bufferedReader.close();
             String[] array = line.split(":\\s+", 2);
             if (array.length > 1) {
-                if (LogUtils.configAllowLog) {
-                    LogUtils.i(array[1]);
-                }
+                LogUtils.i(array[1]);
                 CPU_NAME = array[1];
             }
         } catch (IOException e) {
@@ -169,9 +165,7 @@ public class CpuUtil {
             }
             in.close();
             process.destroy();
-            if (LogUtils.configAllowLog) {
-                LogUtils.i( "CMD: " + sb.toString());
-            }
+            LogUtils.i( "CMD: " + sb.toString());
             return sb.toString();
         } catch (IOException ex) {
             ex.printStackTrace();

@@ -7,7 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 
 import com.android.base.common.assist.Check;
-import com.apkfuns.logutils.LogUtils;
+import com.android.base.common.logutils.LogUtils;
 
 /**
  * <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
@@ -44,7 +44,7 @@ public class PhoneReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (LogUtils.configAllowLog) {
+        if (LogUtils.isEnable()) {
             LogUtils.i( "action: " + intent.getAction());
             LogUtils.d("intent : ");
             Bundle bundle = intent.getExtras();

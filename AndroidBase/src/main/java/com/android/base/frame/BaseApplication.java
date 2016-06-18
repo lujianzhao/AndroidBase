@@ -4,14 +4,14 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Environment;
 
+import com.android.base.common.logutils.LogLevel;
+import com.android.base.common.logutils.LogUtils;
 import com.android.base.common.utils.FileUtil;
 import com.android.base.common.utils.HandlerUtil;
-import com.android.base.frame.activity.impl.BaseActivityImpl;
+import com.android.base.frame.activity.IBaseActivity;
 import com.android.base.netstate.NetChangeObserver;
 import com.android.base.netstate.NetWorkUtil;
 import com.android.base.netstate.NetworkStateReceiver;
-import com.apkfuns.logutils.LogLevel;
-import com.apkfuns.logutils.LogUtils;
 
 import java.io.File;
 
@@ -146,8 +146,8 @@ public class BaseApplication extends Application {
     public void onDisConnect() {
         Activity mCurrentActivity = AppManager.getAppManager().topActivity();
         if (mCurrentActivity != null) {
-            if (mCurrentActivity instanceof BaseActivityImpl) {
-                ((BaseActivityImpl) mCurrentActivity).onDisConnect();
+            if (mCurrentActivity instanceof IBaseActivity) {
+                ((IBaseActivity) mCurrentActivity).onDisConnect();
             }
         }
     }
@@ -158,8 +158,8 @@ public class BaseApplication extends Application {
     protected void onConnect(NetWorkUtil.NetWorkType type) {
         Activity mCurrentActivity = AppManager.getAppManager().topActivity();
         if (mCurrentActivity != null) {
-            if (mCurrentActivity instanceof BaseActivityImpl) {
-                ((BaseActivityImpl) mCurrentActivity).onConnect(type);
+            if (mCurrentActivity instanceof IBaseActivity) {
+                ((IBaseActivity) mCurrentActivity).onConnect(type);
             }
         }
     }

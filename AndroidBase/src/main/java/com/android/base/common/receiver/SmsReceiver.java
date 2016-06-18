@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 
-import com.apkfuns.logutils.LogUtils;
+import com.android.base.common.logutils.LogUtils;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class SmsReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         try {
-            if (LogUtils.configAllowLog) {
+            if (LogUtils.isEnable()) {
                 LogUtils.i("收到广播：" + intent.getAction());
                 Bundle bundle = intent.getExtras();
                 for (String key : bundle.keySet()) {

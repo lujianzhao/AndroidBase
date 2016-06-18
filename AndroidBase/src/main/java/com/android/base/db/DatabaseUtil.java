@@ -4,7 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
-import com.apkfuns.logutils.LogUtils;
+import com.android.base.common.logutils.LogUtils;
 import com.j256.ormlite.misc.JavaxPersistence;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTable;

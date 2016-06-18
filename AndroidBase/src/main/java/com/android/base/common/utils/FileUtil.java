@@ -4,7 +4,7 @@ import android.os.Environment;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.util.IOUtils;
-import com.apkfuns.logutils.LogUtils;
+import com.android.base.common.logutils.LogUtils;
 
 import java.io.BufferedReader;
 import java.io.File;

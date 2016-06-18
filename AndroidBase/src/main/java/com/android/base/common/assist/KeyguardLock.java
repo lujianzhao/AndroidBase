@@ -4,7 +4,8 @@ import android.app.KeyguardManager;
 import android.content.Context;
 import android.os.Build;
 
-import com.apkfuns.logutils.LogUtils;
+import com.android.base.common.logutils.LogUtils;
+
 
 /**
  * <!-- 解锁 -->

@@ -5,7 +5,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
 
-import com.apkfuns.logutils.LogUtils;
+import com.android.base.common.logutils.LogUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -177,9 +177,7 @@ public class SdCardUtil {
                 sd.totalBytes = sf.getTotalBytes();
             }
         }
-        if (LogUtils.configAllowLog) {
-            LogUtils.i( sd.toString());
-        }
+        LogUtils.i( sd.toString());
         return sd;
     }
 

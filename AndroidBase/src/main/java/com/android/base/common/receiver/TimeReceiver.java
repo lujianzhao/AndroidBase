@@ -6,7 +6,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 
-import com.apkfuns.logutils.LogUtils;
+import com.android.base.common.logutils.LogUtils;
+
 
 /**
  * 时间广播
@@ -22,7 +23,7 @@ public class TimeReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (LogUtils.configAllowLog) {
+        if (LogUtils.isEnable()) {
             LogUtils.i("action: " + intent.getAction());
             LogUtils.d("intent : ");
             Bundle bundle = intent.getExtras();

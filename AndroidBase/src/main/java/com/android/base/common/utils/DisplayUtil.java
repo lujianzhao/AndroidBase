@@ -3,7 +3,8 @@ package com.android.base.common.utils;
 import android.content.Context;
 import android.util.DisplayMetrics;
 
-import com.apkfuns.logutils.LogUtils;
+import com.android.base.common.logutils.LogUtils;
+
 
 /**
  * @author lujianzhao
@@ -25,7 +26,7 @@ public class DisplayUtil {
      */
     public static DisplayMetrics printDisplayInfo(Context context) {
         DisplayMetrics dm = getDisplayMetrics(context);
-        if (LogUtils.configAllowLog) {
+        if (LogUtils.isEnable()) {
             StringBuilder sb = new StringBuilder();
             sb.append("_______  显示信息:  ");
             sb.append("\ndensity         :").append(dm.density);

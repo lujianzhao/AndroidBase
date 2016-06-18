@@ -5,7 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
-import com.apkfuns.logutils.LogUtils;
+import com.android.base.common.logutils.LogUtils;
+
 
 public class ScreenReceiver extends BroadcastReceiver {
 //    private String TAG = "ScreenActionReceiver";

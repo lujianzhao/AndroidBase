@@ -1,13 +1,13 @@
 package com.android.base.common.rx;
 
+import android.support.annotation.NonNull;
+
+import com.android.base.common.logutils.LogUtils;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-
-import android.support.annotation.NonNull;
-
-import com.apkfuns.logutils.LogUtils;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -81,10 +81,7 @@ public class RxEventBus {
      * @return
      */
     @SuppressWarnings("rawtypes")
-    public RxEventBus unregister(@NonNull Object tag,
-                                 @NonNull Observable<?> observable) {
-        if (null == observable)
-            return getInstance();
+    public RxEventBus unregister(@NonNull Object tag, @NonNull Observable<?> observable) {
         List<Subject> subjects = subjectMapper.get(tag);
         if (null != subjects) {
             subjects.remove((Subject<?, ?>) observable);

@@ -2,7 +2,7 @@ package com.android.base.db;
 
 import android.database.sqlite.SQLiteDatabase;
 
-import com.apkfuns.logutils.LogUtils;
+import com.android.base.common.logutils.LogUtils;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 

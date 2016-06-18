@@ -2,11 +2,11 @@ package com.android.base.http;
 
 import android.content.Context;
 
+import com.android.base.common.cookiejar.ClearableCookieJar;
+import com.android.base.common.cookiejar.PersistentCookieJar;
+import com.android.base.common.cookiejar.cache.SetCookieCache;
+import com.android.base.common.cookiejar.persistence.SharedPrefsCookiePersistor;
 import com.android.base.http.impl.IRetrofit;
-import com.franmontiel.persistentcookiejar.ClearableCookieJar;
-import com.franmontiel.persistentcookiejar.PersistentCookieJar;
-import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
-import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 
 import java.util.concurrent.TimeUnit;
 

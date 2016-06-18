@@ -1,6 +1,7 @@
 package com.android.base.common.assist;
 
-import com.apkfuns.logutils.LogUtils;
+
+import com.android.base.common.logutils.LogUtils;
 
 import java.util.ArrayList;
 
@@ -63,7 +64,7 @@ public class Averager {
      */
     public String print() {
         String str = "PrintList(" + size() + "): " + numList;
-        LogUtils.i(str);
+       LogUtils.i(str);
         return str;
     }
 

@@ -3,7 +3,7 @@ package com.android.base.frame;
 import android.app.Activity;
 import android.content.Context;
 
-import com.android.base.frame.activity.impl.BaseActivityImpl;
+import com.android.base.frame.activity.IBaseActivity;
 
 import java.util.Stack;
 
@@ -12,7 +12,7 @@ import java.util.Stack;
  */
 public class AppManager {
 
-    private static Stack<BaseActivityImpl> activityStack;
+    private static Stack<IBaseActivity> activityStack;
     private static AppManager mInstance;
 
     private AppManager() {
@@ -42,7 +42,7 @@ public class AppManager {
     /**
      * 添加Activity到栈
      */
-    public void addActivity(BaseActivityImpl activity) {
+    public void addActivity(IBaseActivity activity) {
         if (activityStack == null) {
             activityStack = new Stack<>();
         }
@@ -59,7 +59,7 @@ public class AppManager {
         if (activityStack.isEmpty()) {
             return null;
         }
-        BaseActivityImpl activity = activityStack.lastElement();
+        IBaseActivity activity = activityStack.lastElement();
         return (Activity) activity;
     }
 
@@ -67,8 +67,8 @@ public class AppManager {
      * 查找Activity 没有找到则返回null
      */
     public Activity findActivity(Class<?> cls) {
-        BaseActivityImpl activity = null;
-        for (BaseActivityImpl aty : activityStack) {
+        IBaseActivity activity = null;
+        for (IBaseActivity aty : activityStack) {
             if (aty.getClass().equals(cls)) {
                 activity = aty;
                 break;
@@ -81,7 +81,7 @@ public class AppManager {
      * 结束当前Activity（栈顶Activity）
      */
     public void finishActivity() {
-        BaseActivityImpl activity = activityStack.lastElement();
+        IBaseActivity activity = activityStack.lastElement();
         finishActivity((Activity) activity);
     }
 
@@ -90,7 +90,7 @@ public class AppManager {
      */
     public void finishActivity(Activity activity) {
         if (activity != null) {
-            if (activity instanceof BaseActivityImpl) {
+            if (activity instanceof IBaseActivity) {
                 activityStack.remove(activity);
             }
         }
@@ -100,7 +100,7 @@ public class AppManager {
      * 结束指定的Activity(重载)
      */
     public void finishActivity(Class<?> cls) {
-        for (BaseActivityImpl activity : activityStack) {
+        for (IBaseActivity activity : activityStack) {
             if (activity.getClass().equals(cls)) {
                 finishActivity((Activity) activity);
             }
@@ -113,7 +113,7 @@ public class AppManager {
      * @param cls
      */
     public void finishOthersActivity(Class<?> cls) {
-        for (BaseActivityImpl activity : activityStack) {
+        for (IBaseActivity activity : activityStack) {
             if (!(activity.getClass().equals(cls))) {
                 finishActivity((Activity) activity);
             }

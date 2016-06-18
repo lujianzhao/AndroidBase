@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.android.base.common.data.cipher.Cipher;
+import com.android.base.common.logutils.LogUtils;
 import com.android.base.common.utils.ByteUtil;
 import com.android.base.common.utils.HexUtil;
-import com.apkfuns.logutils.LogUtils;
 
 /**
  * Created by lujianzhao on 2015/9/23 0023.

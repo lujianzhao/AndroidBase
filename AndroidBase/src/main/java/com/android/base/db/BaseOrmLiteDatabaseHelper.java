@@ -3,7 +3,7 @@ package com.android.base.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.apkfuns.logutils.LogUtils;
+import com.android.base.common.logutils.LogUtils;
 import com.j256.ormlite.android.AndroidDatabaseConnection;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;

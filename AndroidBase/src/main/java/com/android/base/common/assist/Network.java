@@ -5,7 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 
-import com.apkfuns.logutils.LogUtils;
+import com.android.base.common.logutils.LogUtils;
 
 import java.lang.reflect.Method;
 
@@ -238,9 +238,7 @@ public class Network {
 	public static int getConnectedTypeINT(Context context) {
 		NetworkInfo net = getConnectivityManager(context).getActiveNetworkInfo();
 		if (net != null) {
-			if (LogUtils.configAllowLog) {
-				LogUtils.i("NetworkInfo: " + net.toString());
-			}
+			LogUtils.i("NetworkInfo: " + net.toString());
 			return net.getType();
 		}
 		return -1;

@@ -12,7 +12,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.apkfuns.logutils.LogUtils;
+import com.android.base.common.logutils.LogUtils;
 
 import java.util.ArrayList;
 

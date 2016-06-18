@@ -4,7 +4,7 @@ import android.support.v4.util.LruCache;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
-import com.apkfuns.logutils.LogUtils;
+import com.android.base.common.logutils.LogUtils;
 
 import java.util.HashMap;
 import java.util.Map;

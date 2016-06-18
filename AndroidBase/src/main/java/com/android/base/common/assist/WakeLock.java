@@ -4,7 +4,8 @@ import android.content.Context;
 import android.os.Build;
 import android.os.PowerManager;
 
-import com.apkfuns.logutils.LogUtils;
+import com.android.base.common.logutils.LogUtils;
+
 
 /**
  * <!-- 亮屏 -->

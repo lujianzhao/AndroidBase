@@ -6,7 +6,8 @@ import android.content.Context;
 import android.os.Build;
 import android.text.format.Formatter;
 
-import com.apkfuns.logutils.LogUtils;
+import com.android.base.common.logutils.LogUtils;
+
 
 /**
  * Get memory info.
@@ -61,9 +62,7 @@ public class MemoryUtil {
      */
     public static String printMemInfo() {
         String info = FileUtil.getFileOutputString(MEM_INFO_PATH);
-        if (LogUtils.configAllowLog) {
-            LogUtils.i("_______  内存信息:   \n" + info);
-        }
+        LogUtils.i("_______  内存信息:   \n" + info);
         return info;
     }
 
@@ -84,7 +83,7 @@ public class MemoryUtil {
     @TargetApi(Build.VERSION_CODES.CUPCAKE)
     public static ActivityManager.MemoryInfo printMemoryInfo(Context context) {
         ActivityManager.MemoryInfo mi = getMemoryInfo(context);
-        if (LogUtils.configAllowLog) {
+        if (LogUtils.isEnable()) {
             StringBuilder sb = new StringBuilder();
             sb.append("_______  Memory :   ");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {

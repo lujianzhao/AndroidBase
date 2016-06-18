@@ -17,12 +17,12 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
+import com.android.base.common.logutils.LogUtils;
 import com.android.base.common.photo.ImageUtils;
 import com.android.base.common.utils.CameraUtil;
 import com.android.base.common.utils.FileUtil;
-import com.android.base.frame.fragment.BaseFragment;
+import com.android.base.frame.fragment.impl.BaseFragment;
 import com.android.base.widget.R;
-import com.apkfuns.logutils.LogUtils;
 
 import java.io.File;
 

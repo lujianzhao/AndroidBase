@@ -1,6 +1,7 @@
 package com.android.base.common.assist;
 
-import com.apkfuns.logutils.LogUtils;
+
+import com.android.base.common.logutils.LogUtils;
 
 /**
  * Time Counter.

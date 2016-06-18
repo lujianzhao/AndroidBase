@@ -13,7 +13,8 @@ import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.text.TextUtils;
 
-import com.apkfuns.logutils.LogUtils;
+import com.android.base.common.logutils.LogUtils;
+
 
 /**
  * note: VERSION_CODE >= API_18
@@ -111,7 +112,7 @@ public class NotificationService extends NotificationListenerService {
     /*----------------- 通知回调 -----------------*/
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
-        if (LogUtils.configAllowLog) {
+        if (LogUtils.isEnable()) {
             LogUtils.i( sbn.toString());
             Notification notification = sbn.getNotification();
             LogUtils.i( "tickerText : " + notification.tickerText);

@@ -1,6 +1,7 @@
 package com.android.base.common.rx;
 
-import com.apkfuns.logutils.LogUtils;
+
+import com.android.base.common.logutils.LogUtils;
 
 import java.util.concurrent.Callable;
 
