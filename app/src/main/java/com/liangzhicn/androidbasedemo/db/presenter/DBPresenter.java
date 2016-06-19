@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.android.base.common.assist.Toastor;
-import com.android.base.db.ormlite.DbCallBack;
+import com.android.base.callback.RequestCallBack;
 import com.liangzhicn.androidbasedemo.R;
 import com.liangzhicn.androidbasedemo.db.contract.DBContract;
 import com.liangzhicn.androidbasedemo.db.model.DBModel;
@@ -49,19 +49,20 @@ public class DBPresenter extends DBContract.Presenter<DBModel> {
     }
 
     public void clear() {
-        mModel.clearTableDataSync(new DbCallBack<Boolean>() {
+        mModel.clearTableDataSync(new RequestCallBack<Boolean>() {
                                       @Override
-                                      public void onComplete(Boolean data) {
+                                      public void onNext(Boolean data) {
                                           mView.clearView();
                                       }
                                   }
+
         );
     }
 
     public void query() {
-        mModel.queryForAllSync(new DbCallBack<List<City>>() {
+        mModel.queryForAllSync(new RequestCallBack<List<City>>() {
             @Override
-            public void onComplete(List<City> data) {
+            public void onNext(List<City> data) {
                 queryFinish(data);
             }
         });
@@ -90,10 +91,10 @@ public class DBPresenter extends DBContract.Presenter<DBModel> {
         city.setCityName("东莞市");
         city.setCityNo(cityUuid);
 
-        mModel.insertSync(city, new DbCallBack<Boolean>() {
+        mModel.insertSync(city, new RequestCallBack<Boolean>() {
 
             @Override
-            public void onComplete(Boolean data) {
+            public void onNext(Boolean data) {
                 Toastor.showToast(mActivity, "插入完成");
             }
         });

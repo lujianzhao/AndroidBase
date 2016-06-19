@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.android.base.db.BaseRxDao;
 import com.j256.ormlite.dao.Dao;
-import com.liangzhicn.androidbasedemo.DatabaseHelper;
 
 /**
  * 作者: lujianzhao

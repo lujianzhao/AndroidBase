@@ -1,4 +1,4 @@
-package com.liangzhicn.androidbasedemo;
+package com.liangzhicn.androidbasedemo.db;
 
 import android.content.Context;
 

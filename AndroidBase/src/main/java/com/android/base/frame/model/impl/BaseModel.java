@@ -22,17 +22,6 @@ public abstract class BaseModel implements IBaseModel {
 
     }
 
-
-    @Override
-    public void onResume() {
-
-    }
-
-    @Override
-    public void onPause() {
-
-    }
-
     @Override
     public void onDestroy() {
         mContext = null;
@@ -40,12 +29,9 @@ public abstract class BaseModel implements IBaseModel {
     }
 
     @Override
-    public void setRxManager(@NonNull RxManager rxManager) {
+    public void init(@NonNull Context context,@NonNull RxManager rxManager) {
+        this.mContext = context;
         this.mRxManager = rxManager;
     }
 
-    @Override
-    public void setContext(Context context) {
-        this.mContext = context;
-    }
 }

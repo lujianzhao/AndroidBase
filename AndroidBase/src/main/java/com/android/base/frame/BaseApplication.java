@@ -17,7 +17,7 @@ import java.io.File;
 
 public class BaseApplication extends Application {
 
-    private final boolean isAllowLog = true;
+    public static final boolean isAllowLog = true;
 
     private NetChangeObserver mNetChangeObserver;
 
@@ -97,7 +97,11 @@ public class BaseApplication extends Application {
 
 
     private void initLogUtils() {
-        LogUtils.getLogConfig().configAllowLog(isAllowLog).configTagPrefix("yike-").configShowBorders(true)
+        LogUtils.getLogConfig()
+                .configAllowLog(isAllowLog)
+                .configTagPrefix("Yike-")
+                .configShowBorders(true)
+                .configFormatTag("%d{HH:mm:ss:SSS} %t %c{-5}")
                 .configLevel(LogLevel.TYPE_VERBOSE);
     }
 

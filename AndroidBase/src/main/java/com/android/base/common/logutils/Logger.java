@@ -3,11 +3,6 @@ package com.android.base.common.logutils;
 import android.text.TextUtils;
 import android.util.Log;
 
-import static com.android.base.common.logutils.LogLevel.*;
-import static com.android.base.common.logutils.utils.ObjectUtil.*;
-import static com.android.base.common.logutils.utils.Utils.*;
-
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,6 +18,21 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+
+import static com.android.base.common.logutils.LogLevel.LogLevelType;
+import static com.android.base.common.logutils.LogLevel.TYPE_DEBUG;
+import static com.android.base.common.logutils.LogLevel.TYPE_ERROR;
+import static com.android.base.common.logutils.LogLevel.TYPE_INFO;
+import static com.android.base.common.logutils.LogLevel.TYPE_VERBOSE;
+import static com.android.base.common.logutils.LogLevel.TYPE_WARM;
+import static com.android.base.common.logutils.LogLevel.TYPE_WTF;
+import static com.android.base.common.logutils.utils.ObjectUtil.objectToString;
+import static com.android.base.common.logutils.utils.Utils.DIVIDER_BOTTOM;
+import static com.android.base.common.logutils.utils.Utils.DIVIDER_CENTER;
+import static com.android.base.common.logutils.utils.Utils.DIVIDER_NORMAL;
+import static com.android.base.common.logutils.utils.Utils.DIVIDER_TOP;
+import static com.android.base.common.logutils.utils.Utils.largeStringToList;
+import static com.android.base.common.logutils.utils.Utils.printDividingLine;
 
 /**
  * Created by pengwei08 on 2015/7/20.
@@ -310,7 +320,6 @@ class Logger implements Printer {
      * @param msg
      */
     private void printLog(@LogLevelType int type, String tag, String msg) {
-        msg = getTopStackInfo()+": "+msg;
         switch (type) {
             case TYPE_VERBOSE:
                 Log.v(tag, msg);

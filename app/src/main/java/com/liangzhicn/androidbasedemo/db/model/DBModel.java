@@ -1,7 +1,7 @@
 package com.liangzhicn.androidbasedemo.db.model;
 
+import com.android.base.callback.RequestCallBack;
 import com.android.base.db.BaseRxDao;
-import com.android.base.db.ormlite.DbCallBack;
 import com.liangzhicn.androidbasedemo.db.RxDao;
 import com.liangzhicn.androidbasedemo.db.contract.DBContract;
 import com.liangzhicn.androidbasedemo.db.model.domains.City;
@@ -15,22 +15,11 @@ import java.util.List;
  */
 public class DBModel extends DBContract.Model {
 
-    private BaseRxDao mCityDao;
+    private BaseRxDao<City> mCityDao;
 
     @Override
     public void onCreate() {
         mCityDao = new RxDao<>(mContext, City.class);
-    }
-
-
-    @Override
-    public void onResume() {
-        mCityDao.subscribe();
-    }
-
-    @Override
-    public void onPause() {
-        mCityDao.unsubscribe();
     }
 
     @Override
@@ -40,17 +29,17 @@ public class DBModel extends DBContract.Model {
     }
 
     @Override
-    public void insertSync(City city, DbCallBack<Boolean> dbCallBack) {
-        mCityDao.insertSync(city, dbCallBack);
+    public void insertSync(City city, RequestCallBack<Boolean> dbCallBack) {
+        mRxManager.add(mCityDao.insertSync(city, dbCallBack));
     }
 
     @Override
-    public void queryForAllSync(DbCallBack<List<City>> dbCallBack) {
-        mCityDao.queryForAllSync(dbCallBack);
+    public void queryForAllSync(RequestCallBack<List<City>> dbCallBack) {
+        mRxManager.add( mCityDao.queryForAllSync(dbCallBack));
     }
 
     @Override
-    public void clearTableDataSync(DbCallBack<Boolean> dbCallBack) {
-        mCityDao.clearTableDataSync(dbCallBack);
+    public void clearTableDataSync(RequestCallBack<Boolean> dbCallBack) {
+        mRxManager.add(mCityDao.clearTableDataSync(dbCallBack));
     }
 }

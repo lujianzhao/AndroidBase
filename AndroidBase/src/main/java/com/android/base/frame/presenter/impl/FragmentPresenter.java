@@ -32,8 +32,7 @@ public abstract class FragmentPresenter<V extends IBaseView, M extends BaseModel
         this.mFragment = fragment;
         this.mView = view;
         this.mModel = getModel();
-        mModel.setRxManager(mRxManager);
-        mModel.setContext(mActivity);
+        mModel.init(mActivity,mRxManager);
     }
 
     public M getModel() {
@@ -56,12 +55,10 @@ public abstract class FragmentPresenter<V extends IBaseView, M extends BaseModel
 
     @Override
     public void onResume() {
-        mModel.onResume();
     }
 
     @Override
     public void onPause() {
-        mModel.onPause();
     }
 
     @Override

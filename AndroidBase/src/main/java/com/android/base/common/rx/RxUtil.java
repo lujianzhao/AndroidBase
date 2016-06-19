@@ -67,38 +67,4 @@ public class RxUtil {
                     }
                 });
     }
-
-    /*public static <T> Observable<T> subscribe(Callable<T> callable, Subscriber<T> subscriber, CompositeSubscription cs) {
-        Observable<T> observable = getObservable(callable);
-        Subscription subscription = observable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
-        getNewCompositeSubIfUnsubscribed(cs);
-        cs.add(subscription);
-        return observable;
-    }
-
-    public static <T> Observable<T> subscribe(Observable<T> observable, Subscriber<T> subscriber, CompositeSubscription cs) {
-        Subscription subscription = observable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
-        getNewCompositeSubIfUnsubscribed(cs);
-        cs.add(subscription);
-        return observable;
-    }
-
-    public static <T> Observable<T> subscribeForRetrofit(Observable<T> observable, Subscriber<T> subscriber, CompositeSubscription cs) {
-        Subscription subscription = observable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io())
-                .subscribe(subscriber);
-        getNewCompositeSubIfUnsubscribed(cs);
-        cs.add(subscription);
-        return observable;
-    }*/
-
-
 }

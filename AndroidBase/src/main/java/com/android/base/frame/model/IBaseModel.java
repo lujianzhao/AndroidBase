@@ -9,9 +9,6 @@ import com.android.base.common.rx.RxManager;
  */
 public interface IBaseModel {
     void onCreate();
-    void onResume();
-    void onPause();
     void onDestroy();
-    void setRxManager(RxManager rxManager);
-    void setContext(Context context);
+    void init(Context context,RxManager rxManager);
 }
