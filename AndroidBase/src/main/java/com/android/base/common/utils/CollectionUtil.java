@@ -1,7 +1,10 @@
-package com.android.base.db;
+package com.android.base.common.utils;
 
 import java.util.List;
 
+/**
+ * Created by huangzj on 2016/1/27.
+ */
 public class CollectionUtil {
 
     /**

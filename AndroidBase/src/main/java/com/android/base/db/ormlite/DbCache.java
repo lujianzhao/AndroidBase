@@ -1,4 +1,4 @@
-package com.android.base.db;
+package com.android.base.db.ormlite;
 
 import android.support.v4.util.LruCache;
 import android.text.TextUtils;
@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Created by huangzj on 2016/3/2.
+ * <p/>
  * 数据库查询后的缓存数据
  */
 public class DbCache {
@@ -24,20 +26,20 @@ public class DbCache {
      */
     private LruCache<String, Map<String, String>> mLruCache;
 
-    private static DbCache sInstance;
+    private static DbCache mInstance;
 
     private DbCache() {
     }
 
     public static DbCache getInstance() {
-        if (sInstance == null) {
+        if (mInstance == null) {
             synchronized (DbCache.class) {
-                if (sInstance == null) {
-                    sInstance = new DbCache();
+                if (mInstance == null) {
+                    mInstance = new DbCache();
                 }
             }
         }
-        return sInstance;
+        return mInstance;
     }
 
     private synchronized void initCache() {
@@ -68,7 +70,7 @@ public class DbCache {
             mLruCache.put(tableName, tableCache);
         } else {
             LogUtils.i("--------update cache");
-            tableCache.put(query, JSON.toJSONString(value));
+            tableCache.put(query,  JSON.toJSONString(value));
         }
     }
 

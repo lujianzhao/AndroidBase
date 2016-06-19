@@ -1,5 +1,7 @@
 package com.android.base.frame.model;
 
+import android.content.Context;
+
 import com.android.base.common.rx.RxManager;
 
 /**
@@ -7,6 +9,9 @@ import com.android.base.common.rx.RxManager;
  */
 public interface IBaseModel {
     void onCreate();
+    void onResume();
+    void onPause();
     void onDestroy();
     void setRxManager(RxManager rxManager);
+    void setContext(Context context);
 }

@@ -5,14 +5,14 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.android.base.common.rx.RxManager;
-import com.android.base.frame.model.IBaseModel;
-import com.android.base.frame.view.IBaseView;
+import com.android.base.frame.model.impl.BaseModel;
 import com.android.base.frame.presenter.IActivityPresenter;
+import com.android.base.frame.view.IBaseView;
 
 /**
  * Created by Administrator on 2016/5/13.
  */
-public abstract class ActivityPresenter<V extends IBaseView, M extends IBaseModel> implements IActivityPresenter {
+public abstract class ActivityPresenter<V extends IBaseView, M extends BaseModel> implements IActivityPresenter {
 
     public V mView;
     public M mModel;
@@ -30,6 +30,7 @@ public abstract class ActivityPresenter<V extends IBaseView, M extends IBaseMode
         this.mView = view;
         this.mModel = getModel();
         mModel.setRxManager(mRxManager);
+        mModel.setContext(mActivity);
     }
 
     public M getModel() {
@@ -52,12 +53,12 @@ public abstract class ActivityPresenter<V extends IBaseView, M extends IBaseMode
 
     @Override
     public void onResume() {
-
+        mModel.onResume();
     }
 
     @Override
     public void onPause() {
-
+        mModel.onPause();
     }
 
     @Override
@@ -77,21 +78,16 @@ public abstract class ActivityPresenter<V extends IBaseView, M extends IBaseMode
 
     @Override
     public void onDestroy() {
-        if (mRxManager != null) {
-            mRxManager.clear();
-            mRxManager = null;
-        }
         if (mModel != null) {
             mModel.onDestroy();
             mModel = null;
         }
         mView = null;
         mActivity = null;
+        if (mRxManager != null) {
+            mRxManager.clear();
+            mRxManager = null;
+        }
     }
-
-
-
-
-
 
 }

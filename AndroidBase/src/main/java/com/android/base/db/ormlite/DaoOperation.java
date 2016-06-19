@@ -1,6 +1,8 @@
-package com.android.base.db.impl;
+package com.android.base.db.ormlite;
 
-
+/**
+ * Created by lhd on 2015/11/7.
+ */
 public interface DaoOperation {
 
     int INSERT = 1;

@@ -1,8 +1,9 @@
-package com.android.base.db;
+package com.android.base.db.ormlite;
 
 import android.database.sqlite.SQLiteDatabase;
 
 import com.android.base.common.logutils.LogUtils;
+import com.android.base.common.utils.CollectionUtil;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
@@ -12,25 +13,28 @@ import java.util.List;
 
 /**
  * 数据库表升级方案的基类
+ * <p/>
  * 需要自定义升级方案的数据表可继承改类，重写对应方法
+ * <p/>
+ * Created by huangzj on 2016/1/25.
  */
 public class DatabaseHandler<T> {
 
-    private Class<T> mClazz;
-    private String mTableName;
+    private Class<T> clazz;
+    private String tableName;
 
     public DatabaseHandler(Class<T> clazz) {
-        this.mClazz = clazz;
-        mTableName = DatabaseUtil.extractTableName(clazz);
+        this.clazz = clazz;
+        tableName = DatabaseUtil.extractTableName(clazz);
     }
 
     public String getTableName() {
-        return mTableName;
+        return tableName;
     }
 
     public void onUpgrade(SQLiteDatabase db, ConnectionSource cs) throws SQLException {
-        List<ColumnStruct> oldStruct = DatabaseUtil.getOldTableStruct(db, mTableName);
-        List<ColumnStruct> newStruct = DatabaseUtil.getNewTableStruct(cs, mClazz);
+        List<ColumnStruct> oldStruct = DatabaseUtil.getOldTableStruct(db, tableName);
+        List<ColumnStruct> newStruct = DatabaseUtil.getNewTableStruct(cs, clazz);
 
         if (oldStruct.isEmpty() && newStruct.isEmpty()) {
             LogUtils.d("数据表结构都为空！不是合法的数据库bean！！！");
@@ -94,7 +98,7 @@ public class DatabaseHandler<T> {
     private String appendAddColumn(ColumnStruct addStruct) {
         StringBuilder sb = new StringBuilder();
         sb.append("ALTER TABLE ");
-        sb.append(mTableName);
+        sb.append(tableName);
         sb.append(" ADD COLUMN ");
         sb.append('`').append(addStruct.getColumnName()).append('`').append(' ');
         sb.append(addStruct.getColumnLimit()).append(' ');
@@ -110,19 +114,19 @@ public class DatabaseHandler<T> {
         db.beginTransaction();
         try {
             //Rename table
-            String tempTableName = mTableName + "_temp";
-            String sql = "ALTER TABLE " + mTableName + " RENAME TO " + tempTableName;
+            String tempTableName = tableName + "_temp";
+            String sql = "ALTER TABLE " + tableName + " RENAME TO " + tempTableName;
             db.execSQL(sql);
 
             //Create table
             try {
-                sql = TableUtils.getCreateTableStatements(cs, mClazz).get(0);
+                sql = TableUtils.getCreateTableStatements(cs, clazz).get(0);
                 db.execSQL(sql);
             } catch (Exception e) {
                 LogUtils.e("", e);
-                TableUtils.createTable(cs, mClazz);
+                TableUtils.createTable(cs, clazz);
             }
-            sql = "INSERT INTO " + mTableName + " (" + columns + ") " +
+            sql = "INSERT INTO " + tableName + " (" + columns + ") " +
                     " SELECT " + columns + " FROM " + tempTableName;
             db.execSQL(sql);
 
@@ -202,7 +206,7 @@ public class DatabaseHandler<T> {
      * @throws SQLException
      */
     public void clear(ConnectionSource connectionSource) throws SQLException {
-        TableUtils.clearTable(connectionSource, mClazz);
+        TableUtils.clearTable(connectionSource, clazz);
     }
 
     /**
@@ -211,7 +215,7 @@ public class DatabaseHandler<T> {
      * @throws SQLException
      */
     public void create(ConnectionSource connectionSource) throws SQLException {
-        TableUtils.createTable(connectionSource, mClazz);
+        TableUtils.createTable(connectionSource, clazz);
     }
 
     /**
@@ -221,7 +225,7 @@ public class DatabaseHandler<T> {
      * @throws SQLException
      */
     public void drop(ConnectionSource connectionSource) throws SQLException {
-        TableUtils.dropTable(connectionSource, mClazz, true);
+        TableUtils.dropTable(connectionSource, clazz, true);
     }
 
 }

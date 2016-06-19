@@ -1,5 +1,6 @@
 package com.android.base.frame.model.impl;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.android.base.common.rx.RxManager;
@@ -12,20 +13,39 @@ import com.android.base.frame.model.IBaseModel;
  */
 public abstract class BaseModel implements IBaseModel {
 
-    private RxManager mRxManager;
+    protected RxManager mRxManager;
+
+    protected Context mContext;
 
     @Override
     public void onCreate() {
 
     }
 
+
+    @Override
+    public void onResume() {
+
+    }
+
+    @Override
+    public void onPause() {
+
+    }
+
     @Override
     public void onDestroy() {
+        mContext = null;
         mRxManager = null;
     }
 
     @Override
     public void setRxManager(@NonNull RxManager rxManager) {
         this.mRxManager = rxManager;
+    }
+
+    @Override
+    public void setContext(Context context) {
+        this.mContext = context;
     }
 }

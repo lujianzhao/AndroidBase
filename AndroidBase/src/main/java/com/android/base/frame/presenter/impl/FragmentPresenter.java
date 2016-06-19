@@ -6,14 +6,14 @@ import android.support.annotation.NonNull;
 
 import com.android.base.common.rx.RxManager;
 import com.android.base.frame.fragment.impl.BaseMvpFragment;
-import com.android.base.frame.model.IBaseModel;
-import com.android.base.frame.view.IBaseView;
+import com.android.base.frame.model.impl.BaseModel;
 import com.android.base.frame.presenter.IFragmentPresenter;
+import com.android.base.frame.view.IBaseView;
 
 /**
  * Created by Administrator on 2016/5/17.
  */
-public abstract class FragmentPresenter<V extends IBaseView, M extends IBaseModel> implements IFragmentPresenter {
+public abstract class FragmentPresenter<V extends IBaseView, M extends BaseModel> implements IFragmentPresenter {
 
     public V mView;
     public M mModel;
@@ -33,6 +33,7 @@ public abstract class FragmentPresenter<V extends IBaseView, M extends IBaseMode
         this.mView = view;
         this.mModel = getModel();
         mModel.setRxManager(mRxManager);
+        mModel.setContext(mActivity);
     }
 
     public M getModel() {
@@ -55,12 +56,12 @@ public abstract class FragmentPresenter<V extends IBaseView, M extends IBaseMode
 
     @Override
     public void onResume() {
-
+        mModel.onResume();
     }
 
     @Override
     public void onPause() {
-
+        mModel.onPause();
     }
 
     @Override
@@ -75,10 +76,6 @@ public abstract class FragmentPresenter<V extends IBaseView, M extends IBaseMode
 
     @Override
     public void onDestroy() {
-        if (mRxManager != null) {
-            mRxManager.clear();
-            mRxManager = null;
-        }
         if (mModel != null) {
             mModel.onDestroy();
             mModel = null;
@@ -86,6 +83,11 @@ public abstract class FragmentPresenter<V extends IBaseView, M extends IBaseMode
         mView = null;
         mFragment = null;
         mActivity = null;
+
+        if (mRxManager != null) {
+            mRxManager.clear();
+            mRxManager = null;
+        }
     }
 
     @Override

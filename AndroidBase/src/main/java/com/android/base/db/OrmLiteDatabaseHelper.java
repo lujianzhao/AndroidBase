@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.android.base.common.logutils.LogUtils;
+import com.android.base.db.ormlite.DatabaseHandler;
 import com.j256.ormlite.android.AndroidDatabaseConnection;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
@@ -17,10 +18,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+
 /**
  * ormlite操作数据库Helper
+ * <p/>
+ * Created by huangzj on 2016/2/24.
  */
-public class BaseOrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
+public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     List<DatabaseHandler> tableHandlers;
 
@@ -29,7 +33,7 @@ public class BaseOrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
      */
     Map<String, Dao> daoMap;
 
-    public BaseOrmLiteDatabaseHelper(Context context, String databaseName, SQLiteDatabase.CursorFactory factory, int databaseVersion) {
+    public OrmLiteDatabaseHelper(Context context, String databaseName, SQLiteDatabase.CursorFactory factory, int databaseVersion) {
         super(context, databaseName, factory, databaseVersion);
         daoMap = new HashMap<>();
     }
@@ -127,7 +131,7 @@ public class BaseOrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
         }
     }
 
-    public synchronized Dao getDao(Class cls) {
+    public  synchronized  Dao getDao(Class cls) {
         Dao dao;
         String clsName = cls.getSimpleName();
         if (daoMap.containsKey(clsName)) {

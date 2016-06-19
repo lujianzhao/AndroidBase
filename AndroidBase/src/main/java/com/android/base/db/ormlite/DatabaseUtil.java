@@ -1,4 +1,4 @@
-package com.android.base.db;
+package com.android.base.db.ormlite;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,6 +16,8 @@ import java.util.List;
 
 /**
  * 数据库处理的辅助工具
+ * <p/>
+ * Created by huangzj on 2016/1/23.
  */
 public class DatabaseUtil {
 
@@ -73,7 +75,7 @@ public class DatabaseUtil {
             LogUtils.i("新的建表语句：" + struct);
             columnStruct = getColumnStruct(struct);
         } catch (SQLException e) {
-            LogUtils.e(e);
+            LogUtils.e("",e);
         }
         return columnStruct;
     }
@@ -105,7 +107,7 @@ public class DatabaseUtil {
                 LogUtils.i("数据库操作失败");
             }
         } catch (Exception e) {
-            LogUtils.e(e);
+            LogUtils.e("", e);
         } finally {
             if (cursor != null) {
                 cursor.close();

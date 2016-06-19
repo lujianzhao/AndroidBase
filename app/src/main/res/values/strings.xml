@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">AndroidBaseDemo</string>
+
+    <string-array name="test_list">
+        <item>操作数据库Test</item>
+        <item>............</item>
+        <item>............</item>
+        <item>............</item>
+        <item>............</item>
+        <item>............</item>
+        <item>............</item>
+        <item>............</item>
+        <item>............</item>
+        <item>............</item>
+        <item>............</item>
+        <item>............</item>
+        <item>............</item>
+    </string-array>
 </resources>
