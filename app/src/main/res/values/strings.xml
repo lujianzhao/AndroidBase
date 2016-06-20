@@ -3,7 +3,7 @@
 
     <string-array name="test_list">
         <item>操作数据库Test</item>
-        <item>............</item>
+        <item>HTTP Test</item>
         <item>............</item>
         <item>............</item>
         <item>............</item>
@@ -16,4 +16,22 @@
         <item>............</item>
         <item>............</item>
     </string-array>
+
+
+    <string-array name="http_list">
+        <item>GET和POST请求</item>
+        <item>上传图片</item>
+        <item>下载文件</item>
+        <item>............</item>
+        <item>............</item>
+        <item>............</item>
+        <item>............</item>
+        <item>............</item>
+        <item>............</item>
+        <item>............</item>
+        <item>............</item>
+        <item>............</item>
+        <item>............</item>
+    </string-array>
+
 </resources>

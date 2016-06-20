@@ -2,8 +2,22 @@ package com.android.base.widget.selector;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.widget.CheckedTextView;
 
+/**
+ * <p>
+ * <com.android.base.widget.selector.SelectorTextView
+ * android:id="@+id/stv"
+ * android:text="Click Me"
+ * app:normalColor="#03a9f4"                     //必填
+ * app:normalDrawable="@drawable/btn_oval_shape" //必填
+ * app:normalStrokeColor="#ffffff"
+ * app:normalStrokeWidth="4dp"
+ * app:pressedColor="#03f4e8"
+ * />
+ * </p>
+ */
 public class SelectorTextView extends CheckedTextView implements SelectorView {
 
     private SelectorInjection injection;
@@ -22,14 +36,14 @@ public class SelectorTextView extends CheckedTextView implements SelectorView {
         injection.injection(this);
 
         setClickable(true);
-//        setGravity(Gravity.CENTER);
+        setGravity(Gravity.CENTER);
     }
 
     @Override
     public SelectorInjection initSelectorInjection(Context context, AttributeSet attr) {
         return new SelectorInjection(context, attr);
     }
-    
+
     @Override
     public SelectorInjection getInjection() {
         return injection;

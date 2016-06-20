@@ -19,10 +19,10 @@ public abstract class ActivityPresenter<V extends IBaseView, M extends BaseModel
     public Activity mActivity;
     public RxManager mRxManager = new RxManager();
 
-    public abstract void start();
-
     @NonNull
     protected abstract Class<M> getModelClass();
+
+    public abstract void start();
 
 
     public void setVM(@NonNull Activity activity,@NonNull V view) {

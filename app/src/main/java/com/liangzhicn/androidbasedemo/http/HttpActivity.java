@@ -1,4 +1,4 @@
-package com.liangzhicn.androidbasedemo;
+package com.liangzhicn.androidbasedemo.http;
 
 import android.content.Intent;
 import android.view.View;
@@ -7,12 +7,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.base.frame.activity.impl.BaseActivity;
-import com.liangzhicn.androidbasedemo.db.view.DBActivity;
-import com.liangzhicn.androidbasedemo.http.HttpActivity;
+import com.liangzhicn.androidbasedemo.R;
+import com.liangzhicn.androidbasedemo.http.view.GetAndPostActivity;
+import com.liangzhicn.androidbasedemo.http.view.UploadActivity;
 
 import butterknife.Bind;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener {
+public class HttpActivity extends BaseActivity implements View.OnClickListener {
 
     @Bind(R.id.title)
     TextView mTitle;
@@ -33,8 +34,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public void initData() {
-        mTitle.setText("老哦 test");
-        String[] bttxt = getResources().getStringArray(R.array.test_list);
+        mTitle.setText("Http test");
+        String[] bttxt = getResources().getStringArray(R.array.http_list);
         if (bttxt != null) {
             for (int i = 0; i < bttxt.length; i++) {
                 Button bt = new Button(this);
@@ -56,14 +57,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         Intent intent = new Intent();
         switch (v.getId()) {
             case 0:
-                gotoActivity(DBActivity.class, false);
+                //get和post请求
+                gotoActivity(GetAndPostActivity.class, false);
                 break;
             case 1:
-                gotoActivity(HttpActivity.class, false);
-                //gotoActivity(FragmentTabHostActivity.class, false);
+                gotoActivity(UploadActivity.class, false);
                 break;
             default:
-                //showShortToast("还在开发中...");
                 break;
         }
 

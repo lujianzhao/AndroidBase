@@ -103,8 +103,8 @@
         <!-- 是否将图片设置到src中（仅仅对ImageButton有效） -->
         <attr name="isSrc" format="boolean" />
 
-        <!-- 是否显示水波纹（Android5.0以上有效）由于targetSdkVersion过低,所以临时关闭-->
-        <!--<attr name="showRipple" format="boolean" />-->
+        <!-- 是否显示水波纹（Android5.0以上有效）-->
+        <attr name="showRipple" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="ConvenientBanner">

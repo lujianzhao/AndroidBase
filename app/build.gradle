@@ -24,4 +24,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile project(':AndroidBase')
     compile project(':AndroidWidget')
+
+    compile 'com.lzy.widget:imagepicker:0.2.1'
+    compile 'com.lzy.widget:view-core:0.2.1'
 }

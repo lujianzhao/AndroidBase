@@ -7,7 +7,9 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.StateListDrawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageButton;
@@ -98,7 +100,7 @@ public class SelectorInjection {
      */
     public int checkedColor;
 
-//    public boolean showRipple;
+    public boolean showRipple;
 
     public SelectorInjection(Context context, AttributeSet attrs) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SelectorInjection);
@@ -124,7 +126,7 @@ public class SelectorInjection {
 
         isSrc = a.getBoolean(R.styleable.SelectorInjection_isSrc, false);
 
-//        showRipple = a.getBoolean(R.styleable.SelectorInjection_showRipple, true);
+        showRipple = a.getBoolean(R.styleable.SelectorInjection_showRipple, true);
         a.recycle();
     }
 
@@ -157,15 +159,15 @@ public class SelectorInjection {
             ((ImageButton) view).setImageDrawable(selector);
             //mView.setBackgroundDrawable(null);
         } else {
-//            if (showRipple && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                RippleDrawable ripple = (RippleDrawable) view.getContext().getDrawable(R.drawable.si_ripple);
-//                assert ripple != null;
-//                ripple.setDrawableByLayerId(android.R.id.background, selector);
-//                ripple.setColor(createColorStateList(pressedColor, pressedColor, pressedColor, pressedColor));
-//                view.setBackground(ripple);
-//            } else {
+            if (showRipple && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                RippleDrawable ripple = (RippleDrawable) view.getContext().getDrawable(R.drawable.si_ripple);
+                assert ripple != null;
+                ripple.setDrawableByLayerId(android.R.id.background, selector);
+                ripple.setColor(createColorStateList(pressedColor, pressedColor, pressedColor, pressedColor));
+                view.setBackground(ripple);
+            } else {
                 view.setBackgroundDrawable(selector);
-//            }
+            }
         }
     }
 
@@ -228,11 +230,11 @@ public class SelectorInjection {
      * @param strokeWidth shape的描边宽度
      */
     private void setShape(GradientDrawable shape, int color, int strokeColor, int strokeWidth, boolean isNormal) {
-//        if (showRipple && !isNormal && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            shape.setColor(normalColor);
-//        } else {
+        if (showRipple && !isNormal && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            shape.setColor(normalColor);
+        } else {
             shape.setColor(color);
-//        }
+        }
         if (strokeColor != DEFAULT_COLOR) {
             shape.setStroke(strokeWidth, strokeColor);
         }

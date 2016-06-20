@@ -4,6 +4,7 @@
 
     <application
         android:allowBackup="true"
+        android:name=".DemoApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -28,6 +29,21 @@
 
         <activity
             android:name=".db.view.DBActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+
+        <activity
+            android:name=".http.HttpActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+
+        <activity
+            android:name=".http.view.GetAndPostActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+
+        <activity
+            android:name=".http.view.UploadActivity"
             android:screenOrientation="portrait" >
         </activity>
 
