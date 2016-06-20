@@ -1,4 +1,4 @@
-package com.android.base.http;
+package com.android.base.http.impl;
 
 import android.content.Context;
 
@@ -6,7 +6,8 @@ import com.android.base.common.cookiejar.ClearableCookieJar;
 import com.android.base.common.cookiejar.PersistentCookieJar;
 import com.android.base.common.cookiejar.cache.SetCookieCache;
 import com.android.base.common.cookiejar.persistence.SharedPrefsCookiePersistor;
-import com.android.base.http.impl.IRetrofit;
+import com.android.base.http.IRetrofit;
+import com.android.base.http.interceptor.LoggerInterceptor;
 
 import java.util.concurrent.TimeUnit;
 

@@ -1,4 +1,4 @@
-package com.android.base.http.impl;
+package com.android.base.http;
 
 import android.content.Context;
 

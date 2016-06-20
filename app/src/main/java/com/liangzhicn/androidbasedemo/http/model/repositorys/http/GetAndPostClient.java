@@ -3,7 +3,7 @@ package com.liangzhicn.androidbasedemo.http.model.repositorys.http;
 import android.text.TextUtils;
 
 import com.android.base.frame.Base;
-import com.android.base.http.BaseRestClient;
+import com.android.base.http.impl.BaseRestClient;
 
 import java.io.IOException;
 

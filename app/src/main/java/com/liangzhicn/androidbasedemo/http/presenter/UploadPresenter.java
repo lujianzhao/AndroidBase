@@ -1,9 +1,12 @@
 package com.liangzhicn.androidbasedemo.http.presenter;
 
 import android.content.Intent;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 
 import com.android.base.common.assist.Toastor;
+import com.android.base.http.listener.ProgressListener;
+import com.android.base.http.progress.ProgressRequestBody;
 import com.liangzhicn.androidbasedemo.http.contract.UploadContract;
 import com.liangzhicn.androidbasedemo.http.model.UploadModel;
 import com.lzy.imagepicker.ImagePicker;
@@ -11,7 +14,13 @@ import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.loader.GlideImageLoader;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 /**
  * 作者: lujianzhao
@@ -51,6 +60,17 @@ public class UploadPresenter extends UploadContract.Presenter<UploadModel> {
             Toastor.showToast(mActivity,"请选择需上传的图片");
             return;
         }
+
+        String token = "09oMsbnJYREss4vRGdGeurO-C7WhTPHnlLyy-6e5:J8V1qHXvDR51PDN5YaAqHIh9eHc=:eyJzY29wZSI6ImFwcGltYWdlIiwiY2FsbGJhY2tVcmwiOiJodHRwOi8vYXBwYXBpLmlpdGUuY2M6ODA4MC9pdGVldGgvY29tbW9uL3Fpbml1Y2FsbGJhY2siLCJkZWFkbGluZSI6MTc3NDA5OTQ2NCwiY2FsbGJhY2tCb2R5Ijoia2V5XHUwMDNkJChrZXkpXHUwMDI2aGFzaFx1MDAzZCQoZXRhZylcdTAwMjZqc29uQm9keVx1MDAzZCQoeDpqc29uQm9keSkifQ==";
+        Map<String, RequestBody> params = new HashMap<>();
+        RequestBody body = RequestBody.create(MediaType.parse("image/jpeg"), new File(Environment.getExternalStorageDirectory().getPath() + File.separator + "app_newkey_release_8_4.apk"));
+        params.put("file", new ProgressRequestBody(body, new ProgressListener() {
+            @Override
+            public void onProgress(long currentBytes, long contentLength, boolean done) {
+
+            }
+        }));
+
     }
 
     @Override
