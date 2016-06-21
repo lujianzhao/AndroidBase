@@ -11,14 +11,14 @@ import com.android.base.frame.view.IBaseView;
 /**
  * Created by Administrator on 2016/5/13.
  */
-public abstract class BaseMvpActivity<P extends ActivityPresenter> extends SuperActivity {
+public abstract class BaseMvpActivity<P extends ActivityPresenter,V extends IBaseView> extends SuperActivity {
     public P mPresenter;
 
     @NonNull
     protected abstract Class<P> getPresenterClass();
 
     @NonNull
-    protected abstract <V extends IBaseView> V getMvpView();
+    protected abstract V getMvpView();
 
 
     @Override
@@ -26,7 +26,7 @@ public abstract class BaseMvpActivity<P extends ActivityPresenter> extends Super
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPresenter = getPresenter();
-        mPresenter.setVM(this, getMvpView());
+        mPresenter.initPresenter(this, getMvpView());
         initView();
         if (mPresenter != null) {
             mPresenter.onCreate();

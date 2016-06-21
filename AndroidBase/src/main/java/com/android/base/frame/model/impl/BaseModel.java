@@ -29,7 +29,7 @@ public abstract class BaseModel implements IBaseModel {
     }
 
     @Override
-    public void init(@NonNull Context context,@NonNull RxManager rxManager) {
+    public void initModel(@NonNull Context context,@NonNull RxManager rxManager) {
         this.mContext = context;
         this.mRxManager = rxManager;
     }

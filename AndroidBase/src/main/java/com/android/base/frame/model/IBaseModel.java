@@ -10,5 +10,5 @@ import com.android.base.common.rx.RxManager;
 public interface IBaseModel {
     void onCreate();
     void onDestroy();
-    void init(Context context,RxManager rxManager);
+    void initModel(Context context,RxManager rxManager);
 }

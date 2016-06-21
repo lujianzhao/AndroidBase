@@ -12,7 +12,7 @@ import com.android.base.frame.view.IBaseView;
 /**
  * Created by Administrator on 2016/5/13.
  */
-public abstract class ActivityPresenter<V extends IBaseView, M extends BaseModel> implements IActivityPresenter {
+public abstract class ActivityPresenter<M extends BaseModel, V extends IBaseView> implements IActivityPresenter {
 
     public V mView;
     public M mModel;
@@ -25,11 +25,11 @@ public abstract class ActivityPresenter<V extends IBaseView, M extends BaseModel
     public abstract void start();
 
 
-    public void setVM(@NonNull Activity activity,@NonNull V view) {
+    public void initPresenter(@NonNull Activity activity, @NonNull V view) {
         this.mActivity = activity;
         this.mView = view;
         this.mModel = getModel();
-        mModel.init(mActivity,mRxManager);
+        mModel.initModel(mActivity, mRxManager);
     }
 
     public M getModel() {

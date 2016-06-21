@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.android.base.frame.activity.impl.BaseMvpActivity;
-import com.android.base.frame.view.IBaseView;
 import com.liangzhicn.androidbasedemo.R;
 import com.liangzhicn.androidbasedemo.db.contract.DBContract;
 import com.liangzhicn.androidbasedemo.db.presenter.DBPresenter;
@@ -18,7 +17,7 @@ import butterknife.OnClick;
  * 创建时间: 2016/06/18 14:49
  * 描述:
  */
-public class DBActivity extends BaseMvpActivity<DBPresenter> implements DBContract.View{
+public class DBActivity extends BaseMvpActivity<DBPresenter,DBContract.View> implements DBContract.View{
 
     @Bind(R.id.text_city)
     TextView textView;
@@ -32,8 +31,8 @@ public class DBActivity extends BaseMvpActivity<DBPresenter> implements DBContra
 
     @NonNull
     @Override
-    protected <V extends IBaseView> V getMvpView() {
-        return (V) this;
+    protected DBContract.View getMvpView() {
+        return  this;
     }
 
     @Override

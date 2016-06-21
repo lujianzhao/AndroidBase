@@ -11,7 +11,7 @@ import com.android.base.frame.view.IBaseView;
 /**
  * Created by Administrator on 2016/5/13.
  */
-public abstract class BaseMvpFragment<P extends FragmentPresenter> extends SuperFragment{
+public abstract class BaseMvpFragment<P extends FragmentPresenter,V extends IBaseView> extends SuperFragment{
 
     public P mPresenter;
 
@@ -19,13 +19,13 @@ public abstract class BaseMvpFragment<P extends FragmentPresenter> extends Super
     protected abstract Class<P> getPresenterClass();
 
     @NonNull
-    protected abstract <V extends IBaseView> V getMvpView();
+    protected abstract V getMvpView();
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mPresenter = getPresenter();
-        mPresenter.setVM(this, getMvpView());
+        mPresenter.initPresenter(this, getMvpView());
         initView(savedInstanceState);
         if(mPresenter !=null){
             mPresenter.onActivityCreated();

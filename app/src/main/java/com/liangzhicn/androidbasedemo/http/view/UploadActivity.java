@@ -7,7 +7,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.base.frame.activity.impl.BaseMvpActivity;
-import com.android.base.frame.view.IBaseView;
 import com.liangzhicn.androidbasedemo.R;
 import com.liangzhicn.androidbasedemo.http.contract.UploadContract;
 import com.liangzhicn.androidbasedemo.http.presenter.UploadPresenter;
@@ -21,7 +20,7 @@ import butterknife.OnClick;
  * 创建时间: 2016/06/20 16:22
  * 描述:
  */
-public class UploadActivity extends BaseMvpActivity<UploadPresenter>implements UploadContract.View{
+public class UploadActivity extends BaseMvpActivity<UploadPresenter,UploadContract.View>implements UploadContract.View{
 
     @Bind(R.id.formUpload)
     Button btnFormUpload;
@@ -50,8 +49,8 @@ public class UploadActivity extends BaseMvpActivity<UploadPresenter>implements U
 
     @NonNull
     @Override
-    protected <V extends IBaseView> V getMvpView() {
-        return (V) this;
+    protected UploadContract.View getMvpView() {
+        return this;
     }
 
     @Override

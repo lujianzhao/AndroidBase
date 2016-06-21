@@ -13,7 +13,7 @@ import com.android.base.frame.view.IBaseView;
 /**
  * Created by Administrator on 2016/5/17.
  */
-public abstract class FragmentPresenter<V extends IBaseView, M extends BaseModel> implements IFragmentPresenter {
+public abstract class FragmentPresenter<M extends BaseModel, V extends IBaseView> implements IFragmentPresenter {
 
     public V mView;
     public M mModel;
@@ -27,12 +27,12 @@ public abstract class FragmentPresenter<V extends IBaseView, M extends BaseModel
     public abstract void start();
 
 
-    public void setVM(@NonNull BaseMvpFragment fragment,@NonNull V view) {
+    public void initPresenter(@NonNull BaseMvpFragment fragment, @NonNull V view) {
         this.mActivity = fragment.getActivity();
         this.mFragment = fragment;
         this.mView = view;
         this.mModel = getModel();
-        mModel.init(mActivity,mRxManager);
+        mModel.initModel(mActivity, mRxManager);
     }
 
     public M getModel() {

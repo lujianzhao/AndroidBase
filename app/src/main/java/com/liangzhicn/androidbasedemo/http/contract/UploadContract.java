@@ -21,7 +21,7 @@ public interface UploadContract {
         void selectImageResult(String imgs);
     }
 
-    abstract class Presenter<M extends Model> extends ActivityPresenter<View, M> {
+    abstract class Presenter<M extends Model> extends ActivityPresenter<M,View> {
         /**
          * 选择图片
          */

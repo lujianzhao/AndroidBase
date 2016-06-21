@@ -6,7 +6,6 @@ import android.widget.TextView;
 
 import com.android.base.common.assist.Toastor;
 import com.android.base.frame.activity.impl.BaseMvpActivity;
-import com.android.base.frame.view.IBaseView;
 import com.android.base.widget.LoadProgressLayout;
 import com.liangzhicn.androidbasedemo.R;
 import com.liangzhicn.androidbasedemo.http.contract.GetAndPostContract;
@@ -20,7 +19,7 @@ import butterknife.OnClick;
  * 创建时间: 2016/06/18 14:49
  * 描述:
  */
-public class GetAndPostActivity extends BaseMvpActivity<GetAndPostPresenter> implements GetAndPostContract.View{
+public class GetAndPostActivity extends BaseMvpActivity<GetAndPostPresenter,GetAndPostContract.View> implements GetAndPostContract.View{
 
     @Bind(R.id.tv_content)
     TextView mContent;
@@ -36,8 +35,8 @@ public class GetAndPostActivity extends BaseMvpActivity<GetAndPostPresenter> imp
 
     @NonNull
     @Override
-    protected <V extends IBaseView> V getMvpView() {
-        return (V) this;
+    protected GetAndPostContract.View getMvpView() {
+        return  this;
     }
 
     @Override

@@ -39,7 +39,7 @@ public interface GetAndPostContract {
         void showGet(String data);
     }
 
-    abstract class Presenter<M extends Model> extends ActivityPresenter<View, M> {
+    abstract class Presenter<M extends Model> extends ActivityPresenter<M,View> {
     }
 
 }

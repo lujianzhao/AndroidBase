@@ -45,7 +45,7 @@ public interface DBContract {
         void updateView(String s);
     }
 
-    abstract class Presenter<M extends Model> extends ActivityPresenter<View, M> {
+    abstract class Presenter<M extends Model> extends ActivityPresenter<M,View> {
 
         public abstract void onBtnClick(android.view.View view);
     }
