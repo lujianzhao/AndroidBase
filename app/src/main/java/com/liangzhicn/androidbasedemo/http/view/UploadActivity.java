@@ -2,6 +2,7 @@ package com.liangzhicn.androidbasedemo.http.view;
 
 
 import android.support.annotation.NonNull;
+import android.text.format.Formatter;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,7 +21,7 @@ import butterknife.OnClick;
  * 创建时间: 2016/06/20 16:22
  * 描述:
  */
-public class UploadActivity extends BaseMvpActivity<UploadPresenter,UploadContract.View>implements UploadContract.View{
+public class UploadActivity extends BaseMvpActivity<UploadContract.Presenter,UploadContract.View>implements UploadContract.View{
 
     @Bind(R.id.formUpload)
     Button btnFormUpload;
@@ -40,11 +41,10 @@ public class UploadActivity extends BaseMvpActivity<UploadPresenter,UploadContra
     @Bind(R.id.images)
     TextView tvImages;
 
-
     @NonNull
     @Override
-    protected Class<UploadPresenter> getPresenterClass() {
-        return UploadPresenter.class;
+    protected UploadContract.Presenter getMvpPresenter() {
+        return new UploadPresenter();
     }
 
     @NonNull
@@ -97,5 +97,15 @@ public class UploadActivity extends BaseMvpActivity<UploadPresenter,UploadContra
     @Override
     public void selectImageResult(String imgs) {
         tvImages.setText(imgs);
+    }
+
+    @Override
+    public void upProgress(long currentSize, long totalSize) {
+        String downloadLength = Formatter.formatFileSize(getApplicationContext(), currentSize);
+        String totalLength = Formatter.formatFileSize(getApplicationContext(), totalSize);
+        tvDownloadSize.setText(downloadLength + "/" + totalLength);
+        tvProgress.setText(( currentSize  / totalSize )*100.0F + "%");
+        pbProgress.setMax(100);
+        pbProgress.setProgress((int) (( currentSize  / totalSize )*100.0F));
     }
 }

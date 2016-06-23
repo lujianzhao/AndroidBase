@@ -19,7 +19,7 @@ import butterknife.OnClick;
  * 创建时间: 2016/06/18 14:49
  * 描述:
  */
-public class GetAndPostActivity extends BaseMvpActivity<GetAndPostPresenter,GetAndPostContract.View> implements GetAndPostContract.View{
+public class GetAndPostActivity extends BaseMvpActivity<GetAndPostContract.Presenter,GetAndPostContract.View> implements GetAndPostContract.View{
 
     @Bind(R.id.tv_content)
     TextView mContent;
@@ -27,10 +27,11 @@ public class GetAndPostActivity extends BaseMvpActivity<GetAndPostPresenter,GetA
     @Bind(R.id.progress_layout)
     LoadProgressLayout mProgressLayout;
 
+
     @NonNull
     @Override
-    protected Class<GetAndPostPresenter> getPresenterClass() {
-        return GetAndPostPresenter.class;
+    protected GetAndPostContract.Presenter getMvpPresenter() {
+        return new GetAndPostPresenter();
     }
 
     @NonNull

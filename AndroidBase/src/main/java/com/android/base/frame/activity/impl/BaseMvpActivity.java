@@ -11,11 +11,14 @@ import com.android.base.frame.view.IBaseView;
 /**
  * Created by Administrator on 2016/5/13.
  */
-public abstract class BaseMvpActivity<P extends ActivityPresenter,V extends IBaseView> extends SuperActivity {
+public abstract class BaseMvpActivity<P extends ActivityPresenter, V extends IBaseView> extends SuperActivity {
     public P mPresenter;
 
+    /**
+     * 此方法在对象初始化的时候调用一次,其他时间段请直接使用 mPresenter
+     */
     @NonNull
-    protected abstract Class<P> getPresenterClass();
+    protected abstract P getMvpPresenter();
 
     @NonNull
     protected abstract V getMvpView();
@@ -25,7 +28,7 @@ public abstract class BaseMvpActivity<P extends ActivityPresenter,V extends IBas
     @CallSuper
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter = getPresenter();
+        mPresenter = getMvpPresenter();
         mPresenter.initPresenter(this, getMvpView());
         initView();
         if (mPresenter != null) {
@@ -60,7 +63,7 @@ public abstract class BaseMvpActivity<P extends ActivityPresenter,V extends IBas
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (mPresenter != null) {
-            mPresenter.onActivityResult(requestCode,resultCode,data);
+            mPresenter.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -101,12 +104,12 @@ public abstract class BaseMvpActivity<P extends ActivityPresenter,V extends IBas
         super.onDestroy();
     }
 
-    public P getPresenter() {
-        try {
-            return getPresenterClass().newInstance();
-        } catch (Exception e) {
-            throw new RuntimeException("create IDelegate error");
-        }
-    }
+//    public P getPresenter() {
+//        try {
+//            return getPresenterClass().newInstance();
+//        } catch (Exception e) {
+//            throw new RuntimeException("create IDelegate error");
+//        }
+//    }
 
 }

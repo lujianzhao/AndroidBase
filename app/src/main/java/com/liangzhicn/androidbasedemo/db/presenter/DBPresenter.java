@@ -18,7 +18,8 @@ import java.util.UUID;
  * 创建时间: 2016/06/18 14:50
  * 描述:
  */
-public class DBPresenter extends DBContract.Presenter<DBModel> {
+public class DBPresenter extends DBContract.Presenter<DBContract.Model> {
+
     @Override
     public void start() {
 
@@ -26,8 +27,8 @@ public class DBPresenter extends DBContract.Presenter<DBModel> {
 
     @NonNull
     @Override
-    protected Class<DBModel> getModelClass() {
-        return DBModel.class;
+    protected DBContract.Model getMvpModel() {
+        return new  DBModel();
     }
 
 

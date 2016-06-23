@@ -32,6 +32,11 @@ public class GetAndPostModel extends GetAndPostContract.Model {
             }
 
             @Override
+            public void onStart() {
+                requestCallBack.onStart();
+            }
+
+            @Override
             public void onError(Throwable e) {
                 requestCallBack.onError(e);
             }
@@ -54,6 +59,12 @@ public class GetAndPostModel extends GetAndPostContract.Model {
             public void onCompleted() {
                 requestCallBack.onComplete();
             }
+
+            @Override
+            public void onStart() {
+                requestCallBack.onStart();
+            }
+
 
             @Override
             public void onError(Throwable e) {
@@ -93,6 +104,12 @@ public class GetAndPostModel extends GetAndPostContract.Model {
                     public void onError(Throwable e) {
                         requestCallBack.onError(e);
                     }
+
+                    @Override
+                    public void onStart() {
+                        requestCallBack.onStart();
+                    }
+
 
                     @Override
                     public void onNext(Object o) {

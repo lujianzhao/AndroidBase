@@ -17,16 +17,15 @@ import butterknife.OnClick;
  * 创建时间: 2016/06/18 14:49
  * 描述:
  */
-public class DBActivity extends BaseMvpActivity<DBPresenter,DBContract.View> implements DBContract.View{
+public class DBActivity extends BaseMvpActivity<DBContract.Presenter,DBContract.View> implements DBContract.View{
 
     @Bind(R.id.text_city)
     TextView textView;
-
-
+    
     @NonNull
     @Override
-    protected Class<DBPresenter> getPresenterClass() {
-        return DBPresenter.class;
+    protected DBContract.Presenter getMvpPresenter() {
+        return new DBPresenter();
     }
 
     @NonNull

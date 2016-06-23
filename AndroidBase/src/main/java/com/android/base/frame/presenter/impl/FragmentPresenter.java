@@ -21,8 +21,11 @@ public abstract class FragmentPresenter<M extends BaseModel, V extends IBaseView
     public BaseMvpFragment mFragment;
     public RxManager mRxManager = new RxManager();
 
+    /**
+     * 此方法在对象初始化的时候调用一次,其他时间段请直接使用 mModel
+     */
     @NonNull
-    protected abstract Class<M> getModelClass();
+    protected abstract M getMvpModel();
 
     public abstract void start();
 
@@ -31,16 +34,8 @@ public abstract class FragmentPresenter<M extends BaseModel, V extends IBaseView
         this.mActivity = fragment.getActivity();
         this.mFragment = fragment;
         this.mView = view;
-        this.mModel = getModel();
+        this.mModel = getMvpModel();
         mModel.initModel(mActivity, mRxManager);
-    }
-
-    public M getModel() {
-        try {
-            return getModelClass().newInstance();
-        } catch (Exception e) {
-            throw new RuntimeException("create IDelegate error");
-        }
     }
 
     @Override

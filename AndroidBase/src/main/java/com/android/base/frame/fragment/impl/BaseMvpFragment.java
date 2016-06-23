@@ -15,8 +15,11 @@ public abstract class BaseMvpFragment<P extends FragmentPresenter,V extends IBas
 
     public P mPresenter;
 
+    /**
+     * 此方法在对象初始化的时候调用一次,其他时间段请直接使用 mPresenter
+     */
     @NonNull
-    protected abstract Class<P> getPresenterClass();
+    protected abstract P getMvpPresenter();
 
     @NonNull
     protected abstract V getMvpView();
@@ -24,7 +27,7 @@ public abstract class BaseMvpFragment<P extends FragmentPresenter,V extends IBas
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mPresenter = getPresenter();
+        mPresenter = getMvpPresenter();
         mPresenter.initPresenter(this, getMvpView());
         initView(savedInstanceState);
         if(mPresenter !=null){
@@ -92,12 +95,12 @@ public abstract class BaseMvpFragment<P extends FragmentPresenter,V extends IBas
     }
 
 
-    public P getPresenter(){
-        try {
-            return getPresenterClass().newInstance();
-        } catch (Exception e) {
-            throw new RuntimeException("create IDelegate error");
-        }
-    }
+//    public P getPresenter(){
+//        try {
+//            return getPresenterClass().newInstance();
+//        } catch (Exception e) {
+//            throw new RuntimeException("create IDelegate error");
+//        }
+//    }
 
 }

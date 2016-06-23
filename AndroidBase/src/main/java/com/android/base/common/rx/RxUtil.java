@@ -42,14 +42,27 @@ public class RxUtil {
         };
     }
 
+    public static <T> Observable.Transformer<T, T> applySchedulersProgress() {
+        return new Transformer<T, T>() {
+            @Override
+            public Observable<T> call(Observable<T> observable) {
+                return observable
+                        .subscribeOn(Schedulers.io())
+                        .onBackpressureBuffer()
+                        .observeOn(AndroidSchedulers.mainThread());
+            }
+        };
+    }
+
+
     public static <T> Observable.Transformer<T, T> applySchedulersForRetrofit() {
         return new Transformer<T, T>() {
             @Override
             public Observable<T> call(Observable<T> observable) {
                 return observable
                         .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .unsubscribeOn(Schedulers.io());
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread());
             }
         };
     }

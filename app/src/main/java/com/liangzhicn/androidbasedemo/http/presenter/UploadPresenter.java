@@ -1,12 +1,12 @@
 package com.liangzhicn.androidbasedemo.http.presenter;
 
 import android.content.Intent;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 
+import com.android.base.callback.RequestDataCallBack;
 import com.android.base.common.assist.Toastor;
-import com.android.base.http.listener.ProgressListener;
-import com.android.base.http.progress.ProgressRequestBody;
+import com.android.base.common.logutils.LogUtils;
+import com.android.base.http.progress.domain.ProgressRequest;
 import com.liangzhicn.androidbasedemo.http.contract.UploadContract;
 import com.liangzhicn.androidbasedemo.http.model.UploadModel;
 import com.lzy.imagepicker.ImagePicker;
@@ -14,27 +14,21 @@ import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.loader.GlideImageLoader;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 
 /**
  * 作者: lujianzhao
  * 创建时间: 2016/06/18 14:50
  * 描述:
  */
-public class UploadPresenter extends UploadContract.Presenter<UploadModel> {
+public class UploadPresenter extends UploadContract.Presenter<UploadContract.Model> {
 
     private ArrayList<ImageItem> imageItems;
 
     @NonNull
     @Override
-    protected Class<UploadModel> getModelClass() {
-        return UploadModel.class;
+    protected UploadContract.Model getMvpModel() {
+        return new UploadModel();
     }
 
     @Override
@@ -54,22 +48,36 @@ public class UploadPresenter extends UploadContract.Presenter<UploadModel> {
         mActivity.startActivityForResult(intent, 100);
     }
 
+
     @Override
     public void formUpload() {
         if (imageItems == null || imageItems.size() == 0) {
-            Toastor.showToast(mActivity,"请选择需上传的图片");
+            Toastor.showToast(mActivity, "请选择需上传的图片");
             return;
         }
 
-        String token = "09oMsbnJYREss4vRGdGeurO-C7WhTPHnlLyy-6e5:J8V1qHXvDR51PDN5YaAqHIh9eHc=:eyJzY29wZSI6ImFwcGltYWdlIiwiY2FsbGJhY2tVcmwiOiJodHRwOi8vYXBwYXBpLmlpdGUuY2M6ODA4MC9pdGVldGgvY29tbW9uL3Fpbml1Y2FsbGJhY2siLCJkZWFkbGluZSI6MTc3NDA5OTQ2NCwiY2FsbGJhY2tCb2R5Ijoia2V5XHUwMDNkJChrZXkpXHUwMDI2aGFzaFx1MDAzZCQoZXRhZylcdTAwMjZqc29uQm9keVx1MDAzZCQoeDpqc29uQm9keSkifQ==";
-        Map<String, RequestBody> params = new HashMap<>();
-        RequestBody body = RequestBody.create(MediaType.parse("image/jpeg"), new File(Environment.getExternalStorageDirectory().getPath() + File.separator + "app_newkey_release_8_4.apk"));
-        params.put("file", new ProgressRequestBody(body, new ProgressListener() {
+        mModel.formUpload(imageItems, new RequestDataCallBack<ProgressRequest>() {
             @Override
-            public void onProgress(long currentBytes, long contentLength, boolean done) {
-
+            public void onStart() {
+                LogUtils.d("开始上传");
             }
-        }));
+
+            @Override
+            public void onNext(ProgressRequest s) {
+                // 因为上传文件完毕后,服务器端返回数据还需要一定的时间,所以当百分比达到100%后,可能会有一定的时间延迟调用onComplete()
+                mView.upProgress(s.getCurrentBytes(), s.getContentLength());
+            }
+
+            @Override
+            public void onComplete() {
+                LogUtils.d("所有文件上传完成");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                LogUtils.d("上传错误 : " + e.getMessage());
+            }
+        });
 
     }
 
@@ -84,14 +92,15 @@ public class UploadPresenter extends UploadContract.Presenter<UploadModel> {
                     for (int i = 0; i < imageItems.size(); i++) {
                         if (i == imageItems.size() - 1)
                             sb.append("图片").append(i + 1).append(" ： ").append(imageItems.get(i).path);
-                        else sb.append("图片").append(i + 1).append(" ： ").append(imageItems.get(i).path).append("\n");
+                        else
+                            sb.append("图片").append(i + 1).append(" ： ").append(imageItems.get(i).path).append("\n");
                     }
                     imgs = sb.toString();
                 } else {
                     imgs = "--";
                 }
             } else {
-                Toastor.showToast(mActivity,"没有选择图片");
+                Toastor.showToast(mActivity, "没有选择图片");
                 imgs = "--";
             }
             mView.selectImageResult(imgs);

@@ -8,6 +8,9 @@ package com.android.base.callback;
  */
 public abstract class RequestDataCallBack<T>  {
 
+    public void onStart() {
+    }
+
     public void onComplete() {
     }
 
