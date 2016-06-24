@@ -52,6 +52,7 @@ public class BaseRestClient implements IRetrofit {
                 .build();
     }
 
+
     protected Interceptor getNetworkInterceptor() {
         return null;
     }

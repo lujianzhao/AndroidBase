@@ -1,6 +1,5 @@
 package com.liangzhicn.androidbasedemo.http.view;
 
-
 import android.support.annotation.NonNull;
 import android.text.format.Formatter;
 import android.view.View;
@@ -10,8 +9,8 @@ import android.widget.TextView;
 import com.android.base.common.logutils.LogUtils;
 import com.android.base.frame.activity.impl.BaseMvpActivity;
 import com.liangzhicn.androidbasedemo.R;
-import com.liangzhicn.androidbasedemo.http.contract.UploadContract;
-import com.liangzhicn.androidbasedemo.http.presenter.UploadPresenter;
+import com.liangzhicn.androidbasedemo.http.contract.DownloadContract;
+import com.liangzhicn.androidbasedemo.http.presenter.DownloadPresenter;
 import com.liangzhicn.androidbasedemo.view.NumberProgressBar;
 
 import butterknife.Bind;
@@ -19,13 +18,13 @@ import butterknife.OnClick;
 
 /**
  * 作者: lujianzhao
- * 创建时间: 2016/06/20 16:22
+ * 创建时间: 2016/06/23 13:31
  * 描述:
  */
-public class UploadActivity extends BaseMvpActivity<UploadContract.Presenter,UploadContract.View>implements UploadContract.View{
+public class DownloadActivity extends BaseMvpActivity<DownloadContract.Presenter,DownloadContract.View> implements DownloadContract.View {
 
-    @Bind(R.id.formUpload)
-    Button btnFormUpload;
+    @Bind(R.id.fileDownload)
+    Button btnFileDownload;
 
     @Bind(R.id.downloadSize)
     TextView tvDownloadSize;
@@ -39,40 +38,21 @@ public class UploadActivity extends BaseMvpActivity<UploadContract.Presenter,Upl
     @Bind(R.id.pbProgress)
     NumberProgressBar pbProgress;
 
-    @Bind(R.id.images)
-    TextView tvImages;
-
     @NonNull
     @Override
-    protected UploadContract.Presenter getMvpPresenter() {
-        return new UploadPresenter();
+    protected DownloadContract.Presenter getMvpPresenter() {
+        return new DownloadPresenter();
     }
 
     @NonNull
     @Override
-    protected UploadContract.View getMvpView() {
+    protected DownloadContract.View getMvpView() {
         return this;
     }
 
-    @Override
-    protected int getContentViewId() {
-        return R.layout.activity_upload;
-    }
-
-    @OnClick(R.id.selectImage)
-    public void selectImage(View view) {
-        mPresenter.selectImage();
-
-    }
-
-    @OnClick(R.id.formUpload)
-    public void formUpload(View view) {
-        mPresenter.formUpload();
-    }
-
-    @Override
-    protected void initView() {
-
+    @OnClick(R.id.fileDownload)
+    public void fileDownload(View view) {
+        mPresenter.fileDownload();
     }
 
     @Override
@@ -96,8 +76,13 @@ public class UploadActivity extends BaseMvpActivity<UploadContract.Presenter,Upl
     }
 
     @Override
-    public void selectImageResult(String imgs) {
-        tvImages.setText(imgs);
+    protected int getContentViewId() {
+        return R.layout.activity_file_download;
+    }
+
+    @Override
+    protected void initView() {
+
     }
 
     @Override

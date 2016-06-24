@@ -47,6 +47,11 @@
             android:screenOrientation="portrait" >
         </activity>
 
+        <activity
+            android:name=".http.view.DownloadActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+
     </application>
 
 </manifest>

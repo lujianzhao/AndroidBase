@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.android.base.frame.activity.impl.BaseActivity;
 import com.liangzhicn.androidbasedemo.R;
+import com.liangzhicn.androidbasedemo.http.view.DownloadActivity;
 import com.liangzhicn.androidbasedemo.http.view.GetAndPostActivity;
 import com.liangzhicn.androidbasedemo.http.view.UploadActivity;
 
@@ -60,9 +61,17 @@ public class HttpActivity extends BaseActivity implements View.OnClickListener {
                 //get和post请求
                 gotoActivity(GetAndPostActivity.class, false);
                 break;
+
             case 1:
+                // 上传图片
                 gotoActivity(UploadActivity.class, false);
                 break;
+
+            case 2:
+                // 下载文件
+                gotoActivity(DownloadActivity.class, false);
+                break;
+
             default:
                 break;
         }

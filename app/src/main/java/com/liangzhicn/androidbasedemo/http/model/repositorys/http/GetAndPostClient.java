@@ -34,6 +34,7 @@ public class GetAndPostClient extends BaseRestClient {
         attachBaseUrl(Base.getContext(), baseUrl);
     }
 
+
     /**
      * 添加自定义Cookie或者头的操作类,本例只是一个示例.
      * @return

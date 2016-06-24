@@ -33,6 +33,7 @@ public class UploadModel extends UploadContract.Model {
     public void formUpload(ArrayList<ImageItem> imageItems, final RequestDataCallBack<ProgressRequest> requestDataCallBack) {
         // 添加上传进度监听
         final PublishSubject<ProgressRequest> objectPublishSubject = PublishSubject.create();
+        // 此处是为了可以自由的选择监听单独文件的进度还是监听总进度.总进度可以使用.map来转变
         mRxManager.add(objectPublishSubject.compose(RxUtil.<ProgressRequest>applySchedulersProgress()).subscribe(new Action1<ProgressRequest>() {
             @Override
             public void call(ProgressRequest progressRequest) {

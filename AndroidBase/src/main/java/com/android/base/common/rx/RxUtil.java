@@ -2,9 +2,18 @@ package com.android.base.common.rx;
 
 
 import com.android.base.common.logutils.LogUtils;
+import com.android.base.http.progress.domain.ProgressRequest;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Response;
 import rx.Observable;
 import rx.Observable.Transformer;
 import rx.Subscriber;
@@ -48,7 +57,8 @@ public class RxUtil {
             public Observable<T> call(Observable<T> observable) {
                 return observable
                         .subscribeOn(Schedulers.io())
-                        .onBackpressureBuffer()
+                        .unsubscribeOn(Schedulers.io())
+                        .sample(100, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread());
             }
         };
@@ -79,5 +89,73 @@ public class RxUtil {
                         }
                     }
                 });
+    }
+
+
+
+    public static  Observable<ProgressRequest> getDownloadObservable(final Call<ResponseBody> call, final String filePath) {
+        return Observable.create(new Observable.OnSubscribe<ProgressRequest>() {
+            private InputStream is;
+            private FileOutputStream fos;
+            @Override
+            public void call(Subscriber<? super ProgressRequest> subscriber) {
+                try {
+                    Response<ResponseBody> response=call.execute();
+                    try {
+                        if (response != null && response.isSuccessful()) {
+                            //文件总长度
+                            long fileSize = response.body().contentLength();
+                            long fileSizeDownloaded = 0;
+                            is = response.body().byteStream();
+                            File file = new File(filePath);
+                            ProgressRequest progressRequest = new ProgressRequest(file.getName(), file.getAbsolutePath(),fileSizeDownloaded,fileSize);
+
+                            if (file.exists()) {
+                                file.delete();
+                            } else {
+                                file.createNewFile();
+                            }
+                            fos = new FileOutputStream(file);
+                            int count = 0;
+                            byte[] buffer = new byte[1024];
+
+                            while ((count = is.read(buffer)) != -1) {
+                                fos.write(buffer, 0, count);
+                                fileSizeDownloaded += count;
+                                progressRequest.setCurrentBytes(fileSizeDownloaded);
+                                subscriber.onNext(progressRequest);
+                            }
+                            fos.flush();
+                            subscriber.onCompleted();
+                        } else {
+                            subscriber.onError(new Exception("接口请求异常"));
+                        }
+                    } catch (Exception e) {
+                        subscriber.onError(e);
+                        LogUtils.e(e);
+                    } finally {
+                        if (is != null) {
+                            try {
+                                is.close();
+                                is = null;
+                            } catch (IOException e) {
+                                LogUtils.e(e);
+                            }
+                        }
+                        if (fos != null) {
+                            try {
+                                fos.close();
+                                fos = null;
+                            } catch (IOException e) {
+                                LogUtils.e(e);
+                            }
+                        }
+                    }
+                } catch (IOException e) {
+                    LogUtils.e(e);
+                    subscriber.onError(e);
+                }
+            }
+        });
     }
 }

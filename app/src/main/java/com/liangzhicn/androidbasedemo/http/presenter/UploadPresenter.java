@@ -64,7 +64,6 @@ public class UploadPresenter extends UploadContract.Presenter<UploadContract.Mod
 
             @Override
             public void onNext(ProgressRequest s) {
-                // 因为上传文件完毕后,服务器端返回数据还需要一定的时间,所以当百分比达到100%后,可能会有一定的时间延迟调用onComplete()
                 mView.upProgress(s.getCurrentBytes(), s.getContentLength());
             }
 

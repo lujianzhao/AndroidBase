@@ -25,8 +25,8 @@ public class GetAndPostPresenter extends GetAndPostContract.Presenter<GetAndPost
 
     @Override
     public void start() {
-//        test1();
-        test2();
+        test1();
+//        test2();
     }
 
     /**

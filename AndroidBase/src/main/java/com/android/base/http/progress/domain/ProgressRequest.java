@@ -24,6 +24,13 @@ public class ProgressRequest implements Serializable, Parcelable {
         this.path = path;
     }
 
+    public ProgressRequest(String name, String path,long currentBytes,long contentLength) {
+        this.name = name;
+        this.path = path;
+        this.currentBytes = currentBytes;
+        this.contentLength = contentLength;
+    }
+
     public String getName() {
         return name;
     }
