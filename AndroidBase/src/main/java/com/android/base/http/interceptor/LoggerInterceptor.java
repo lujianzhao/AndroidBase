@@ -21,16 +21,13 @@ public class LoggerInterceptor implements Interceptor {
     private String tag = TAG;
     private boolean showLog = LogUtils.isEnable();
 
-    public LoggerInterceptor(String tag) {
-        this(tag, false);
+    public LoggerInterceptor() {
     }
 
-    public LoggerInterceptor(String tag, boolean showLog) {
-        if (TextUtils.isEmpty(tag)) {
-            tag = TAG;
+    public LoggerInterceptor(String tag) {
+        if (!TextUtils.isEmpty(tag)) {
+            this.tag = tag;
         }
-        this.showLog = showLog;
-        this.tag = tag;
     }
 
     @Override
@@ -41,7 +38,7 @@ public class LoggerInterceptor implements Interceptor {
         }
         Response response = chain.proceed(request);
         if (showLog) {
-            logForResponse(response);
+            response =logForResponse(response);
         }
 
         return response;

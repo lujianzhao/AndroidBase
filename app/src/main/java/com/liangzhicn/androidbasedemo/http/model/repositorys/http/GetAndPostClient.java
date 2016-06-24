@@ -32,16 +32,11 @@ public class GetAndPostClient extends BaseRestClient {
 
     public GetAndPostClient(String baseUrl){
         attachBaseUrl(Base.getContext(), baseUrl);
-    }
+        // 使用缓存
+        enableCache(true,Base.getContext());
 
-
-    /**
-     * 添加自定义Cookie或者头的操作类,本例只是一个示例.
-     * @return
-     */
-    @Override
-    protected Interceptor getNetworkInterceptor() {
-        return new AddCookiesInterceptor();
+        //添加Cookie操作类,增加token字段
+        addExtraInterceptor(new AddCookiesInterceptor());
     }
 
     /**

@@ -3,6 +3,7 @@ package com.liangzhicn.androidbasedemo.http.presenter;
 import android.support.annotation.NonNull;
 
 import com.android.base.callback.RequestDataCallBack;
+import com.android.base.common.logutils.LogUtils;
 import com.liangzhicn.androidbasedemo.http.contract.GetAndPostContract;
 import com.liangzhicn.androidbasedemo.http.model.GetAndPostModel;
 
@@ -25,8 +26,8 @@ public class GetAndPostPresenter extends GetAndPostContract.Presenter<GetAndPost
 
     @Override
     public void start() {
-        test1();
-//        test2();
+//        test1();
+        test2();
     }
 
     /**
@@ -91,35 +92,36 @@ public class GetAndPostPresenter extends GetAndPostContract.Presenter<GetAndPost
             public void onError(Throwable e) {
                 //加载错误
                 mView.showErrorView();
+                LogUtils.d(e);
             }
         });
 
-        mModel.getPost(new RequestDataCallBack<String>() {
-
-            @Override
-            public void onStart() {
-                mView.showLoadingView();
-            }
-
-            @Override
-            public void onNext(String data) {
-                //保存数据,刷新界面
-                mData2 = data;
-                mView.showGet("Post请求结果 : \r\n" + mData2 + "\r\n");
-            }
-
-            @Override
-            public void onComplete() {
-                // 停止加载
-                mView.showContentView();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                //加载错误
-                mView.showErrorView();
-            }
-        });
+//        mModel.getPost(new RequestDataCallBack<String>() {
+//
+//            @Override
+//            public void onStart() {
+//                mView.showLoadingView();
+//            }
+//
+//            @Override
+//            public void onNext(String data) {
+//                //保存数据,刷新界面
+//                mData2 = data;
+//                mView.showGet("Post请求结果 : \r\n" + mData2 + "\r\n");
+//            }
+//
+//            @Override
+//            public void onComplete() {
+//                // 停止加载
+//                mView.showContentView();
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                //加载错误
+//                mView.showErrorView();
+//            }
+//        });
     }
 
 }
