@@ -27,8 +27,6 @@ public abstract class BaseRcvQuickAdapter<T, H extends BaseRcvAdapterHelper> ext
     protected MultiItemRcvTypeSupport<T> mMultiItemTypeSupport;
 
 
-
-
     //define interface
     public static interface OnItemClickListener {
         void onItemClick(View view, int position);
@@ -81,7 +79,8 @@ public abstract class BaseRcvQuickAdapter<T, H extends BaseRcvAdapterHelper> ext
 
 
     public T getItem(int position) {
-        if (position >= data.size()) return null;
+        if (position >= data.size())
+            return null;
         return data.get(position);
     }
 
@@ -147,11 +146,14 @@ public abstract class BaseRcvQuickAdapter<T, H extends BaseRcvAdapterHelper> ext
     }
 
     public void add(T elem) {
-        data.add(elem);
-        notifyDataSetChanged();
+//        data.add(elem);
+//        notifyDataSetChanged();
+//        notifyItemInserted(data.size() - 1);
+        add(data.size(),elem);
     }
-    public void add(int index,T elem) {
-        data.add(index,elem);
+
+    public void add(int index, T elem) {
+        data.add(index, elem);
         notifyItemInserted(index);
     }
 
@@ -162,17 +164,25 @@ public abstract class BaseRcvQuickAdapter<T, H extends BaseRcvAdapterHelper> ext
     }
 
     public void set(T oldElem, T newElem) {
-        set(data.indexOf(oldElem), newElem);
+        int index = data.indexOf(oldElem);
+        if (index != -1) {
+            set(index, newElem);
+        }
     }
 
     public void set(int index, T elem) {
         data.set(index, elem);
-        notifyDataSetChanged();
+//        notifyDataSetChanged();
+        notifyItemChanged(index);
     }
 
     public void remove(T elem) {
-        data.remove(elem);
-        notifyDataSetChanged();
+//        data.remove(elem);
+//        notifyDataSetChanged();
+        int index = data.indexOf(elem);
+        if (index != -1) {
+            remove(index);
+        }
     }
 
     public void remove(int index) {
@@ -186,7 +196,8 @@ public abstract class BaseRcvQuickAdapter<T, H extends BaseRcvAdapterHelper> ext
         if (elem != null) {
             data.addAll(elem);
         }
-        notifyDataSetChanged();
+//        notifyDataSetChanged();
+        notifyItemRangeInserted(0, data.size());
     }
 
     public boolean contains(T elem) {
