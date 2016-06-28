@@ -1,6 +1,6 @@
 package com.liangzhicn.androidbasedemo.http.contract;
 
-import com.android.base.callback.RequestDataCallBack;
+import com.android.base.callback.ExecutorCallBack;
 import com.android.base.frame.model.impl.BaseModel;
 import com.android.base.frame.presenter.impl.ActivityPresenter;
 import com.android.base.frame.view.IBaseView;
@@ -21,7 +21,7 @@ public interface UploadContract {
          * @param imageItems
          * @param requestDataCallBack
          */
-        public abstract void formUpload(ArrayList<ImageItem> imageItems, RequestDataCallBack<ProgressRequest> requestDataCallBack);
+        public abstract void formUpload(ArrayList<ImageItem> imageItems, ExecutorCallBack<ProgressRequest> requestDataCallBack);
 
     }
 

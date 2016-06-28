@@ -115,16 +115,14 @@ public class ProgressRequestBody extends RequestBody {
                 if (contentLength == 0) {
                     //获得contentLength的值，后续不再调用
                     contentLength = contentLength();
+                    mProgressRequest.setContentLength(contentLength);
                 }
                 //增加当前写入的字节数
                 bytesWritten += byteCount;
                 //回调
                 if (mPublishSubject != null && mProgressRequest!=null) {
-
                     mProgressRequest.setCurrentBytes(bytesWritten);
-                    mProgressRequest.setContentLength(contentLength);
                     mPublishSubject.onNext(mProgressRequest);
-
                     //判断是否上传完毕
                     if (bytesWritten == contentLength) {
                         //clean

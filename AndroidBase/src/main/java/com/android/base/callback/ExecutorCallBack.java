@@ -6,7 +6,7 @@ package com.android.base.callback;
  * Presenter获取数据的统一回调
  *
  */
-public abstract class RequestDataCallBack<T>  {
+public abstract class ExecutorCallBack<T>  {
 
     public void onStart() {
     }

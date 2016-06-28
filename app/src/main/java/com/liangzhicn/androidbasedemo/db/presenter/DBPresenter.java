@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.android.base.common.assist.Toastor;
-import com.android.base.callback.RequestDataCallBack;
+import com.android.base.callback.ExecutorCallBack;
 import com.liangzhicn.androidbasedemo.R;
 import com.liangzhicn.androidbasedemo.db.contract.DBContract;
 import com.liangzhicn.androidbasedemo.db.model.DBModel;
@@ -50,7 +50,7 @@ public class DBPresenter extends DBContract.Presenter<DBContract.Model> {
     }
 
     public void clear() {
-        mModel.clearTableDataSync(new RequestDataCallBack<Boolean>() {
+        mModel.clearTableDataSync(new ExecutorCallBack<Boolean>() {
                                       @Override
                                       public void onNext(Boolean data) {
                                           mView.clearView();
@@ -61,7 +61,7 @@ public class DBPresenter extends DBContract.Presenter<DBContract.Model> {
     }
 
     public void query() {
-        mModel.queryForAllSync(new RequestDataCallBack<List<City>>() {
+        mModel.queryForAllSync(new ExecutorCallBack<List<City>>() {
             @Override
             public void onNext(List<City> data) {
                 queryFinish(data);
@@ -92,7 +92,7 @@ public class DBPresenter extends DBContract.Presenter<DBContract.Model> {
         city.setCityName("东莞市");
         city.setCityNo(cityUuid);
 
-        mModel.insertSync(city, new RequestDataCallBack<Boolean>() {
+        mModel.insertSync(city, new ExecutorCallBack<Boolean>() {
 
             @Override
             public void onNext(Boolean data) {

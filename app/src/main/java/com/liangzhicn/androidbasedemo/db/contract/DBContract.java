@@ -1,6 +1,6 @@
 package com.liangzhicn.androidbasedemo.db.contract;
 
-import com.android.base.callback.RequestDataCallBack;
+import com.android.base.callback.ExecutorCallBack;
 import com.android.base.frame.model.impl.BaseModel;
 import com.android.base.frame.presenter.impl.ActivityPresenter;
 import com.android.base.frame.view.IBaseView;
@@ -19,19 +19,19 @@ public interface DBContract {
          * @param city 需要插入的数据
          * @param dbCallBack 完成的回调
          */
-        public abstract void insertSync(City city, RequestDataCallBack<Boolean> dbCallBack);
+        public abstract void insertSync(City city, ExecutorCallBack<Boolean> dbCallBack);
 
         /**
          * 查询所有数据
          * @param dbCallBack
          */
-        public abstract void queryForAllSync(RequestDataCallBack<List<City>> dbCallBack);
+        public abstract void queryForAllSync(ExecutorCallBack<List<City>> dbCallBack);
 
         /**
          * 删除数据
          * @param dbCallBack
          */
-        public abstract void clearTableDataSync(RequestDataCallBack<Boolean> dbCallBack);
+        public abstract void clearTableDataSync(ExecutorCallBack<Boolean> dbCallBack);
     }
 
     interface View extends IBaseView {

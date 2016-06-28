@@ -1,6 +1,6 @@
 package com.liangzhicn.androidbasedemo.http.model;
 
-import com.android.base.callback.RequestDataCallBack;
+import com.android.base.callback.ExecutorCallBack;
 import com.android.base.common.rx.RxUtil;
 import com.liangzhicn.androidbasedemo.constant.ApiConfig;
 import com.liangzhicn.androidbasedemo.http.contract.GetAndPostContract;
@@ -20,7 +20,7 @@ public class GetAndPostModel extends GetAndPostContract.Model {
     private GetAndPostService mGetAndPostService;
 
     @Override
-    public void getRequest(final RequestDataCallBack<String> requestCallBack) {
+    public void getRequest(final ExecutorCallBack<String> requestCallBack) {
         if (mGetAndPostService == null) {
             mGetAndPostService = GetAndPostClient.getInstance(ApiConfig.URL_BASE).createService(GetAndPostService.class);
         }
@@ -49,7 +49,7 @@ public class GetAndPostModel extends GetAndPostContract.Model {
     }
 
     @Override
-    public void getPost(final RequestDataCallBack<String> requestCallBack) {
+    public void getPost(final ExecutorCallBack<String> requestCallBack) {
         if (mGetAndPostService == null) {
             mGetAndPostService = GetAndPostClient.getInstance(ApiConfig.URL_BASE).createService(GetAndPostService.class);
         }
@@ -80,7 +80,7 @@ public class GetAndPostModel extends GetAndPostContract.Model {
     }
 
     @Override
-    public void getBlend(final RequestDataCallBack<Object> requestCallBack) {
+    public void getBlend(final ExecutorCallBack<Object> requestCallBack) {
 
         if (mGetAndPostService == null) {
             mGetAndPostService = GetAndPostClient.getInstance(ApiConfig.URL_BASE).createService(GetAndPostService.class);

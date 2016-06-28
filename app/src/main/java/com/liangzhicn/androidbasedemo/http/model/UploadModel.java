@@ -1,6 +1,6 @@
 package com.liangzhicn.androidbasedemo.http.model;
 
-import com.android.base.callback.RequestDataCallBack;
+import com.android.base.callback.ExecutorCallBack;
 import com.android.base.common.rx.RxUtil;
 import com.android.base.http.progress.ProgressRequestBody;
 import com.android.base.http.progress.domain.ProgressRequest;
@@ -30,7 +30,7 @@ public class UploadModel extends UploadContract.Model {
 
 
     @Override
-    public void formUpload(ArrayList<ImageItem> imageItems, final RequestDataCallBack<ProgressRequest> requestDataCallBack) {
+    public void formUpload(ArrayList<ImageItem> imageItems, final ExecutorCallBack<ProgressRequest> requestDataCallBack) {
         // 添加上传进度监听
         final PublishSubject<ProgressRequest> objectPublishSubject = PublishSubject.create();
         // 此处是为了可以自由的选择监听单独文件的进度还是监听总进度.总进度可以使用.map来转变

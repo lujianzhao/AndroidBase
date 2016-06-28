@@ -1,6 +1,6 @@
 package com.liangzhicn.androidbasedemo.http.model;
 
-import com.android.base.callback.RequestDataCallBack;
+import com.android.base.callback.ExecutorCallBack;
 import com.android.base.common.logutils.LogUtils;
 import com.android.base.common.rx.RxUtil;
 import com.android.base.http.progress.domain.ProgressRequest;
@@ -18,7 +18,7 @@ import rx.Subscriber;
 public class DownloadModel extends DownloadContract.Model {
 
     @Override
-    public void fileDownload(String path, final RequestDataCallBack<ProgressRequest> requestDataCallBack) {
+    public void fileDownload(String path, final ExecutorCallBack<ProgressRequest> requestDataCallBack) {
         GetAndPostService mGetAndPostService = GetAndPostClient.getInstance("http://server.jeasonlzy.com/OkHttpUtils/").createService(GetAndPostService.class);
         mRxManager.add(RxUtil.getDownloadObservable(mGetAndPostService.downloadFile(), path).compose(RxUtil.<ProgressRequest>applySchedulersProgress()).subscribe(new Subscriber<ProgressRequest>() {
             @Override

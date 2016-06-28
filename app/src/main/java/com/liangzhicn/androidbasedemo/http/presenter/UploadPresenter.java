@@ -3,7 +3,7 @@ package com.liangzhicn.androidbasedemo.http.presenter;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 
-import com.android.base.callback.RequestDataCallBack;
+import com.android.base.callback.ExecutorCallBack;
 import com.android.base.common.assist.Toastor;
 import com.android.base.common.logutils.LogUtils;
 import com.android.base.http.progress.domain.ProgressRequest;
@@ -55,8 +55,7 @@ public class UploadPresenter extends UploadContract.Presenter<UploadContract.Mod
             Toastor.showToast(mActivity, "请选择需上传的图片");
             return;
         }
-
-        mModel.formUpload(imageItems, new RequestDataCallBack<ProgressRequest>() {
+        mModel.formUpload(imageItems, new ExecutorCallBack<ProgressRequest>() {
             @Override
             public void onStart() {
                 LogUtils.d("开始上传");

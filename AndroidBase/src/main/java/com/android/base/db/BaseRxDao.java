@@ -3,7 +3,7 @@ package com.android.base.db;
 import android.content.Context;
 
 import com.alibaba.fastjson.JSON;
-import com.android.base.callback.RequestDataCallBack;
+import com.android.base.callback.ExecutorCallBack;
 import com.android.base.common.logutils.LogUtils;
 import com.android.base.common.rx.RxUtil;
 import com.android.base.db.ormlite.DatabaseUtil;
@@ -60,7 +60,7 @@ public abstract class BaseRxDao<T> extends OrmLiteDao<T> {
     /**
      * 增加一条记录
      */
-    public Subscription insertSync(final T t, final RequestDataCallBack<Boolean> listener) {
+    public Subscription insertSync(final T t, final ExecutorCallBack<Boolean> listener) {
         return subscribe(new Callable<Boolean>() {
             @Override
             public Boolean call() {
@@ -88,7 +88,7 @@ public abstract class BaseRxDao<T> extends OrmLiteDao<T> {
     /**
      * 批量插入
      */
-    public Subscription insertForBatchSync(final List<T> list, final RequestDataCallBack<Boolean> listener) {
+    public Subscription insertForBatchSync(final List<T> list, final ExecutorCallBack<Boolean> listener) {
         return subscribe(new Callable<Boolean>() {
             @Override
             public Boolean call() {
@@ -117,7 +117,7 @@ public abstract class BaseRxDao<T> extends OrmLiteDao<T> {
     /**
      * 清空数据
      */
-    public Subscription clearTableDataSync(final RequestDataCallBack<Boolean> listener) {
+    public Subscription clearTableDataSync(final ExecutorCallBack<Boolean> listener) {
         return subscribe(new Callable<Boolean>() {
             @Override
             public Boolean call() {
@@ -145,7 +145,7 @@ public abstract class BaseRxDao<T> extends OrmLiteDao<T> {
     /**
      * 根据id删除记录
      */
-    public Subscription deleteByIdSync(final Integer id, final RequestDataCallBack<Boolean> listener) {
+    public Subscription deleteByIdSync(final Integer id, final ExecutorCallBack<Boolean> listener) {
         return subscribe(new Callable<Boolean>() {
             @Override
             public Boolean call() {
@@ -183,7 +183,7 @@ public abstract class BaseRxDao<T> extends OrmLiteDao<T> {
         });
     }
 
-    public Subscription queryForAllSync(final RequestDataCallBack<List<T>> listener) {
+    public Subscription queryForAllSync(final ExecutorCallBack<List<T>> listener) {
         return subscribe(new Callable<List<T>>() {
             @Override
             public List<T> call() {

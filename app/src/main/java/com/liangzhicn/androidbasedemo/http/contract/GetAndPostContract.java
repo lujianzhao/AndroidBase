@@ -1,6 +1,6 @@
 package com.liangzhicn.androidbasedemo.http.contract;
 
-import com.android.base.callback.RequestDataCallBack;
+import com.android.base.callback.ExecutorCallBack;
 import com.android.base.frame.model.impl.BaseModel;
 import com.android.base.frame.presenter.impl.ActivityPresenter;
 import com.android.base.frame.view.IBaseView;
@@ -15,20 +15,20 @@ public interface GetAndPostContract {
          * Get请求
          * @param requestCallBack
          */
-        public abstract void getRequest(RequestDataCallBack<String> requestCallBack);
+        public abstract void getRequest(ExecutorCallBack<String> requestCallBack);
 
         /**
          * POST请求
          * @param requestCallBack
          */
-        public abstract void getPost(RequestDataCallBack<String> requestCallBack);
+        public abstract void getPost(ExecutorCallBack<String> requestCallBack);
 
         /**
          * POST混合GET请求.两个请求都完毕时才会回调onComplete
          * 这里的泛型是因为两次请求解析出的bean不一致,所以才用Object来接收结果
          * @param requestCallBack
          */
-        public abstract void getBlend(RequestDataCallBack<Object> requestCallBack);
+        public abstract void getBlend(ExecutorCallBack<Object> requestCallBack);
     }
 
     interface View extends IBaseView {

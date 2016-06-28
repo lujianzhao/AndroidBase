@@ -2,7 +2,7 @@ package com.liangzhicn.androidbasedemo.http.presenter;
 
 import android.support.annotation.NonNull;
 
-import com.android.base.callback.RequestDataCallBack;
+import com.android.base.callback.ExecutorCallBack;
 import com.android.base.common.logutils.LogUtils;
 import com.liangzhicn.androidbasedemo.http.contract.GetAndPostContract;
 import com.liangzhicn.androidbasedemo.http.model.GetAndPostModel;
@@ -35,7 +35,7 @@ public class GetAndPostPresenter extends GetAndPostContract.Presenter<GetAndPost
      */
     private void test2() {
 
-        mModel.getBlend(new RequestDataCallBack<Object>() {
+        mModel.getBlend(new ExecutorCallBack<Object>() {
 
             @Override
             public void onStart() {
@@ -68,7 +68,7 @@ public class GetAndPostPresenter extends GetAndPostContract.Presenter<GetAndPost
      * 单独的请求.每次请求完毕都会回调
      */
     public void test1() {
-        mModel.getRequest(new RequestDataCallBack<String>() {
+        mModel.getRequest(new ExecutorCallBack<String>() {
 
             @Override
             public void onStart() {

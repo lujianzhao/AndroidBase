@@ -1,6 +1,6 @@
 package com.liangzhicn.androidbasedemo.http.contract;
 
-import com.android.base.callback.RequestDataCallBack;
+import com.android.base.callback.ExecutorCallBack;
 import com.android.base.frame.model.impl.BaseModel;
 import com.android.base.frame.presenter.impl.ActivityPresenter;
 import com.android.base.frame.view.IBaseView;
@@ -18,7 +18,7 @@ public interface DownloadContract {
          * @param path 保存路径
          * @param requestDataCallBack
          */
-        public abstract void fileDownload(String path, RequestDataCallBack<ProgressRequest> requestDataCallBack);
+        public abstract void fileDownload(String path, ExecutorCallBack<ProgressRequest> requestDataCallBack);
 
     }
 

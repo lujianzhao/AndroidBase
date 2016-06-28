@@ -3,7 +3,7 @@ package com.liangzhicn.androidbasedemo.http.presenter;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 
-import com.android.base.callback.RequestDataCallBack;
+import com.android.base.callback.ExecutorCallBack;
 import com.android.base.common.logutils.LogUtils;
 import com.android.base.http.progress.domain.ProgressRequest;
 import com.liangzhicn.androidbasedemo.http.contract.DownloadContract;
@@ -31,7 +31,7 @@ public class DownloadPresenter extends DownloadContract.Presenter<DownloadContra
 
     @Override
     public void fileDownload() {
-        mModel.fileDownload(Environment.getExternalStorageDirectory().getPath() + File.separator + "app_newkey_release_8_4.apk", new RequestDataCallBack<ProgressRequest>() {
+        mModel.fileDownload(Environment.getExternalStorageDirectory().getPath() + File.separator + "app_newkey_release_8_4.apk", new ExecutorCallBack<ProgressRequest>() {
 
             @Override
             public void onStart() {
