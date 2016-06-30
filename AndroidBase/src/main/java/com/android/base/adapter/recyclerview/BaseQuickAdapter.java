@@ -36,6 +36,7 @@ import java.util.List;
 
 /**
  * https://github.com/CymChad/BaseRecyclerViewAdapterHelper
+ * 目前版本是1.8.5
  */
 public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -547,6 +548,9 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
                 baseViewHolder = onCreateDefViewHolder(parent, viewType);
                 initItemClickListener(baseViewHolder);
         }
+
+
+
         return baseViewHolder;
 
     }

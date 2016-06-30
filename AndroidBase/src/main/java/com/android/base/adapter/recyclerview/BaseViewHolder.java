@@ -19,6 +19,8 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.zhy.autolayout.utils.AutoUtils;
+
 
 /**
  * https://github.com/CymChad/BaseRecyclerViewAdapterHelper
@@ -41,6 +43,8 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
 
     protected BaseViewHolder(View view) {
         super(view);
+        AutoUtils.autoSize(view);
+
         this.views = new SparseArray<View>();
         convertView = view;
 
