@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.base.common.rx.RxManager;
 import com.zhy.autolayout.utils.AutoUtils;
 
 import butterknife.ButterKnife;
@@ -18,12 +19,13 @@ public abstract class UIViewHolder<T> {
 
     private View mConvertView;
 
+    protected RxManager mRxManager = new RxManager();
+
     public abstract void refreshUI(T data);
 
     public UIViewHolder(Context context, ViewGroup parent, int layoutId) {
         mConvertView = LayoutInflater.from(context).inflate(layoutId, parent, false);
         ButterKnife.bind(this,mConvertView);
-        //对于listview，注意添加这一行，即可在item上使用高度
         AutoUtils.autoSize(mConvertView);
     }
 
@@ -32,7 +34,13 @@ public abstract class UIViewHolder<T> {
     }
 
     public void onDestroy() {
+        ButterKnife.unbind(this);
+        if (mRxManager != null) {
+            mRxManager.clear();
+            mRxManager = null;
+        }
         mConvertView = null;
+
     }
 
 }

@@ -32,7 +32,7 @@ public abstract class ActivityPresenter<M extends BaseModel, V extends IBaseView
         this.mActivity = activity;
         this.mView = view;
         this.mModel = getMvpModel();
-        mModel.initModel(mActivity, mRxManager);
+        mModel.initModel(mActivity);
     }
 
     @Override

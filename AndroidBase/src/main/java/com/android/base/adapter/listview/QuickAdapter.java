@@ -67,11 +67,10 @@ public abstract class QuickAdapter<T> extends BaseQuickAdapter<T, BaseAdapterHel
     }
 
     protected BaseAdapterHelper getAdapterHelper(int position, View convertView, ViewGroup parent) {
-
         if (mMultiItemSupport != null) {
-            return get(context, convertView, parent, mMultiItemSupport.getLayoutId(position, data.get(position)), position);
+            return BaseAdapterHelper.get(context, convertView, parent, mMultiItemSupport.getLayoutId(position, data.get(position)), position);
         } else {
-            return get(context, convertView, parent, layoutResId, position);
+            return BaseAdapterHelper.get(context, convertView, parent, layoutResId, position);
         }
     }
 

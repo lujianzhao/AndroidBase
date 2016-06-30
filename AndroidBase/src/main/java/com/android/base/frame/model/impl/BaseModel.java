@@ -13,7 +13,7 @@ import com.android.base.frame.model.IBaseModel;
  */
 public abstract class BaseModel implements IBaseModel {
 
-    protected RxManager mRxManager;
+    protected RxManager mRxManager = new RxManager();
 
     protected Context mContext;
 
@@ -24,14 +24,16 @@ public abstract class BaseModel implements IBaseModel {
 
     @Override
     public void onDestroy() {
+        if (mRxManager != null) {
+            mRxManager.clear();
+            mRxManager = null;
+        }
         mContext = null;
-        mRxManager = null;
     }
 
     @Override
-    public void initModel(@NonNull Context context,@NonNull RxManager rxManager) {
+    public void initModel(@NonNull Context context) {
         this.mContext = context;
-        this.mRxManager = rxManager;
     }
 
 }

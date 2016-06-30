@@ -35,7 +35,7 @@ public abstract class FragmentPresenter<M extends BaseModel, V extends IBaseView
         this.mFragment = fragment;
         this.mView = view;
         this.mModel = getMvpModel();
-        mModel.initModel(mActivity, mRxManager);
+        mModel.initModel(mActivity);
     }
 
     @Override
@@ -72,14 +72,15 @@ public abstract class FragmentPresenter<M extends BaseModel, V extends IBaseView
             mModel.onDestroy();
             mModel = null;
         }
-        mView = null;
-        mFragment = null;
-        mActivity = null;
 
         if (mRxManager != null) {
             mRxManager.clear();
             mRxManager = null;
         }
+
+        mView = null;
+        mFragment = null;
+        mActivity = null;
     }
 
     @Override
