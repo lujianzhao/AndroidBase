@@ -26,6 +26,7 @@ import com.android.base.adapter.recyclerview.animation.SlideInLeftAnimation;
 import com.android.base.adapter.recyclerview.animation.SlideInRightAnimation;
 import com.android.base.adapter.recyclerview.listener.OnItemDragListener;
 import com.android.base.adapter.recyclerview.listener.OnItemSwipeListener;
+import com.bumptech.glide.Glide;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -75,6 +76,14 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
     protected static final int FOOTER_VIEW = 0x00000333;
     protected static final int EMPTY_VIEW = 0x00000555;
     private View mLoadingView;
+
+    public void onScrollStop() {
+        Glide.with(mContext).resumeRequests();
+    }
+
+    public void onScrolling() {
+        Glide.with(mContext).pauseRequests();
+    }
 
     @IntDef({ALPHAIN, SCALEIN, SLIDEIN_BOTTOM, SLIDEIN_LEFT, SLIDEIN_RIGHT})
     @Retention(RetentionPolicy.SOURCE)
@@ -324,6 +333,7 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
         this.mData.addAll(elem);
         //notifyDataSetChanged();
         notifyItemRangeInserted(this.mData.size(), elem.size());
+
     }
 
 

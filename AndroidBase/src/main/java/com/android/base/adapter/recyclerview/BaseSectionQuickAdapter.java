@@ -2,7 +2,7 @@ package com.android.base.adapter.recyclerview;
 
 import android.view.ViewGroup;
 
-import com.chad.library.adapter.base.entity.SectionEntity;
+import com.android.base.adapter.recyclerview.entity.SectionEntity;
 
 import java.util.List;
 

@@ -47,6 +47,7 @@ public class FamiliarRecyclerView extends RecyclerView {
     private int mDefAllDividerHeight;
     private boolean needInitAddItemDescration = false;
 
+    private OnScrollListener mOnScrollListener;
 
     public FamiliarRecyclerView(Context context) {
         this(context, null);
@@ -92,6 +93,25 @@ public class FamiliarRecyclerView extends RecyclerView {
             }
         }
         ta.recycle();
+
+        mOnScrollListener= new OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                switch (newState) {
+                    case SCROLL_STATE_IDLE:
+                        mReqAdapter.onScrollStop();
+                        break;
+                    case SCROLL_STATE_DRAGGING:
+                    case SCROLL_STATE_SETTLING:
+                        mReqAdapter.onScrolling();
+                        break;
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            }
+        };
     }
 
     private void processDefDivider(boolean isLinearLayoutManager, int layoutManagerOrientation) {
@@ -179,6 +199,8 @@ public class FamiliarRecyclerView extends RecyclerView {
 
         if (adapter instanceof BaseQuickAdapter) {
             mReqAdapter = (BaseQuickAdapter) adapter;
+            removeOnScrollListener(mOnScrollListener);
+            addOnScrollListener(mOnScrollListener);
         }
 
         super.setAdapter(adapter);
