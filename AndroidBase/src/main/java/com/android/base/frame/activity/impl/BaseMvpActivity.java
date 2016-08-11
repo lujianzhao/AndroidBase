@@ -11,7 +11,7 @@ import com.android.base.frame.view.IBaseView;
 /**
  * Created by Administrator on 2016/5/13.
  */
-public abstract class BaseMvpActivity<P extends ActivityPresenter, V extends IBaseView> extends SuperActivity {
+public abstract class BaseMvpActivity<P extends ActivityPresenter> extends SuperActivity {
     public P mPresenter;
 
     /**
@@ -21,7 +21,7 @@ public abstract class BaseMvpActivity<P extends ActivityPresenter, V extends IBa
     protected abstract P getMvpPresenter();
 
     @NonNull
-    protected abstract V getMvpView();
+    protected abstract IBaseView getMvpView();
 
 
     @Override

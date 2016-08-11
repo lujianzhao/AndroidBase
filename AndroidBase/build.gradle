@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    buildToolsVersion "24.0.1"
 
     defaultConfig {
         minSdkVersion 16
@@ -28,10 +28,10 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:24.0.0'
-    compile 'com.android.support:support-v4:24.0.0'
-    compile 'com.android.support:design:24.0.0'
-    compile 'com.android.support:recyclerview-v7:24.0.0'
+    compile 'com.android.support:appcompat-v7:24.1.1'
+    compile 'com.android.support:support-v4:24.1.1'
+    compile 'com.android.support:design:24.1.1'
+    compile 'com.android.support:recyclerview-v7:24.1.1'
     //自动布局
     compile 'com.zhy:autolayout:1.4.3'
     //注入工具
@@ -44,18 +44,18 @@ dependencies {
     //RxLifecycle
     compile 'com.trello:rxlifecycle:0.6.1'
     //Json解析库
-    compile 'com.alibaba:fastjson:1.2.12'
+    compile 'com.alibaba:fastjson:1.2.15'
     //图片加载、缓存库
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'jp.wasabeef:glide-transformations:2.0.1'
     //6.0权限处理库
-    compile 'pub.devrel:easypermissions:0.1.7'
+    compile 'pub.devrel:easypermissions:0.1.9'
     //Retrofit网络请求
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
-    compile 'org.ligboy.retrofit2:converter-fastjson-android:2.0.2'
+    compile 'org.ligboy.retrofit2:converter-fastjson-android:2.1.0'
     //Fragment解决库
-    compile 'me.yokeyword:fragmentation:0.7.5'
+    compile 'me.yokeyword:fragmentation:0.7.9'
     //db数据库
     compile 'com.j256.ormlite:ormlite-core:4.48'
     compile 'com.j256.ormlite:ormlite-android:4.48'
@@ -63,6 +63,8 @@ dependencies {
     compile 'jp.wasabeef:recyclerview-animators:2.2.3'
 
     //Log工具类,目前的版本1.4.2,在com.android.base.common.logutils
-//    compile 'com.apkfuns.logutils:library:1.4.2'
+    //compile 'com.apkfuns.logutils:library:1.4.2'
+
+    //BaseRecyclerViewAdapterHelper,目前的版本1.9.7,在com.android.base.adapter.recyclerview
 
 }

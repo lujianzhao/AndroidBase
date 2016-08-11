@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.android.base.common.logutils.LogUtils;
 import com.android.base.frame.activity.impl.BaseMvpActivity;
+import com.android.base.frame.view.IBaseView;
 import com.liangzhicn.androidbasedemo.R;
 import com.liangzhicn.androidbasedemo.http.contract.DownloadContract;
 import com.liangzhicn.androidbasedemo.http.presenter.DownloadPresenter;
@@ -21,7 +22,7 @@ import butterknife.OnClick;
  * 创建时间: 2016/06/23 13:31
  * 描述:
  */
-public class DownloadActivity extends BaseMvpActivity<DownloadContract.Presenter,DownloadContract.View> implements DownloadContract.View {
+public class DownloadActivity extends BaseMvpActivity<DownloadContract.Presenter> implements DownloadContract.View {
 
     @Bind(R.id.fileDownload)
     Button btnFileDownload;
@@ -46,7 +47,7 @@ public class DownloadActivity extends BaseMvpActivity<DownloadContract.Presenter
 
     @NonNull
     @Override
-    protected DownloadContract.View getMvpView() {
+    protected IBaseView getMvpView() {
         return this;
     }
 

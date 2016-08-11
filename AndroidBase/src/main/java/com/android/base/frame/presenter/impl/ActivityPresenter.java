@@ -74,12 +74,15 @@ public abstract class ActivityPresenter<M extends BaseModel, V extends IBaseView
             mModel.onDestroy();
             mModel = null;
         }
-        mView = null;
-        mActivity = null;
+
         if (mRxManager != null) {
             mRxManager.clear();
             mRxManager = null;
         }
+
+        mView = null;
+        mActivity = null;
+
     }
 
 }
