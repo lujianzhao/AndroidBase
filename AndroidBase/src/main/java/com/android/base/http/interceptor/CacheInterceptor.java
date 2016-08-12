@@ -16,35 +16,35 @@ import okhttp3.Response;
  */
 public class CacheInterceptor implements Interceptor {
 
-    Context context;
+    private Context mContext;
+    private int mOnlineCacheTime; // 在线缓存时间,默认交由服务器端维护
+    private int mOfflineCacheTime; // 离线缓存时间,默认1天
 
     public CacheInterceptor(Context context) {
-        this.context=context;
+        this(context, 0, 86400);
+    }
+
+    public CacheInterceptor(Context context, int onlineCacheTime, int offlineCacheTime) {
+        this.mContext = context;
+        this.mOnlineCacheTime = onlineCacheTime;
+        this.mOfflineCacheTime = offlineCacheTime;
     }
 
     @Override
     public Response intercept(Interceptor.Chain chain) throws IOException {
         Request request = chain.request();
         //如果没有网络，则启用 FORCE_CACHE
-        if(!isNetworkConnected(context)) {
-            request = request.newBuilder()
-                    .cacheControl(CacheControl.FORCE_CACHE)
-                    .build();
+        if (!isNetworkConnected(mContext)) {
+            request = request.newBuilder().cacheControl(CacheControl.FORCE_CACHE).build();
         }
 
         Response originalResponse = chain.proceed(request);
-        if(isNetworkConnected(context)) {
+        if (isNetworkConnected(mContext)) {
             //有网的时候读接口上的@Headers里的配置
             String cacheControl = request.cacheControl().toString();
-            return originalResponse.newBuilder()
-                    .header("Cache-Control", cacheControl)
-                    .removeHeader("Pragma")
-                    .build();
+            return originalResponse.newBuilder().header("Cache-Control", mOnlineCacheTime == 0 ? cacheControl : String.valueOf(mOnlineCacheTime)).removeHeader("Pragma").build();
         } else {
-            return originalResponse.newBuilder()
-                    .header("Cache-Control", "public, only-if-cached, max-stale=3600")
-                    .removeHeader("Pragma")
-                    .build();
+            return originalResponse.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + mOfflineCacheTime).removeHeader("Pragma").build();
         }
     }
 

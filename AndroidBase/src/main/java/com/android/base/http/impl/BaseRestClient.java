@@ -1,17 +1,16 @@
 package com.android.base.http.impl;
 
 import android.content.Context;
-import android.os.Environment;
 
 import com.android.base.common.cookiejar.ClearableCookieJar;
 import com.android.base.common.cookiejar.PersistentCookieJar;
 import com.android.base.common.cookiejar.cache.SetCookieCache;
 import com.android.base.common.cookiejar.persistence.SharedPrefsCookiePersistor;
+import com.android.base.common.utils.UIUtil;
 import com.android.base.http.IRetrofit;
 import com.android.base.http.interceptor.CacheInterceptor;
 import com.android.base.http.interceptor.LoggerInterceptor;
 
-import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
@@ -59,12 +58,14 @@ public class BaseRestClient implements IRetrofit {
      */
     public void enableCache(boolean flag, Context context) {
         if (flag) {
+
+
             //缓存拦截器
             mOkhttpBuilder
                     .addInterceptor(new CacheInterceptor(context))
                     .addNetworkInterceptor(new CacheInterceptor(context))
                     //设置缓存路径以及大小
-                    .cache(new Cache(new File(Environment.getExternalStorageDirectory().getPath() + "/retrofit2demo"), 1024 * 1024 * 100));
+                    .cache(new Cache(UIUtil.getContext().getNetCacheFile(), 1024 * 1024 * 100));
             mOkhttpBuilder.interceptors().add(new CacheInterceptor(context));
         }
     }

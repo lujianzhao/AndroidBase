@@ -168,7 +168,7 @@ public class BaseApplication extends Application {
         }
     }
 
-    public File getNetCacheFile() {
+    public  File getNetCacheFile() {
         if (mNetCacheFile == null) {
             mNetCacheFile = new File(getCacheDir() + "/netcache");
         }
