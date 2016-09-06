@@ -48,7 +48,7 @@ public abstract class SuperActivity extends SupportActivity implements IBaseActi
 
     protected abstract int getContentViewId();
 
-    protected abstract void initView();
+    protected abstract void initView(Bundle savedInstanceState);
 
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {

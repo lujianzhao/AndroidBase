@@ -6,8 +6,9 @@ import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.android.base.common.utils.DensityUtil;
@@ -18,7 +19,7 @@ import com.zhy.autolayout.utils.AutoUtils;
  * 创建时间: 2016/05/10 11:36
  * 描述:
  */
-public class TopBar extends RelativeLayout {
+public class TopBar extends FrameLayout {
 
     private TextView tv_right;
     private TextView tv_title;
@@ -116,18 +117,11 @@ public class TopBar extends RelativeLayout {
         //进行垃圾回收
         ta.recycle();
 
-        //初始化控件
-        tv_left = new TextView(context);
-        tv_left.setLines(1);
-        tv_left.setEllipsize(TextUtils.TruncateAt.END);
+        LayoutInflater.from(context).inflate(R.layout.top_bar, this);
+        tv_left = (TextView) findViewById(R.id.tv_left);
+        tv_right = (TextView) findViewById(R.id.tv_right);
+        tv_title = (TextView) findViewById(R.id.tv_title);
 
-        tv_right = new TextView(context);
-        tv_right.setLines(1);
-        tv_right.setEllipsize(TextUtils.TruncateAt.END);
-
-        tv_title = new TextView(context);
-        tv_title.setLines(1);
-        tv_title.setEllipsize(TextUtils.TruncateAt.END);
 
         //设置控件的值
         tv_left.setTextColor(leftTextColor);          //设置文字颜色
@@ -177,32 +171,8 @@ public class TopBar extends RelativeLayout {
         }
         tv_title.setText(toptitle);                    //设置文本
         tv_title.setGravity(Gravity.CENTER);           //居中显示
-//        if (titleBackground != null) {
-//            titleBackground.setBounds(0, 0, titleBackground.getMinimumWidth(), titleBackground.getMinimumHeight());
-//            tv_title.setCompoundDrawables(titleBackground, null, null, null);
-//        }
         setBackgroundColor(titleBackgroundColor);               //设置View的背景颜色
 
-        //设置布局属性的width和height
-        leftParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-        //设置对齐方式为父容器的左侧
-        leftParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, TRUE);
-        //将左边按钮添加到视图中，并设置布局属性
-        addView(tv_left, leftParams);
-
-        //设置布局属性的width和height
-        rightParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-        //设置对齐方式为父容器的右侧
-        rightParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, TRUE);
-        //将右边按钮添加到视图中，并设置布局属性
-        addView(tv_right, rightParams);
-
-        //设置布局属性的width和height
-        titleParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-        //设置对齐方式为居中对齐
-        titleParams.addRule(RelativeLayout.CENTER_IN_PARENT, TRUE);
-        //将中间TextView添加到视图中，并设置布局属性
-        addView(tv_title, titleParams);
 
         //添加左侧按钮的Click事件
         tv_left.setOnClickListener(new OnClickListener() {
@@ -237,7 +207,7 @@ public class TopBar extends RelativeLayout {
         setLeftButtonIsVisiable(leftIsVisiable);
         setRightButtonIsVisiable(rightIsVisiable);
 
-
+        AutoUtils.auto(this);
     }
 
     @Override

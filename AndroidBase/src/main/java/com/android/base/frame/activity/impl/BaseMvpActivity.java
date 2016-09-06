@@ -30,7 +30,7 @@ public abstract class BaseMvpActivity<P extends ActivityPresenter> extends Super
         super.onCreate(savedInstanceState);
         mPresenter = getMvpPresenter();
         mPresenter.initPresenter(this, getMvpView());
-        initView();
+        initView(savedInstanceState);
         if (mPresenter != null) {
             mPresenter.onCreate();
             mPresenter.start();

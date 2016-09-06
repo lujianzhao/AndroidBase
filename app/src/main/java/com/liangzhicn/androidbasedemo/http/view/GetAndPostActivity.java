@@ -1,5 +1,6 @@
 package com.liangzhicn.androidbasedemo.http.view;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
@@ -48,8 +49,10 @@ public class GetAndPostActivity extends BaseMvpActivity<GetAndPostContract.Prese
     }
 
     @Override
-    protected void initView() {
+    protected void initView(Bundle savedInstanceState) {
+
     }
+
 
     /**
      * 请求错误的时候重试界面的点击按钮

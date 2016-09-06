@@ -121,7 +121,9 @@ public class WebViewFragment extends BaseFragment {
 
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
-                mProgressBar.setProgress(newProgress);
+                if (mProgressBar != null) {
+                    mProgressBar.setProgress(newProgress);
+                }
                 super.onProgressChanged(view, newProgress);
             }
 
@@ -214,13 +216,17 @@ public class WebViewFragment extends BaseFragment {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                mProgressBar.setVisibility(View.VISIBLE);
+                if (mProgressBar != null) {
+                    mProgressBar.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                mProgressBar.setVisibility(View.GONE);
+                if (mProgressBar != null) {
+                    mProgressBar.setVisibility(View.GONE);
+                }
             }
         });
 

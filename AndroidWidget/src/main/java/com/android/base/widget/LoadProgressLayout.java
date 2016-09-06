@@ -3,9 +3,7 @@ package com.android.base.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -196,6 +194,14 @@ public class LoadProgressLayout extends RelativeLayout {
         LoadProgressLayout.this.setContentVisibility(true);
     }
 
+    public boolean isShowLoadingViewOrErrorView() {
+        boolean flag = false;
+        if (loadingView.getVisibility() == View.VISIBLE || errorView.getVisibility() == View.VISIBLE) {
+            flag = true;
+        }
+        return flag;
+    }
+
     private void hideLoadingView() {
         if (loadingView != null && loadingView.getVisibility() != GONE) {
             this.loadingView.setVisibility(GONE);
@@ -218,10 +224,5 @@ public class LoadProgressLayout extends RelativeLayout {
         for (View contentView : contentViews) {
             contentView.setVisibility(visible ? View.VISIBLE : View.GONE);
         }
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 }

@@ -1,6 +1,7 @@
 package com.liangzhicn.androidbasedemo.http.view;
 
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.format.Formatter;
 import android.view.View;
@@ -60,6 +61,11 @@ public class UploadActivity extends BaseMvpActivity<UploadContract.Presenter>imp
         return R.layout.activity_upload;
     }
 
+    @Override
+    protected void initView(Bundle savedInstanceState) {
+
+    }
+
     @OnClick(R.id.selectImage)
     public void selectImage(View view) {
         mPresenter.selectImage();
@@ -69,11 +75,6 @@ public class UploadActivity extends BaseMvpActivity<UploadContract.Presenter>imp
     @OnClick(R.id.formUpload)
     public void formUpload(View view) {
         mPresenter.formUpload();
-    }
-
-    @Override
-    protected void initView() {
-
     }
 
     @Override

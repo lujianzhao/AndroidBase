@@ -3,7 +3,7 @@ package com.liangzhicn.androidbasedemo.http.model.repositorys.http;
 import android.text.TextUtils;
 
 import com.android.base.frame.Base;
-import com.android.base.http.impl.BaseRestClient;
+import com.android.base.http.impl.BaseClient;
 
 import java.io.IOException;
 
@@ -15,7 +15,7 @@ import okhttp3.Response;
 /**
  * Created by huangwm on 2016/4/30.
  */
-public class GetAndPostClient extends BaseRestClient {
+public class GetAndPostClient extends BaseClient {
 
     private static GetAndPostClient mInstance;
 

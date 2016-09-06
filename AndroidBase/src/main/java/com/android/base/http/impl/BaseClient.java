@@ -23,7 +23,7 @@ import retrofit2.converter.fastjson.FastJsonConverterFactory;
 /**
  * Created by Administrator on 2016/4/29.
  */
-public class BaseRestClient implements IRetrofit {
+public class BaseClient implements IRetrofit {
     //okhttp build对象
     private OkHttpClient.Builder mOkhttpBuilder;
 

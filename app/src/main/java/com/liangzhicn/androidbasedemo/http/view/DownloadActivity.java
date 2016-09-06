@@ -1,5 +1,6 @@
 package com.liangzhicn.androidbasedemo.http.view;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.format.Formatter;
 import android.view.View;
@@ -82,7 +83,7 @@ public class DownloadActivity extends BaseMvpActivity<DownloadContract.Presenter
     }
 
     @Override
-    protected void initView() {
+    protected void initView(Bundle savedInstanceState) {
 
     }
 

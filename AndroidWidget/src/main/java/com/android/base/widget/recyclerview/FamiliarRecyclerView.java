@@ -9,10 +9,15 @@ import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
+import android.widget.Adapter;
 
 import com.android.base.adapter.recyclerview.BaseQuickAdapter;
+import com.android.base.glide.recyclerview.ListPreloaderQuickAdapter;
+import com.android.base.glide.recyclerview.RecyclerViewPreloader;
 import com.android.base.widget.R;
 import com.android.base.widget.recyclerview.decoration.FamiliarDefaultItemDecoration;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.util.ViewPreloadSizeProvider;
 
 /**
  * FamiliarRecyclerView
@@ -99,9 +104,10 @@ public class FamiliarRecyclerView extends RecyclerView {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 switch (newState) {
                     case SCROLL_STATE_IDLE:
+                    case SCROLL_STATE_DRAGGING:
                         mReqAdapter.onScrollStop();
                         break;
-                    case SCROLL_STATE_DRAGGING:
+
                     case SCROLL_STATE_SETTLING:
                         mReqAdapter.onScrolling();
                         break;
@@ -201,6 +207,12 @@ public class FamiliarRecyclerView extends RecyclerView {
             mReqAdapter = (BaseQuickAdapter) adapter;
             removeOnScrollListener(mOnScrollListener);
             addOnScrollListener(mOnScrollListener);
+        }
+
+        if (adapter instanceof ListPreloaderQuickAdapter) {
+            ListPreloaderQuickAdapter tempAdapter = (ListPreloaderQuickAdapter)adapter;
+            RecyclerViewPreloader preloader =new RecyclerViewPreloader(Glide.with(getContext()), tempAdapter, new ViewPreloadSizeProvider(), tempAdapter.getMaxPreload());
+            addOnScrollListener(preloader);
         }
 
         super.setAdapter(adapter);

@@ -19,11 +19,14 @@ public abstract class UIViewHolder<T> {
 
     private View mConvertView;
 
+    protected Context mContext;
+
     protected RxManager mRxManager = new RxManager();
 
     public abstract void refreshUI(T data);
 
     public UIViewHolder(Context context, ViewGroup parent, int layoutId) {
+        mContext = context;
         mConvertView = LayoutInflater.from(context).inflate(layoutId, parent, false);
         ButterKnife.bind(this,mConvertView);
         AutoUtils.autoSize(mConvertView);
@@ -39,6 +42,7 @@ public abstract class UIViewHolder<T> {
             mRxManager.clear();
             mRxManager = null;
         }
+        mContext = null;
         mConvertView = null;
 
     }

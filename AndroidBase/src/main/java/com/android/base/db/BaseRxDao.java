@@ -26,9 +26,9 @@ import rx.functions.Action1;
  */
 public abstract class BaseRxDao<T> extends OrmLiteDao<T> {
 
-    private boolean cache;
-    private Class<T> clazz;
-    private String tableName;
+    protected boolean cache;
+    protected Class<T> clazz;
+    protected String tableName;
 
     public BaseRxDao(Context context, Class<T> cls) {
         this(context, cls, true);
@@ -174,15 +174,6 @@ public abstract class BaseRxDao<T> extends OrmLiteDao<T> {
         return result;
     }
 
-    public Observable queryForAllObservable() {
-        return RxUtil.getObservable(new Callable() {
-            @Override
-            public Object call() throws Exception {
-                return queryForAll();
-            }
-        });
-    }
-
     public Subscription queryForAllSync(final ExecutorCallBack<List<T>> listener) {
         return subscribe(new Callable<List<T>>() {
             @Override
@@ -197,7 +188,7 @@ public abstract class BaseRxDao<T> extends OrmLiteDao<T> {
         });
     }
 
-    private <T> Subscription subscribe(Callable<T> callable, Action1<T> action) {
+    protected  <T> Subscription subscribe(Callable<T> callable, Action1<T> action) {
         Observable<T> observable = RxUtil.getObservable(callable);
         return observable.compose(RxUtil.<T>applySchedulers()).subscribe(action);
     }

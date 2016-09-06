@@ -140,6 +140,10 @@ public class ConvenientBanner<T> extends LinearLayout {
         notifyDataSetChanged();
     }
 
+    public List<T> getDatas() {
+        return this.mDatas;
+    }
+
     /**
      * 通知数据变化
      * 如果只是增加数据建议使用 notifyDataSetAdd()

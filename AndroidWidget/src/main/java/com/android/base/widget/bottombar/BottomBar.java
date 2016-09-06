@@ -1,4 +1,4 @@
-package com.android.base.widget;
+package com.android.base.widget.bottombar;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -58,13 +58,14 @@ public class BottomBar extends LinearLayout {
         mTabParams.weight = 1;
     }
 
-    public BottomBar addItem(final View tab) {
+    public BottomBar addItem(final BottomBarTab tab) {
         tab.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mListener == null)
                     return;
-                int pos =(Integer) tab.getTag();
+
+                int pos = tab.getTabPosition();
                 if (mCurrentPosition == pos) {
                     mListener.onTabReselected(pos);
                 } else {
@@ -76,7 +77,7 @@ public class BottomBar extends LinearLayout {
                 }
             }
         });
-        tab.setTag(mTabLayout.getChildCount());
+        tab.setTabPosition(mTabLayout.getChildCount());
         tab.setLayoutParams(mTabParams);
         mTabLayout.addView(tab);
         return this;
@@ -121,6 +122,10 @@ public class BottomBar extends LinearLayout {
         mCurrentPosition = ss.position;
     }
 
+    public int getCurrentItemPosition() {
+        return mCurrentPosition;
+    }
+
     static class SavedState extends BaseSavedState {
         private int position;
 
@@ -140,7 +145,7 @@ public class BottomBar extends LinearLayout {
             out.writeInt(position);
         }
 
-        public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
+        public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {
             public SavedState createFromParcel(Parcel in) {
                 return new SavedState(in);
             }
@@ -196,9 +201,7 @@ public class BottomBar extends LinearLayout {
             }
             int translationY = visible ? 0 : height;
             if (animate) {
-                animate().setInterpolator(mInterpolator)
-                        .setDuration(TRANSLATE_DURATION_MILLIS)
-                        .translationY(translationY);
+                animate().setInterpolator(mInterpolator).setDuration(TRANSLATE_DURATION_MILLIS).translationY(translationY);
             } else {
                 ViewCompat.setTranslationY(this, translationY);
             }

@@ -4,15 +4,16 @@ import android.support.annotation.NonNull;
 
 import com.android.base.common.logutils.LogUtils;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.subjects.PublishSubject;
+import rx.subjects.BehaviorSubject;
+import rx.subjects.SerializedSubject;
 import rx.subjects.Subject;
 
 /**
@@ -56,11 +57,11 @@ public class RxEventBus {
     public <T> Observable<T> register(@NonNull Object tag) {
         List<Subject> subjectList = subjectMapper.get(tag);
         if (null == subjectList) {
-            subjectList = new ArrayList<Subject>();
+            subjectList = new CopyOnWriteArrayList<>();
             subjectMapper.put(tag, subjectList);
         }
-        Subject<T, T> subject;
-        subjectList.add(subject = PublishSubject.create());
+        Subject<T, T> subject = new SerializedSubject<>(BehaviorSubject.<T>create());
+        subjectList.add(subject);
         LogUtils.d("register" + tag + "  size:" + subjectList.size());
         return subject;
     }

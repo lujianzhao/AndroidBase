@@ -21,12 +21,12 @@
         <attr name="loadingView" format="reference" />
     </declare-styleable>
 
+
     <declare-styleable name="Topbar">
         <attr name="topTitle" format="string" />                           <!--中间文字，类型字符串-->
         <attr name="topTitleTextSize" format="dimension" />                   <!--字体大小，类型为数字-->
         <attr name="topTitleTextColor" format="color"/>                       <!--字体颜色，类型为颜色-->
-        <attr name="titleBackgroundColor" format="color"/>                       <!--字体颜色，类型为颜色-->
-        <!--<attr name="titleBackground" format="reference|color" />-->
+        <attr name="titleBackgroundColor" format="color"/>                       <!--背景颜色，类型为颜色-->
 
         <attr name="topLeftTextColor" format="color"/>                        <!--左侧字体颜色，类型为颜色-->
         <attr name="topLeftBackground" format="reference|color" />            <!--左侧背景颜色，类型为图片和颜色-->
@@ -45,6 +45,8 @@
         <attr name="topLeftIsVisiable" format="boolean" />                           <!--左侧按钮是否显示-->
         <attr name="topRightIsVisiable" format="boolean" />                           <!--右侧按钮是否显示-->
     </declare-styleable>
+
+
 
     <declare-styleable name="FamiliarRecyclerView">
         <attr name="frv_divider" format="reference|color" />
