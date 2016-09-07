@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
-import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.util.AttributeSet;
@@ -18,10 +17,6 @@ import com.android.base.frame.BaseApplication;
 import com.android.base.frame.activity.IBaseActivity;
 import com.android.base.netstate.NetWorkUtil;
 import com.android.base.netstate.NetworkStateReceiver;
-import com.trello.rxlifecycle.ActivityEvent;
-import com.trello.rxlifecycle.ActivityLifecycleProvider;
-import com.trello.rxlifecycle.LifecycleTransformer;
-import com.trello.rxlifecycle.RxLifecycle;
 import com.zhy.autolayout.AutoFrameLayout;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
@@ -31,20 +26,17 @@ import java.util.List;
 import butterknife.ButterKnife;
 import me.yokeyword.fragmentation.SupportActivity;
 import pub.devrel.easypermissions.EasyPermissions;
-import rx.Observable;
-import rx.subjects.BehaviorSubject;
 
 /**
  * 作者: lujianzhao
  * 创建时间: 2016/06/13 16:27
  * 描述:
  */
-public abstract class SuperActivity extends SupportActivity implements IBaseActivity, ActivityLifecycleProvider  , EasyPermissions.PermissionCallbacks{
+public abstract class SuperActivity extends SupportActivity implements IBaseActivity, EasyPermissions.PermissionCallbacks{
 
     private static final String LAYOUT_LINEARLAYOUT = "LinearLayout";
     private static final String LAYOUT_FRAMELAYOUT = "FrameLayout";
     private static final String LAYOUT_RELATIVELAYOUT = "RelativeLayout";
-    private final BehaviorSubject<ActivityEvent> mLifecycleSubject = BehaviorSubject.create();
 
     protected abstract int getContentViewId();
 
@@ -72,27 +64,6 @@ public abstract class SuperActivity extends SupportActivity implements IBaseActi
     }
 
     @Override
-    @NonNull
-    @CheckResult
-    public final Observable<ActivityEvent> lifecycle() {
-        return mLifecycleSubject.asObservable();
-    }
-
-    @Override
-    @NonNull
-    @CheckResult
-    public final <T> LifecycleTransformer<T> bindUntilEvent(@NonNull ActivityEvent event) {
-        return RxLifecycle.bindUntilEvent(mLifecycleSubject, event);
-    }
-
-    @Override
-    @NonNull
-    @CheckResult
-    public final <T> LifecycleTransformer<T> bindToLifecycle() {
-        return RxLifecycle.bindActivity(mLifecycleSubject);
-    }
-
-    @Override
     @CallSuper
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +72,6 @@ public abstract class SuperActivity extends SupportActivity implements IBaseActi
         initActionBar();
         ButterKnife.bind(this);
         NetworkStateReceiver.registerNetworkStateReceiver(this);
-        mLifecycleSubject.onNext(ActivityEvent.CREATE);
     }
 
     /**
@@ -116,38 +86,16 @@ public abstract class SuperActivity extends SupportActivity implements IBaseActi
 
     @Override
     @CallSuper
-    protected void onStart() {
-        super.onStart();
-        mLifecycleSubject.onNext(ActivityEvent.START);
-    }
-
-    @Override
-    @CallSuper
-    protected void onResume() {
-        super.onResume();
-        mLifecycleSubject.onNext(ActivityEvent.RESUME);
-    }
-
-    @Override
-    @CallSuper
     protected void onPause() {
-        mLifecycleSubject.onNext(ActivityEvent.PAUSE);
         InputMethodUtils.hideSoftInput(this);
         super.onPause();
     }
 
-    @Override
-    @CallSuper
-    protected void onStop() {
-        mLifecycleSubject.onNext(ActivityEvent.STOP);
-        super.onStop();
-    }
 
     @Override
     @CallSuper
     protected void onDestroy() {
         ButterKnife.unbind(this);
-        mLifecycleSubject.onNext(ActivityEvent.DESTROY);
         NetworkStateReceiver.unRegisterNetworkStateReceiver(this);
         super.onDestroy();
         AppManager.getAppManager().finishActivity(this);
@@ -219,8 +167,6 @@ public abstract class SuperActivity extends SupportActivity implements IBaseActi
     public void onConnect(NetWorkUtil.NetWorkType type) {
 
     }
-
-
 
 
 }

@@ -71,14 +71,13 @@ public class WebViewFragment extends BaseFragment {
 
     }
 
-
     @Override
-    public boolean onBackPressed() {
+    public boolean onBackPressedSupport() {
         if (mWebView != null && mWebView.canGoBack()) {
             mWebView.goBack();
             return true;
         }
-        return super.onBackPressed();
+        return super.onBackPressedSupport();
     }
 
     /**

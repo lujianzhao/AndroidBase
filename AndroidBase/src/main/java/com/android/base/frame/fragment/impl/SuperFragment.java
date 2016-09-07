@@ -30,7 +30,7 @@ import rx.subjects.BehaviorSubject;
  * 创建时间: 2016/06/13 16:27
  * 描述:
  */
-public abstract class SuperFragment extends SupportFragment  implements IBaseFragment, FragmentLifecycleProvider,EasyPermissions.PermissionCallbacks {
+public abstract class SuperFragment extends SupportFragment  implements IBaseFragment,EasyPermissions.PermissionCallbacks, FragmentLifecycleProvider {
     private final BehaviorSubject<FragmentEvent> mLifecycleSubject = BehaviorSubject.create();
     protected View mRootView = null;
 
@@ -45,9 +45,7 @@ public abstract class SuperFragment extends SupportFragment  implements IBaseFra
         return mLifecycleSubject.asObservable();
     }
 
-    public boolean onBackPressed(){
-        return false;
-    }
+
 
     @Override
     @NonNull
