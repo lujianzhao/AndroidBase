@@ -1,6 +1,8 @@
 package com.android.base.common.assist;
 
 
+import android.os.Environment;
+
 import com.android.base.common.logutils.LogUtils;
 
 import java.io.BufferedReader;
@@ -22,7 +24,7 @@ import java.util.Date;
 public class LogReader extends Thread {
 //    public static final String TAG           = "LogReader";
     public static final String LOG_FILE_PATH = "/bonglog.txt";
-    public static final String LOG_ROOT_PATH = "/sdcard";
+    public static final String LOG_ROOT_PATH = Environment.getExternalStorageDirectory().getPath();
 
     public static  boolean   open        = true;
     private static LogReader instance    = null;

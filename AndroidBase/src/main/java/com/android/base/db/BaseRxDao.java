@@ -188,9 +188,9 @@ public abstract class BaseRxDao<T> extends OrmLiteDao<T> {
         });
     }
 
-    protected  <T> Subscription subscribe(Callable<T> callable, Action1<T> action) {
-        Observable<T> observable = RxUtil.getObservable(callable);
-        return observable.compose(RxUtil.<T>applySchedulers()).subscribe(action);
+    protected  <R> Subscription subscribe(Callable<R> callable, Action1<R> action) {
+        Observable<R> observable = RxUtil.getObservable(callable);
+        return observable.compose(RxUtil.<R>applySchedulers()).subscribe(action);
     }
 
 }

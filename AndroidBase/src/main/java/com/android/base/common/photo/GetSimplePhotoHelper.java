@@ -130,7 +130,7 @@ public class GetSimplePhotoHelper {
      */
     public interface OnSelectedPhotoListener {
 
-        public void onSelectedPhoto(int way, SimplePhoto photo);
+        void onSelectedPhoto(int way, SimplePhoto photo);
 
     }
 

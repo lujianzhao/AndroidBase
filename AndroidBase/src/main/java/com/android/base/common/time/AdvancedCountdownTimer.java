@@ -83,7 +83,7 @@ public abstract class AdvancedCountdownTimer {
                     } else if (mRemainTime < mCountdownInterval) {
                         sendMessageDelayed(obtainMessage(MSG_RUN), mRemainTime);
                     } else {
-                        onTick(mRemainTime, new Long(100 * (mTotalTime - mRemainTime) / mTotalTime).intValue());
+                        onTick(mRemainTime, Long.valueOf(100 * (mTotalTime - mRemainTime) / mTotalTime).intValue());
 
                         sendMessageDelayed(obtainMessage(MSG_RUN), mCountdownInterval);
                     }

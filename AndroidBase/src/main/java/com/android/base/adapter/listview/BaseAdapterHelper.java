@@ -464,7 +464,7 @@ public class BaseAdapterHelper {
      * @return The BaseAdapterHelper for chaining.
      */
     public BaseAdapterHelper setChecked(int viewId, boolean checked) {
-        Checkable view = (Checkable) retrieveView(viewId);
+        Checkable view = retrieveView(viewId);
         view.setChecked(checked);
         return this;
     }

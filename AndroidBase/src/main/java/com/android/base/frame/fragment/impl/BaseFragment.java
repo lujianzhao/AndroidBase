@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 /**
  * Created by Administrator on 2016/5/13.
  */
-public abstract class BaseFragment extends SuperFragment{
+public abstract class BaseFragment extends SuperFragment {
 
     protected abstract void initData();
 
@@ -16,6 +16,4 @@ public abstract class BaseFragment extends SuperFragment{
         initView(savedInstanceState);
         initData();
     }
-
-
 }

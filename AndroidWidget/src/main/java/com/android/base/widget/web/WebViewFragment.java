@@ -19,7 +19,6 @@ import android.widget.ProgressBar;
 
 import com.android.base.common.logutils.LogUtils;
 import com.android.base.common.photo.ImageUtils;
-import com.android.base.common.utils.CameraUtil;
 import com.android.base.common.utils.FileUtil;
 import com.android.base.frame.fragment.impl.BaseFragment;
 import com.android.base.widget.R;
@@ -139,7 +138,8 @@ public class WebViewFragment extends BaseFragment {
                     // Create the File where the photo should go
                     File photoFile = null;
                     try {
-                        photoFile = CameraUtil.getOutputMediaFile(CameraUtil.MEDIA_TYPE_IMAGE);
+//                        photoFile = CameraUtil.getOutputMediaFile(CameraUtil.MEDIA_TYPE_IMAGE);
+                        photoFile = new File(FileUtil.getIconDir());
                         takePictureIntent.putExtra("PhotoPath", mCameraPhotoPath);
                     } catch (Exception ex) {
                         // Error occurred while creating the File

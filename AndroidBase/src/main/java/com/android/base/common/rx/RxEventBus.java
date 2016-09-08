@@ -85,7 +85,7 @@ public class RxEventBus {
     public RxEventBus unregister(@NonNull Object tag, @NonNull Observable<?> observable) {
         List<Subject> subjects = subjectMapper.get(tag);
         if (null != subjects) {
-            subjects.remove((Subject<?, ?>) observable);
+            subjects.remove((Subject) observable);
             if (isEmpty(subjects)) {
                 subjectMapper.remove(tag);
                 LogUtils.d("unregister" + tag + "  size:" + subjects.size());

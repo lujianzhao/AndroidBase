@@ -3,10 +3,10 @@ package com.android.base.common.utils;
 import android.os.Environment;
 import android.text.TextUtils;
 
-import com.alibaba.fastjson.util.IOUtils;
 import com.android.base.common.logutils.LogUtils;
 
 import java.io.BufferedReader;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -20,19 +20,12 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.UUID;
 
 /**
  * @author lujianzhao
  * @date 2014-08-10
  */
 public class FileUtil {
-
-//    private static final String TAG = FileUtil.class.getSimpleName();
-
-    private static final int TYPE_IMAGE = 1;
-    private static final int TYPE_ADUIO = 2;
-    private static final int TYPE_VIDEO = 3;
 
     public static final String ROOT_DIR = "Android/data/"+ UIUtil.getPackageName();
     public static final String DOWNLOAD_DIR = "download";
@@ -42,7 +35,9 @@ public class FileUtil {
     /** * 清除本应用所有的数据 * * @param context * @param filepath */
     public static void cleanApplicationData() {
         delAllFile(UIUtil.getContext().getCacheDir().getAbsolutePath());
-        delAllFile(UIUtil.getContext().mAppDir);
+        delAllFile(getDownloadDir());
+        delAllFile(getCacheDir());
+        delAllFile(getIconDir());
         //清理Webview缓存数据库
         try {
             UIUtil.getContext().deleteDatabase("webview.db");
@@ -206,10 +201,20 @@ public class FileUtil {
             LogUtils.e(e);
             return false;
         } finally {
-            IOUtils.close(out);
-            IOUtils.close(in);
+            closeIO(out);
+            closeIO(in);
         }
         return true;
+    }
+
+    private static void closeIO(Closeable x) {
+        if (x != null) {
+            try {
+                x.close();
+            } catch (Exception e) {
+                // skip
+            }
+        }
     }
 
     /** 判断文件是否可写 */
@@ -267,8 +272,8 @@ public class FileUtil {
         } catch (Exception e) {
             LogUtils.e(e);
         } finally {
-            IOUtils.close(fos);
-            IOUtils.close(is);
+            closeIO(fos);
+            closeIO(is);
         }
         return res;
     }
@@ -302,7 +307,7 @@ public class FileUtil {
         } catch (Exception e) {
             LogUtils.e(e);
         } finally {
-            IOUtils.close(raf);
+            closeIO(raf);
         }
         return res;
     }
@@ -345,8 +350,8 @@ public class FileUtil {
         } catch (Exception e) {
             LogUtils.e(e);
         } finally {
-            IOUtils.close(fis);
-            IOUtils.close(fos);
+            closeIO(fis);
+            closeIO(fos);
         }
     }
 
@@ -369,7 +374,7 @@ public class FileUtil {
         } catch (IOException e) {
             LogUtils.e(e);
         } finally {
-            IOUtils.close(fis);
+            closeIO(fis);
         }
         return value;
     }
@@ -397,8 +402,8 @@ public class FileUtil {
         } catch (Exception e) {
             LogUtils.e(e);
         } finally {
-            IOUtils.close(fis);
-            IOUtils.close(fos);
+            closeIO(fis);
+            closeIO(fos);
         }
     }
 
@@ -422,7 +427,7 @@ public class FileUtil {
         } catch (Exception e) {
             LogUtils.e(e);
         } finally {
-            IOUtils.close(fis);
+            closeIO(fis);
         }
         return map;
     }
@@ -449,8 +454,8 @@ public class FileUtil {
             LogUtils.e(e);
             return false;
         } finally {
-            IOUtils.close(in);
-            IOUtils.close(out);
+            closeIO(in);
+            closeIO(out);
         }
         if (delete) {
             file.delete();
@@ -464,101 +469,6 @@ public class FileUtil {
         name = name.substring(0,name.lastIndexOf("."));
         return name;
     }
-
-    /**
-     * {@link #TYPE_IMAGE}<br/>
-     * {@link #TYPE_ADUIO}<br/>
-     * {@link #TYPE_VIDEO} <br/>
-     *
-     * @param type
-     * @return
-     */
-    private static String getPublicFilePath(int type) {
-        String fileDir = null;
-        String fileSuffix = null;
-        switch (type) {
-            case TYPE_ADUIO:
-                fileDir = UIUtil.getContext().mVoicesDir;
-                fileSuffix = ".mp3";
-                break;
-            case TYPE_VIDEO:
-                fileDir = UIUtil.getContext().mVideosDir;
-                fileSuffix = ".mp4";
-                break;
-            case TYPE_IMAGE:
-                fileDir = UIUtil.getContext().mPicturesDir;
-                fileSuffix = ".jpg";
-                break;
-        }
-        if (fileDir == null) {
-            return null;
-        }
-        File file = new File(fileDir);
-        if (!file.exists()) {
-            if (!file.mkdirs()) {
-                return null;
-            }
-        }
-        return fileDir + File.separator + UUID.randomUUID().toString().replaceAll("-", "") + fileSuffix;
-    }
-
-    /**
-     * {@link #TYPE_ADUIO}<br/>
-     * {@link #TYPE_VIDEO} <br/>
-     *
-     * @param type
-     * @return
-     */
-    private static String getPrivateFilePath(int type, String userId) {
-        String fileDir = null;
-        String fileSuffix = null;
-        switch (type) {
-            case TYPE_ADUIO:
-                fileDir = UIUtil.getContext().mAppDir + File.separator + userId + File.separator + Environment.DIRECTORY_MUSIC;
-                fileSuffix = ".mp3";
-                break;
-            case TYPE_VIDEO:
-                fileDir = UIUtil.getContext().mAppDir + File.separator + userId + File.separator + Environment.DIRECTORY_MOVIES;
-                fileSuffix = ".mp4";
-                break;
-        }
-        if (fileDir == null) {
-            return null;
-        }
-        File file = new File(fileDir);
-        if (!file.exists()) {
-            if (!file.mkdirs()) {
-                return null;
-            }
-        }
-        return fileDir + File.separator + UUID.randomUUID().toString().replaceAll("-", "") + fileSuffix;
-    }
-
-    public static String getImageFilePath() {
-        return getPublicFilePath(TYPE_IMAGE);
-    }
-
-    public static String getAudioFilePath() {
-        return getPublicFilePath(TYPE_ADUIO);
-
-    }
-
-    public static String getAudioAmrFilePath() {
-        String filePath = null;
-        filePath = getPublicFilePath(TYPE_ADUIO);
-        if (!TextUtils.isEmpty(filePath)) {
-            return filePath.replace(".mp3", ".amr");
-        } else {
-            return null;
-        }
-    }
-
-    public static String getRandomVideoFilePath() {
-        return getPublicFilePath(TYPE_VIDEO);
-    }
-
-
-
 
     public static void fileChannelCopy(File s, File t) {
         FileInputStream fi = null;

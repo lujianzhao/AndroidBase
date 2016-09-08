@@ -2,28 +2,20 @@ package com.android.base.frame;
 
 import android.app.Activity;
 import android.app.Application;
-import android.os.Environment;
 
 import com.android.base.common.logutils.LogLevel;
 import com.android.base.common.logutils.LogUtils;
-import com.android.base.common.utils.FileUtil;
 import com.android.base.common.utils.HandlerUtil;
 import com.android.base.frame.activity.IBaseActivity;
 import com.android.base.netstate.NetChangeObserver;
 import com.android.base.netstate.NetWorkUtil;
 import com.android.base.netstate.NetworkStateReceiver;
 
-import java.io.File;
-
 public class BaseApplication extends Application {
 
     public static final boolean isAllowLog = true;
 
     private NetChangeObserver mNetChangeObserver;
-
-    public File mNetCacheFile;
-
-    public int mMaxCacheSize = 50 * 1024 * 1024;
 
     @Override
     public void onCreate() {
@@ -34,75 +26,12 @@ public class BaseApplication extends Application {
         initLogUtils();
         LogUtils.d("BaseApplication onCreate");
 
-        // 初始化App目录
-        initAppDir();
-
         registerNetWorkStateListener();// 注册网络状态监测器
+
     }
-
-
-    /* 文件缓存的目录 */
-    public String mAppDir;
-    public String mPicturesDir;
-    public String mVoicesDir;
-    public String mVideosDir;
-    public String mFilesDir;
-
-    private void initAppDir() {
-        File file = getExternalFilesDir(null);
-        if (file == null) {
-            file = new File(FileUtil.getExternalStoragePath());
-        }
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        mAppDir = file.getAbsolutePath();
-
-        file = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        if (file == null) {
-            file = new File(FileUtil.getExternalStoragePath() + File.separator + Environment.DIRECTORY_PICTURES);
-        }
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        mPicturesDir = file.getAbsolutePath();
-
-        file = getExternalFilesDir(Environment.DIRECTORY_MUSIC);
-        if (file == null) {
-            file = new File(FileUtil.getExternalStoragePath() + File.separator + Environment.DIRECTORY_MUSIC);
-        }
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        mVoicesDir = file.getAbsolutePath();
-
-        file = getExternalFilesDir(Environment.DIRECTORY_MOVIES);
-        if (file == null) {
-            file = new File(FileUtil.getExternalStoragePath() + File.separator + Environment.DIRECTORY_MOVIES);
-        }
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        mVideosDir = file.getAbsolutePath();
-
-        file = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
-        if (file == null) {
-            file = new File(FileUtil.getExternalStoragePath() + File.separator + Environment.DIRECTORY_DOWNLOADS);
-        }
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        mFilesDir = file.getAbsolutePath();
-    }
-
 
     private void initLogUtils() {
-        LogUtils.getLogConfig()
-                .configAllowLog(isAllowLog)
-                .configTagPrefix("Yike-")
-                .configShowBorders(true)
-                .configFormatTag("%d{HH:mm:ss:SSS} %t %c{-5}")
-                .configLevel(LogLevel.TYPE_VERBOSE);
+        LogUtils.getLogConfig().configAllowLog(isAllowLog).configTagPrefix("Yike-").configShowBorders(true).configFormatTag("%d{HH:mm:ss:SSS} %t %c{-5}").configLevel(LogLevel.TYPE_VERBOSE);
     }
 
     /**
@@ -166,20 +95,6 @@ public class BaseApplication extends Application {
                 ((IBaseActivity) mCurrentActivity).onConnect(type);
             }
         }
-    }
-
-    public  File getNetCacheFile() {
-        if (mNetCacheFile == null) {
-            mNetCacheFile = new File(getCacheDir() + "/netcache");
-        }
-        if (!mNetCacheFile.exists()) {
-            if (mNetCacheFile.mkdirs()) {
-                LogUtils.d("创建了 mNetCacheFile 文件夹 成功 : " + mNetCacheFile.getAbsolutePath());
-            } else {
-                LogUtils.e("创建了 mNetCacheFile 文件夹 失败 : " + mNetCacheFile.getAbsolutePath());
-            }
-        }
-        return mNetCacheFile;
     }
 
     /**

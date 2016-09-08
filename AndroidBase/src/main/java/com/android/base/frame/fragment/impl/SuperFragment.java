@@ -12,10 +12,11 @@ import android.view.ViewGroup;
 
 import com.android.base.common.logutils.LogUtils;
 import com.android.base.frame.fragment.IBaseFragment;
-import com.trello.rxlifecycle.FragmentEvent;
-import com.trello.rxlifecycle.FragmentLifecycleProvider;
+import com.trello.rxlifecycle.LifecycleProvider;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
+import com.trello.rxlifecycle.android.FragmentEvent;
+import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 
 import java.util.List;
 
@@ -30,9 +31,11 @@ import rx.subjects.BehaviorSubject;
  * 创建时间: 2016/06/13 16:27
  * 描述:
  */
-public abstract class SuperFragment extends SupportFragment  implements IBaseFragment,EasyPermissions.PermissionCallbacks, FragmentLifecycleProvider {
-    private final BehaviorSubject<FragmentEvent> mLifecycleSubject = BehaviorSubject.create();
+public abstract class SuperFragment extends SupportFragment  implements IBaseFragment,EasyPermissions.PermissionCallbacks,LifecycleProvider<FragmentEvent> {
+
     protected View mRootView = null;
+
+    private final BehaviorSubject<FragmentEvent> mLifecycleSubject = BehaviorSubject.create();
 
     protected abstract int getContentViewId();
 
@@ -45,8 +48,6 @@ public abstract class SuperFragment extends SupportFragment  implements IBaseFra
         return mLifecycleSubject.asObservable();
     }
 
-
-
     @Override
     @NonNull
     @CheckResult
@@ -58,7 +59,7 @@ public abstract class SuperFragment extends SupportFragment  implements IBaseFra
     @NonNull
     @CheckResult
     public final <T> LifecycleTransformer<T> bindToLifecycle() {
-        return RxLifecycle.bindFragment(mLifecycleSubject);
+        return RxLifecycleAndroid.bindFragment(mLifecycleSubject);
     }
 
     @Override
@@ -72,6 +73,7 @@ public abstract class SuperFragment extends SupportFragment  implements IBaseFra
         super.onCreate(savedInstanceState);
         mLifecycleSubject.onNext(FragmentEvent.CREATE);
     }
+
 
     @Nullable
     @Override
@@ -106,18 +108,21 @@ public abstract class SuperFragment extends SupportFragment  implements IBaseFra
         super.onPause();
     }
 
+
     @Override
     public void onStop() {
         mLifecycleSubject.onNext(FragmentEvent.STOP);
         super.onStop();
     }
 
+
     @Override
     public void onDestroyView() {
-        ButterKnife.unbind(this);
         mLifecycleSubject.onNext(FragmentEvent.DESTROY_VIEW);
+        ButterKnife.unbind(this);
         super.onDestroyView();
     }
+
 
     @Override
     public void onDestroy() {
@@ -130,6 +135,7 @@ public abstract class SuperFragment extends SupportFragment  implements IBaseFra
         mLifecycleSubject.onNext(FragmentEvent.DETACH);
         super.onDetach();
     }
+
 
     public void gotoActivity(Class<? extends Activity> clazz, boolean finish) {
         Intent intent = new Intent(_mActivity, clazz);
@@ -175,7 +181,5 @@ public abstract class SuperFragment extends SupportFragment  implements IBaseFra
     public void onPermissionsDenied(int requestCode, List<String> perms) {
         LogUtils.d("onPermissionsDenied:" + requestCode + ":" + perms.size());
     }
-
-
 
 }

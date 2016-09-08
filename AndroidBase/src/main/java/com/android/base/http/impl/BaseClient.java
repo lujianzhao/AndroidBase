@@ -6,11 +6,12 @@ import com.android.base.common.cookiejar.ClearableCookieJar;
 import com.android.base.common.cookiejar.PersistentCookieJar;
 import com.android.base.common.cookiejar.cache.SetCookieCache;
 import com.android.base.common.cookiejar.persistence.SharedPrefsCookiePersistor;
-import com.android.base.common.utils.UIUtil;
+import com.android.base.common.utils.FileUtil;
 import com.android.base.http.IRetrofit;
 import com.android.base.http.interceptor.CacheInterceptor;
 import com.android.base.http.interceptor.LoggerInterceptor;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
@@ -24,6 +25,9 @@ import retrofit2.converter.fastjson.FastJsonConverterFactory;
  * Created by Administrator on 2016/4/29.
  */
 public class BaseClient implements IRetrofit {
+
+    private static final String DEFAULT_DISK_CACHE_DIR = "http_disk_cache";
+
     //okhttp build对象
     private OkHttpClient.Builder mOkhttpBuilder;
 
@@ -58,14 +62,12 @@ public class BaseClient implements IRetrofit {
      */
     public void enableCache(boolean flag, Context context) {
         if (flag) {
-
-
             //缓存拦截器
             mOkhttpBuilder
                     .addInterceptor(new CacheInterceptor(context))
                     .addNetworkInterceptor(new CacheInterceptor(context))
                     //设置缓存路径以及大小
-                    .cache(new Cache(UIUtil.getContext().getNetCacheFile(), 1024 * 1024 * 100));
+                    .cache(new Cache(new File(FileUtil.getCacheDir()), 1024 * 1024 * 100));
             mOkhttpBuilder.interceptors().add(new CacheInterceptor(context));
         }
     }

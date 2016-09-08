@@ -274,9 +274,7 @@ public class DiskLruCacheHelper {
         try {
             ois = new ObjectInputStream(is);
             t = (T) ois.readObject();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         } finally {
             try {

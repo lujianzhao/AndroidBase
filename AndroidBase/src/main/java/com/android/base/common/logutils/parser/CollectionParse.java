@@ -1,7 +1,6 @@
 package com.android.base.common.logutils.parser;
 
 import com.android.base.common.logutils.Constant;
-import com.android.base.common.logutils.LogUtils;
 import com.android.base.common.logutils.Parser;
 import com.android.base.common.logutils.utils.ObjectUtil;
 
@@ -23,7 +22,7 @@ public class CollectionParse implements Parser<Collection> {
         String msg = "%s size = %d [" + Constant.BR;
         msg = String.format(msg, simpleName, collection.size());
         if (!collection.isEmpty()) {
-            Iterator<Object> iterator = collection.iterator();
+            Iterator iterator = collection.iterator();
             int flag = 0;
             while (iterator.hasNext()) {
                 String itemString = "[%d]:%s%s";

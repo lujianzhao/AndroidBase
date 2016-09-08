@@ -1,6 +1,7 @@
 package com.android.base.common.photo;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
@@ -41,6 +42,7 @@ class GetPhotoUtil {
      * @param activity
      * @param requestCode
      */
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     public static void choicePicFromAlbum_kitkat(Activity activity, int requestCode) {
         // 来自相册
         Intent albumIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);

@@ -30,8 +30,6 @@ import static com.android.base.adapter.recyclerview.BaseQuickAdapter.LOADING_VIE
 public abstract class SimpleClickListener implements RecyclerView.OnItemTouchListener {
     private GestureDetectorCompat mGestureDetector;
     private RecyclerView recyclerView;
-    private Set<Integer> childClickViewIds;
-    private Set<Integer> longClickViewIds;
     protected BaseQuickAdapter baseQuickAdapter;
     public static String TAG = "SimpleClickListener";
     private boolean mIsPrepressed = false;
@@ -104,7 +102,7 @@ public abstract class SimpleClickListener implements RecyclerView.OnItemTouchLis
                 if (isHeaderOrFooterPosition(vh.getLayoutPosition())) {
                     return false;
                 }
-                childClickViewIds = vh.getChildClickViewIds();
+                Set<Integer> childClickViewIds = vh.getChildClickViewIds();
 
                 if (childClickViewIds != null && childClickViewIds.size() > 0) {
                     for (Iterator it = childClickViewIds.iterator(); it.hasNext(); ) {
@@ -150,7 +148,7 @@ public abstract class SimpleClickListener implements RecyclerView.OnItemTouchLis
             if (mIsPrepressed && mPressedView != null) {
                 BaseViewHolder vh = (BaseViewHolder) recyclerView.getChildViewHolder(mPressedView);
                 if (!isHeaderOrFooterPosition(vh.getLayoutPosition())) {
-                    longClickViewIds = vh.getItemChildLongClickViewIds();
+                    Set<Integer> longClickViewIds = vh.getItemChildLongClickViewIds();
                     if (longClickViewIds != null && longClickViewIds.size() > 0) {
                         for (Iterator it = longClickViewIds.iterator(); it.hasNext(); ) {
                             View childView = mPressedView.findViewById((Integer) it.next());
