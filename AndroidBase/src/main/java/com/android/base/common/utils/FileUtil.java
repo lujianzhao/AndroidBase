@@ -4,6 +4,7 @@ import android.os.Environment;
 import android.text.TextUtils;
 
 import com.android.base.common.logutils.LogUtils;
+import com.android.base.frame.Base;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -27,21 +28,21 @@ import java.util.Properties;
  */
 public class FileUtil {
 
-    public static final String ROOT_DIR = "Android/data/"+ UIUtil.getPackageName();
+    //    public static final String ROOT_DIR = "Android/data/"+ UIUtil.getPackageName();
     public static final String DOWNLOAD_DIR = "download";
     public static final String CACHE_DIR = "cache";
     public static final String ICON_DIR = "icon";
 
     /** * 清除本应用所有的数据 * * @param context * @param filepath */
     public static void cleanApplicationData() {
-        delAllFile(UIUtil.getContext().getCacheDir().getAbsolutePath());
+        delAllFile(Base.getContext().getCacheDir().getAbsolutePath());
         delAllFile(getDownloadDir());
         delAllFile(getCacheDir());
         delAllFile(getIconDir());
         //清理Webview缓存数据库
         try {
-            UIUtil.getContext().deleteDatabase("webview.db");
-            UIUtil.getContext().deleteDatabase("webviewCache.db");
+            Base.getContext().deleteDatabase("webview.db");
+            Base.getContext().deleteDatabase("webviewCache.db");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -144,17 +145,23 @@ public class FileUtil {
 
     /** 获取SD下的应用目录 */
     public static String getExternalStoragePath() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(Environment.getExternalStorageDirectory().getAbsolutePath());
-        sb.append(File.separator);
-        sb.append(ROOT_DIR);
-        sb.append(File.separator);
-        return sb.toString();
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(Environment.getExternalStorageDirectory().getAbsolutePath());
+//        sb.append(File.separator);
+//        sb.append(ROOT_DIR);
+//        sb.append(File.separator);
+//        return sb.toString();
+        File f = Base.getContext().getExternalCacheDir();
+        if (null == f) {
+            return null;
+        } else {
+            return f.getAbsolutePath() + "/";
+        }
     }
 
     /** 获取应用的cache目录 */
     public static String getCachePath() {
-        File f = UIUtil.getContext().getCacheDir();
+        File f = Base.getContext().getCacheDir();
         if (null == f) {
             return null;
         } else {
