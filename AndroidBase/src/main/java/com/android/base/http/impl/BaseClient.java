@@ -62,12 +62,15 @@ public class BaseClient implements IRetrofit {
      */
     public void enableCache(boolean flag, Context context) {
         if (flag) {
+            File file = new File(FileUtil.getCacheDir(), DEFAULT_DISK_CACHE_DIR);
+            FileUtil.createDirs(file);
+
             //缓存拦截器
             mOkhttpBuilder
                     .addInterceptor(new CacheInterceptor(context))
                     .addNetworkInterceptor(new CacheInterceptor(context))
                     //设置缓存路径以及大小
-                    .cache(new Cache(new File(FileUtil.getCacheDir()), 1024 * 1024 * 100));
+                    .cache(new Cache(file, 1024 * 1024 * 100));
             mOkhttpBuilder.interceptors().add(new CacheInterceptor(context));
         }
     }

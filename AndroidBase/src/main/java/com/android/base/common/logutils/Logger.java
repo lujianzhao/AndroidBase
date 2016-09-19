@@ -320,6 +320,9 @@ class Logger implements Printer {
      * @param msg
      */
     private void printLog(@LogLevelType int type, String tag, String msg) {
+        if (!mLogConfig.isShowBorder()) {
+            msg = getTopStackInfo() + ": " + msg;
+        }
         switch (type) {
             case TYPE_VERBOSE:
                 Log.v(tag, msg);

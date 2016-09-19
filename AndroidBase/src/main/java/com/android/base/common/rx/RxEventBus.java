@@ -22,9 +22,13 @@ import rx.subjects.Subject;
 public class RxEventBus {
     private static RxEventBus sInstance;
 
-    public static synchronized RxEventBus getInstance() {
+    public static  RxEventBus getInstance() {
         if (null == sInstance) {
-            sInstance = new RxEventBus();
+            synchronized (RxEventBus.class) {
+                if (null == sInstance) {
+                    sInstance = new RxEventBus();
+                }
+            }
         }
         return sInstance;
     }

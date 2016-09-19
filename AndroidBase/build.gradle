@@ -62,9 +62,11 @@ dependencies {
     compile 'com.j256.ormlite:ormlite-android:4.48'
     //动画
     compile 'jp.wasabeef:recyclerview-animators:2.2.4'
+    //应用发生错误时,自动重启
+    compile 'com.zxy.android:recovery:0.0.5'
 
     //Log工具类,目前的版本1.4.2,在com.android.base.common.logutils
-    //compile 'com.apkfuns.logutils:library:1.4.2'
+//    compile 'com.apkfuns.logutils:library:1.4.2'
 
     //BaseRecyclerViewAdapterHelper,目前的版本2.0.8,在com.android.base.adapter.recyclerview
 

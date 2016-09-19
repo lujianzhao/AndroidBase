@@ -1,12 +1,12 @@
 package com.android.base.common.logutils.utils;
 
+
 import com.android.base.common.logutils.Constant;
 import com.android.base.common.logutils.Parser;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-
-import static com.android.base.common.logutils.Constant.BR;
+import static com.android.base.common.logutils.Constant.*;
 
 /**
  * Created by pengwei08 on 2015/7/20.
@@ -80,7 +80,8 @@ public class ObjectUtil {
      * @param isSubClass  死否为子class
      * @param childOffset 递归解析属性的层级
      */
-    private static void getClassFields(Class cla, StringBuilder builder, Object o, boolean isSubClass, int childOffset) {
+    private static void getClassFields(Class cla, StringBuilder builder, Object o, boolean isSubClass,
+                                       int childOffset) {
         if (cla.equals(Object.class)) {
             return;
         }
@@ -105,7 +106,7 @@ public class ObjectUtil {
             } finally {
                 if (subObject != null) {
                     // 解决Instant Run情况下内部类死循环的问题
-                    System.out.println(field.getName() + "***" + subObject.getClass() + "啊啊啊啊啊啊" + cla);
+//                    System.out.println(field.getName()+ "***" +subObject.getClass() + "啊啊啊啊啊啊" + cla);
                     if (!isStaticInnerClass(cla) && (field.getName().equals("$change") || field.getName().equalsIgnoreCase("this$0"))) {
                         continue;
                     }
@@ -119,8 +120,9 @@ public class ObjectUtil {
                     }
                 }
                 String formatString = breakLine + "%s = %s, ";
-                System.out.println(field.getName() + "**" + cla.getName() + "**" + isSubClass + "**" + o.toString());
-                builder.append(String.format(formatString, field.getName(), subObject == null ? "null" : subObject.toString()));
+//                System.out.println(field.getName() + "**" + cla.getName() + "**" + isSubClass + "**" + o.toString());
+                builder.append(String.format(formatString, field.getName(),
+                        subObject == null ? "null" : subObject.toString()));
             }
         }
         if (builder.toString().endsWith("{")) {

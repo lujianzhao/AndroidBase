@@ -1,5 +1,6 @@
 package com.android.base.common.logutils;
 
+
 import com.android.base.common.logutils.annotation.IntDef;
 
 import java.lang.annotation.Retention;

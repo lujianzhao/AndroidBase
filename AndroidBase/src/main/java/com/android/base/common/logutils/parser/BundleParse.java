@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.android.base.common.logutils.Parser;
 import com.android.base.common.logutils.utils.ObjectUtil;
 
+
 /**
  * Created by pengwei on 16/3/8.
  */

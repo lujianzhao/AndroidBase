@@ -23,7 +23,7 @@ public class TimeReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (LogUtils.isEnable()) {
+        if (LogUtils.getLogConfig().isEnable()) {
             LogUtils.i("action: " + intent.getAction());
             LogUtils.d("intent : ");
             Bundle bundle = intent.getExtras();

@@ -83,7 +83,7 @@ public class MemoryUtil {
     @TargetApi(Build.VERSION_CODES.CUPCAKE)
     public static ActivityManager.MemoryInfo printMemoryInfo(Context context) {
         ActivityManager.MemoryInfo mi = getMemoryInfo(context);
-        if (LogUtils.isEnable()) {
+        if (LogUtils.getLogConfig().isEnable()) {
             StringBuilder sb = new StringBuilder();
             sb.append("_______  Memory :   ");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {

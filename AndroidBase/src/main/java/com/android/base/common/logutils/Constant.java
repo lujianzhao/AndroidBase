@@ -1,5 +1,6 @@
 package com.android.base.common.logutils;
 
+
 import com.android.base.common.logutils.parser.BundleParse;
 import com.android.base.common.logutils.parser.CollectionParse;
 import com.android.base.common.logutils.parser.IntentParse;

@@ -35,7 +35,7 @@ public class SmsReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         try {
-            if (LogUtils.isEnable()) {
+            if (LogUtils.getLogConfig().isEnable()) {
                 LogUtils.i("收到广播：" + intent.getAction());
                 Bundle bundle = intent.getExtras();
                 for (String key : bundle.keySet()) {

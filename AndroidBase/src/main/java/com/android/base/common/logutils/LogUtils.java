@@ -19,14 +19,6 @@ public final class LogUtils {
         return logConfig;
     }
 
-    /**
-     * 是否开启打印日记
-     * @return
-     */
-    public static boolean isEnable() {
-        return logConfig.isEnable();
-    }
-
     public static Printer tag(String tag) {
         return printer.setTag(tag);
     }

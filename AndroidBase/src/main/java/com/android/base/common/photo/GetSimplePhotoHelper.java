@@ -49,7 +49,11 @@ public class GetSimplePhotoHelper {
 
     public static GetSimplePhotoHelper getInstance(Activity activity) {
         if (instance == null) {
-            instance = new GetSimplePhotoHelper(activity);
+            synchronized (GetSimplePhotoHelper.class) {
+                if (instance == null) {
+                    instance = new GetSimplePhotoHelper(activity);
+                }
+            }
         }
         return instance;
     }
@@ -116,7 +120,7 @@ public class GetSimplePhotoHelper {
         // 如果来源是相机，而且没有指定图片保存的目录，那么使用完毕后就立刻删除相片
         if (mFromWay == FROM_CAMERA && mPicFilePath == null) {
             File tempPicFile = new File(uri.toString());
-            if (tempPicFile != null) {
+            if (tempPicFile.exists()) {
                 tempPicFile.delete();//设置成功后清除之前的照片文件
             }
         }

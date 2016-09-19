@@ -4,7 +4,6 @@ package com.android.base.common.logutils;
 import android.text.TextUtils;
 
 import com.android.base.common.logutils.pattern.LogPattern;
-import com.android.base.frame.BaseApplication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,11 +33,6 @@ class LogConfigImpl implements LogConfig {
             synchronized (LogConfigImpl.class) {
                 if (singleton == null) {
                     singleton = new LogConfigImpl();
-                    singleton.configAllowLog(BaseApplication.isAllowLog)
-                            .configTagPrefix("AndroidBase")
-                            .configShowBorders(true)
-                            .configFormatTag("%d{HH:mm:ss.SSS} %t %c{-5}")
-                            .configLevel(LogLevel.TYPE_VERBOSE);
                 }
             }
         }
@@ -95,6 +89,7 @@ class LogConfigImpl implements LogConfig {
         return this;
     }
 
+    @Override
     public boolean isEnable() {
         return enable;
     }

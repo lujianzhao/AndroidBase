@@ -172,7 +172,14 @@ public class FileUtil {
     /** 创建文件夹 */
     public static boolean createDirs(String dirPath) {
         File file = new File(dirPath);
-        if (!file.exists() || !file.isDirectory()) {
+        if (!file.exists()) {
+            return file.mkdirs();
+        }
+        return true;
+    }
+
+    public static boolean createDirs(File file) {
+        if (!file.exists()) {
             return file.mkdirs();
         }
         return true;

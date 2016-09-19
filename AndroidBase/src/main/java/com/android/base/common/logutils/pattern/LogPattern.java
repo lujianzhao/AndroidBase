@@ -1,5 +1,6 @@
 package com.android.base.common.logutils.pattern;
 
+
 import com.android.base.common.logutils.utils.Utils;
 
 import java.text.SimpleDateFormat;

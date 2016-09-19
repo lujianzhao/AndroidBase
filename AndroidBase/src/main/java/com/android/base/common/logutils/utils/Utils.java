@@ -1,5 +1,6 @@
 package com.android.base.common.logutils.utils;
 
+
 import com.android.base.common.logutils.Constant;
 
 import java.util.ArrayList;

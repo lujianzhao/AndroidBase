@@ -1,5 +1,6 @@
 package com.android.base.common.logutils.parser;
 
+
 import com.android.base.common.logutils.Parser;
 import com.android.base.common.logutils.utils.ObjectUtil;
 
@@ -18,7 +19,7 @@ public class MapParse implements Parser<Map> {
     @Override
     public String parseString(Map map) {
         String msg = map.getClass().getName() + " [" + LINE_SEPARATOR;
-        Set keys = map.keySet();
+        Set<Object> keys = map.keySet();
         for (Object key : keys) {
             String itemString = "%s -> %s" + LINE_SEPARATOR;
             Object value = map.get(key);

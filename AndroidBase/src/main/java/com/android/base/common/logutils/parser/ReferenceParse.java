@@ -1,5 +1,6 @@
 package com.android.base.common.logutils.parser;
 
+
 import com.android.base.common.logutils.Parser;
 import com.android.base.common.logutils.utils.ObjectUtil;
 

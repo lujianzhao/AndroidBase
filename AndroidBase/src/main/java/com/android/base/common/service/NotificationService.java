@@ -112,7 +112,7 @@ public class NotificationService extends NotificationListenerService {
     /*----------------- 通知回调 -----------------*/
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
-        if (LogUtils.isEnable()) {
+        if (LogUtils.getLogConfig().isEnable()) {
             LogUtils.i( sbn.toString());
             Notification notification = sbn.getNotification();
             LogUtils.i( "tickerText : " + notification.tickerText);

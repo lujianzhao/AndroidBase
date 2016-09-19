@@ -10,10 +10,10 @@ import com.android.base.frame.activity.IBaseActivity;
 import com.android.base.netstate.NetChangeObserver;
 import com.android.base.netstate.NetWorkUtil;
 import com.android.base.netstate.NetworkStateReceiver;
+import com.zxy.recovery.callback.RecoveryCallback;
+import com.zxy.recovery.core.Recovery;
 
 public class BaseApplication extends Application {
-
-    public static final boolean isAllowLog = true;
 
     private NetChangeObserver mNetChangeObserver;
 
@@ -24,14 +24,62 @@ public class BaseApplication extends Application {
         Base.initialize(this);
 
         initLogUtils();
+
+        initRecovery();
+
         LogUtils.d("BaseApplication onCreate");
 
         registerNetWorkStateListener();// 注册网络状态监测器
 
     }
 
+    /**
+     * 初始化程序错误时,APP自动恢复
+     */
+    private void initRecovery() {
+        Recovery.getInstance()
+                .debug(isDebug())
+                .recoverInBackground(false)
+                .callback(new RecoveryCallback(){
+
+                    @Override
+                    public void stackTrace(String stackTrace) {
+                        LogUtils.e(stackTrace);
+                        onErrorHappens(stackTrace);
+                    }
+
+                    @Override
+                    public void cause(String cause) {
+
+                    }
+
+                    @Override
+                    public void exception(String throwExceptionType, String throwClassName, String throwMethodName, int throwLineNumber) {
+
+                    }
+                })
+                .silent(true, Recovery.SilentMode.RECOVER_ACTIVITY_STACK)
+                .init(this);
+    }
+
+    /**
+     * 当错误发生后
+     * @param stackTrace
+     */
+    protected void onErrorHappens(String stackTrace) {
+
+    }
+
+    /**
+     * 当前是否是Debug模式
+     * @return
+     */
+    protected boolean isDebug() {
+        return true;
+    }
+
     private void initLogUtils() {
-        LogUtils.getLogConfig().configAllowLog(isAllowLog).configTagPrefix("Yike-").configShowBorders(true).configFormatTag("%d{HH:mm:ss:SSS} %t %c{-5}").configLevel(LogLevel.TYPE_VERBOSE);
+        LogUtils.getLogConfig().configAllowLog(isDebug()).configTagPrefix("Yike-").configShowBorders(true).configFormatTag("%d{HH:mm:ss:SSS} %t %c{-5}").configLevel(LogLevel.TYPE_VERBOSE);
     }
 
     /**
