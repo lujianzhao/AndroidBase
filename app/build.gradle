@@ -26,7 +26,7 @@ dependencies {
     compile 'com.lzy.widget:imagepicker:0.2.1'
     compile 'com.lzy.widget:view-core:0.2.1'
 
-    // 桌面图标显示消息数量,目前版本1.1.7.https://github.com/MacNovice/ShortcutBadger
+    // 桌面图标显示消息数量,目前版本1.1.8.https://github.com/MacNovice/ShortcutBadger
     //ShortcutBadger.applyCount(context, 33); //添加
     //ShortcutBadger.removeCount(context); //删除
     compile project(':ShortcutBadger')

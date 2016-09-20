@@ -11,4 +11,8 @@ android {
         versionName "1.1.8"
         consumerProguardFiles 'proguard-rules.pro'
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }

@@ -4,12 +4,13 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import me.leolin.shortcutbadger.Badger;
 import me.leolin.shortcutbadger.ShortcutBadgeException;
+import me.leolin.shortcutbadger.ShortcutBadger;
 import me.leolin.shortcutbadger.util.BroadcastHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author leolin
