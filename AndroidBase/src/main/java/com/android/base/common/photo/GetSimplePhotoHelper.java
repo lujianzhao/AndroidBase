@@ -11,6 +11,8 @@ import android.support.annotation.Nullable;
 import com.android.base.common.utils.BitmapUtil;
 
 import java.io.File;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * 从相册或者从照相机得到一个图片，没有裁剪功能.
@@ -31,6 +33,7 @@ public class GetSimplePhotoHelper {
     public static final int FROM_CAMERA = 1;
 
     @IntDef({FROM_ALBUM, FROM_CAMERA})
+    @Retention(RetentionPolicy.SOURCE)
     private @interface from {
 
     }

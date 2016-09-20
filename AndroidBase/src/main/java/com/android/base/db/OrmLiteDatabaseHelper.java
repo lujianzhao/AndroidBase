@@ -26,12 +26,12 @@ import java.util.Map;
  */
 public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
 
-    List<DatabaseHandler> tableHandlers;
+    private List<DatabaseHandler> tableHandlers;
 
     /**
      * dao缓存
      */
-    Map<String, Dao> daoMap;
+    private Map<String, Dao> daoMap;
 
     public OrmLiteDatabaseHelper(Context context, String databaseName, SQLiteDatabase.CursorFactory factory, int databaseVersion) {
         super(context, databaseName, factory, databaseVersion);
@@ -44,7 +44,7 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
      * @param clazz 表的列结构bean
      * @param <T>
      */
-    public <T> void registerTable(Class<T> clazz) {
+    protected  <T> void registerTable(Class<T> clazz) {
         if (tableHandlers == null) {
             tableHandlers = new ArrayList<>();
         }
@@ -56,12 +56,12 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase, ConnectionSource connectionSource) {
-        try {
-            for (DatabaseHandler handler : tableHandlers) {
+        for (DatabaseHandler handler : tableHandlers) {
+            try {
                 handler.create(connectionSource);
+            } catch (SQLException e) {
+                LogUtils.e("database create fail", e);
             }
-        } catch (SQLException e) {
-            LogUtils.e("database create fail", e);
         }
     }
 
@@ -71,12 +71,12 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, ConnectionSource cs, int oldVersion, int newVersion) {
         LogUtils.i("数据库升级了" + " oldVersion = " + oldVersion + " newVersion = " + newVersion);
-        try {
-            for (DatabaseHandler handler : tableHandlers) {
+        for (DatabaseHandler handler : tableHandlers) {
+            try {
                 handler.onUpgrade(db, cs, oldVersion, newVersion);
+            } catch (SQLException e) {
+                LogUtils.e("database upgrade fail", e);
             }
-        } catch (SQLException e) {
-            LogUtils.e("database upgrade fail", e);
         }
     }
 
@@ -107,7 +107,7 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
         }
     }
 
-    public void onDowngrade(ConnectionSource cs, int oldVersion, int newVersion) {
+    private void onDowngrade(ConnectionSource cs, int oldVersion, int newVersion) {
         LogUtils.i("数据库降级了" + " oldVersion = " + oldVersion + " newVersion = " + newVersion);
         try {
             for (DatabaseHandler handler : tableHandlers) {
@@ -131,7 +131,7 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
         }
     }
 
-    public  synchronized  Dao getDao(Class cls) {
+    public synchronized Dao getDao(Class cls) {
         Dao dao;
         String clsName = cls.getSimpleName();
         if (daoMap.containsKey(clsName)) {
@@ -155,8 +155,7 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
             Iterator<Map.Entry<String, Dao>> it = daoMap.entrySet().iterator();
             while (it.hasNext()) {
                 Map.Entry<String, Dao> entry = it.next();
-                Dao dao = entry.getValue();
-                dao = null;
+                entry.setValue(null);
                 it.remove();
             }
         }
@@ -168,7 +167,7 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
      * @param handler 数据表对应的DatabaseHandler
      * @return
      */
-    public boolean isValidTable(DatabaseHandler handler) {
+    private boolean isValidTable(DatabaseHandler handler) {
         if (tableHandlers == null || handler == null) {
             return false;
         }

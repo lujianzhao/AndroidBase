@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.android.base.common.logutils.LogUtils;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.misc.TransactionManager;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.PreparedQuery;
@@ -458,14 +459,21 @@ public abstract class OrmLiteDao<T> {
     /**
      * 修改记录，ID不能为空
      *
-     * @param t
-     * @return
+     * @param t 更新的数据对象
+     * @return 是否更新成功
      */
     public boolean update(T t) {
         int result = updateIfValueNotNull(t);
         return result > 0;
     }
 
+    /**
+     *
+     * @param t 更新的数据对象
+     * @param columnName 数据库中的columnName
+     * @param value 数据库中columnName的value
+     * @return 是否更新成功
+     */
     public boolean updateBy(T t, String columnName, Object value) {
         int result = 0;
         T t1 = queryForFirst(columnName, value);
@@ -482,6 +490,12 @@ public abstract class OrmLiteDao<T> {
         return result > 0;
     }
 
+    /**
+     *
+     * @param t 更新的数据对象
+     * @param value 数据库中的Map<columnName,value>
+     * @return 是否更新成功
+     */
     public boolean updateBy(T t, Map<String, Object> value) {
         int result = 0;
         T t1 = queryForFirst(value);
@@ -574,17 +588,20 @@ public abstract class OrmLiteDao<T> {
         Map<String, Object> map = new HashMap<>();
         Field[] fields = obj.getClass().getDeclaredFields();
         for (Field field : fields) {
-            field.setAccessible(true);
-            Object valueObj = null;
-            try {
-                valueObj = field.get(obj);
-            } catch (IllegalAccessException e) {
-                LogUtils.e("", e);
-            }
-            if (valueObj != null) {
-                map.put(field.getName(), valueObj);
-            } else {
-                LogUtils.w(field.getName() + " is null.");
+            DatabaseField databaseField = field.getAnnotation(DatabaseField.class);
+            if (null != databaseField) {
+                field.setAccessible(true);
+                Object valueObj = null;
+                try {
+                    valueObj = field.get(obj);
+                } catch (IllegalAccessException e) {
+                    LogUtils.e("", e);
+                }
+                if (valueObj != null) {
+                    map.put(field.getName(), valueObj);
+                } else {
+                    LogUtils.w(field.getName() + " is null.");
+                }
             }
         }
         return map;
