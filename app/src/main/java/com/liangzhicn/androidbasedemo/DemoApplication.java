@@ -1,6 +1,8 @@
 package com.liangzhicn.androidbasedemo;
 
+import com.android.base.db.OrmLiteDatabaseHelper;
 import com.android.base.frame.BaseApplication;
+import com.liangzhicn.androidbasedemo.db.DatabaseHelper;
 
 /**
  * 作者: lujianzhao
@@ -8,4 +10,9 @@ import com.android.base.frame.BaseApplication;
  * 描述:
  */
 public class DemoApplication extends BaseApplication {
+
+    @Override
+    public OrmLiteDatabaseHelper getOrmLiteDatabaseHelper() {
+        return DatabaseHelper.getInstance(this);
+    }
 }

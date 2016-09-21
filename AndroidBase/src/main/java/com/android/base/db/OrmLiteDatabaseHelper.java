@@ -36,6 +36,7 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
     public OrmLiteDatabaseHelper(Context context, String databaseName, SQLiteDatabase.CursorFactory factory, int databaseVersion) {
         super(context, databaseName, factory, databaseVersion);
         daoMap = new HashMap<>();
+        LogUtils.d("数据库创建");
     }
 
     /**
@@ -155,10 +156,14 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
             Iterator<Map.Entry<String, Dao>> it = daoMap.entrySet().iterator();
             while (it.hasNext()) {
                 Map.Entry<String, Dao> entry = it.next();
-                entry.setValue(null);
+
+                Dao dao = entry.setValue(null);
+                dao = null;
+
                 it.remove();
             }
         }
+        LogUtils.d("数据库关闭");
     }
 
     /**

@@ -1,7 +1,5 @@
 package com.android.base.db;
 
-import android.content.Context;
-
 import com.alibaba.fastjson.JSON;
 import com.android.base.callback.ExecutorCallBack;
 import com.android.base.common.logutils.LogUtils;
@@ -24,23 +22,22 @@ import rx.functions.Action1;
  * <p/>
  * 如果使用异步方式读写数据库，必须交由RxManager管理Subscription的生命周期
  */
-public abstract class BaseRxDao<T> extends OrmLiteDao<T> {
+public class BaseRxDao<T> extends OrmLiteDao<T> {
 
     protected boolean cache;
     protected Class<T> clazz;
     protected String tableName;
 
-    public BaseRxDao(Context context, Class<T> cls) {
-        this(context, cls, true);
+    public BaseRxDao(Class<T> cls) {
+        this(cls, true);
     }
 
     /**
-     * @param context context
-     * @param cls     表结构clazz
-     * @param cache   是否缓存，如果设置缓存，数据查询将优先读取缓存
+     * @param cls   表结构clazz
+     * @param cache 是否缓存，如果设置缓存，数据查询将优先读取缓存
      */
-    public BaseRxDao(Context context, Class<T> cls, boolean cache) {
-        super(context, cls);
+    public BaseRxDao(Class<T> cls, boolean cache) {
+        super(cls);
         this.clazz = cls;
         this.cache = cache;
         tableName = DatabaseUtil.extractTableName(cls);
@@ -188,7 +185,7 @@ public abstract class BaseRxDao<T> extends OrmLiteDao<T> {
         });
     }
 
-    protected  <R> Subscription subscribe(Callable<R> callable, Action1<R> action) {
+    protected <R> Subscription subscribe(Callable<R> callable, Action1<R> action) {
         Observable<R> observable = RxUtil.getObservable(callable);
         return observable.compose(RxUtil.<R>applySchedulers()).subscribe(action);
     }

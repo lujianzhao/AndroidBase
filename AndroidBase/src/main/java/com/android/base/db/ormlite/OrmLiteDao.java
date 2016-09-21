@@ -1,8 +1,9 @@
 package com.android.base.db.ormlite;
 
-import android.content.Context;
-
 import com.android.base.common.logutils.LogUtils;
+import com.android.base.db.OrmLiteDatabaseHelper;
+import com.android.base.frame.Base;
+import com.android.base.frame.BaseApplication;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.misc.TransactionManager;
@@ -26,13 +27,23 @@ import java.util.concurrent.Callable;
  * <p/>
  * Created by lhd on 2015/9/15.
  */
-public abstract class OrmLiteDao<T> {
+public class OrmLiteDao<T> {
 
     protected final Dao<T, Integer> ormLiteDao;
 
-    public OrmLiteDao(Context context, Class<T> cls) {
-        ormLiteDao = getOrmLiteDao(context,cls);
+    public OrmLiteDao(Class<T> cls) {
+        ormLiteDao = getOrmLiteDao(cls);
     }
+
+    private Dao<T, Integer> getOrmLiteDao(Class<T> cls) {
+        BaseApplication context = (BaseApplication) Base.getContext();
+        OrmLiteDatabaseHelper ormLiteDatabaseHelper = context.getOrmLiteDatabaseHelper();
+        if (null == ormLiteDatabaseHelper) {
+            throw new NullPointerException("Overload getOrmLiteDatabaseHelper() with in your Application.");
+        }
+        return ormLiteDatabaseHelper.getDao(cls);
+    }
+
 
     private boolean doBatchInTransaction(final List<T> list, final int batchType) {
         boolean doBatch = false;
@@ -468,10 +479,9 @@ public abstract class OrmLiteDao<T> {
     }
 
     /**
-     *
-     * @param t 更新的数据对象
+     * @param t          更新的数据对象
      * @param columnName 数据库中的columnName
-     * @param value 数据库中columnName的value
+     * @param value      数据库中columnName的value
      * @return 是否更新成功
      */
     public boolean updateBy(T t, String columnName, Object value) {
@@ -491,8 +501,7 @@ public abstract class OrmLiteDao<T> {
     }
 
     /**
-     *
-     * @param t 更新的数据对象
+     * @param t     更新的数据对象
      * @param value 数据库中的Map<columnName,value>
      * @return 是否更新成功
      */
@@ -615,9 +624,5 @@ public abstract class OrmLiteDao<T> {
         return false;
     }
 
-    /**
-     * 抽象方法，重写提供Dao,在RxDao里提供了简单的泛型实现
-     * @return Dao类
-     */
-    public abstract Dao<T, Integer> getOrmLiteDao(Context context, Class<T> cls);
+
 }

@@ -31,7 +31,7 @@ public class DatabaseUtil {
     public static <T> String extractTableName(Class<T> clazz) {
         DatabaseTable databaseTable = clazz.getAnnotation(DatabaseTable.class);
         String name;
-        if (databaseTable != null && databaseTable.tableName() != null && databaseTable.tableName().length() > 0) {
+        if (databaseTable != null &&  !TextUtils.isEmpty(databaseTable.tableName()) && databaseTable.tableName().length() > 0) {
             name = databaseTable.tableName();
         } else {
             name = JavaxPersistence.getEntityName(clazz);

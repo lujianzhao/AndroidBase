@@ -2,7 +2,6 @@ package com.liangzhicn.androidbasedemo.db.model;
 
 import com.android.base.callback.ExecutorCallBack;
 import com.android.base.db.BaseRxDao;
-import com.liangzhicn.androidbasedemo.db.RxDao;
 import com.liangzhicn.androidbasedemo.db.contract.DBContract;
 import com.liangzhicn.androidbasedemo.db.model.domains.City;
 
@@ -19,7 +18,7 @@ public class DBModel extends DBContract.Model {
 
     @Override
     public void onCreate() {
-        mCityDao = new RxDao<>(mContext, City.class);
+        mCityDao = new BaseRxDao<>(City.class);
     }
 
     @Override
