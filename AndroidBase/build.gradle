@@ -33,17 +33,17 @@ dependencies {
     compile 'com.android.support:design:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'
     //自动布局
-    compile 'com.zhy:autolayout:1.4.3'
+    compile 'com.zhy:autolayout:1.4.5'
     //注入工具
     compile 'com.jakewharton:butterknife:7.0.1'
     //缓存
     compile 'com.jakewharton:disklrucache:2.0.2'
     //Rxjava
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'io.reactivex:rxjava:1.1.10'
+    compile 'io.reactivex:rxjava:1.2.0'
     //RxLifecycle
-    compile 'com.trello:rxlifecycle:0.7.0'
-    compile 'com.trello:rxlifecycle-android:0.7.0'
+    compile 'com.trello:rxlifecycle:0.8.0'
+    compile 'com.trello:rxlifecycle-android:0.8.0'
     //RxBinding
     compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
     //下面3个视情况增加

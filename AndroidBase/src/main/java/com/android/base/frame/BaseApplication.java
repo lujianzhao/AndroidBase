@@ -49,6 +49,7 @@ public class BaseApplication extends Application {
         Recovery.getInstance()
                 .debug(isDebug())
                 .recoverInBackground(false)
+                .recoverStack(true)
                 .callback(new RecoveryCallback(){
 
                     @Override
