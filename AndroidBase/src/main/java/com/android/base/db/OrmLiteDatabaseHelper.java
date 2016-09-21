@@ -36,7 +36,7 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
     public OrmLiteDatabaseHelper(Context context, String databaseName, SQLiteDatabase.CursorFactory factory, int databaseVersion) {
         super(context, databaseName, factory, databaseVersion);
         daoMap = new HashMap<>();
-        LogUtils.d("数据库创建");
+        LogUtils.i("OrmLiteDatabaseHelper 创建");
     }
 
     /**
@@ -163,7 +163,7 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
                 it.remove();
             }
         }
-        LogUtils.d("数据库关闭");
+        LogUtils.i("OrmLiteDatabaseHelper 关闭");
     }
 
     /**

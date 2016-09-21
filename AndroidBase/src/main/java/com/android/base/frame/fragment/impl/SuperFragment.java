@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.base.common.logutils.LogUtils;
 import com.android.base.frame.fragment.IBaseFragment;
 import com.trello.rxlifecycle.LifecycleProvider;
 import com.trello.rxlifecycle.LifecycleTransformer;
@@ -18,11 +17,8 @@ import com.trello.rxlifecycle.RxLifecycle;
 import com.trello.rxlifecycle.android.FragmentEvent;
 import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 
-import java.util.List;
-
 import butterknife.ButterKnife;
 import me.yokeyword.fragmentation.SupportFragment;
-import pub.devrel.easypermissions.EasyPermissions;
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
 
@@ -31,7 +27,7 @@ import rx.subjects.BehaviorSubject;
  * 创建时间: 2016/06/13 16:27
  * 描述:
  */
-public abstract class SuperFragment extends SupportFragment  implements IBaseFragment,EasyPermissions.PermissionCallbacks,LifecycleProvider<FragmentEvent> {
+public abstract class SuperFragment extends SupportFragment  implements IBaseFragment,LifecycleProvider<FragmentEvent> {
 
     protected View mRootView = null;
 
@@ -162,24 +158,6 @@ public abstract class SuperFragment extends SupportFragment  implements IBaseFra
         if (finish) {
             _mActivity.finish();
         }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        // EasyPermissions handles the request result.
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-
-    @Override
-    public void onPermissionsGranted(int requestCode, List<String> perms) {
-        LogUtils.d("onPermissionsGranted:" + requestCode + ":" + perms.size());
-    }
-
-    @Override
-    public void onPermissionsDenied(int requestCode, List<String> perms) {
-        LogUtils.d("onPermissionsDenied:" + requestCode + ":" + perms.size());
     }
 
 }

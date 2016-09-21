@@ -8,12 +8,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.base.frame.activity.impl.BaseActivity;
+import com.jakewharton.rxbinding.view.RxView;
 import com.liangzhicn.androidbasedemo.db.view.DBActivity;
 import com.liangzhicn.androidbasedemo.http.HttpActivity;
 
-import butterknife.Bind;
+import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener {
+import butterknife.Bind;
+import rx.functions.Action1;
+
+public class MainActivity extends BaseActivity {//implements View.OnClickListener {
 
     @Bind(R.id.title)
     TextView mTitle;
@@ -32,19 +36,105 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
+    /**
+     * 权限请求的Demo,
+     */
+    private void demo() {
+        //RxBinding
+//        RxView.clicks(findViewById(enableCamera))
+//                // Ask for permissions when button is clicked
+//                .compose(rxPermissions.ensure(Manifest.permission.CAMERA))
+//                .compose(this.<Boolean>bindUntilEvent(ActivityEvent.DESTROY))
+//                .subscribe(new Action1<Boolean>() {
+//                               @Override
+//                               public void call(Boolean granted) {
+//                                   Log.i(TAG, "Permission result " + granted);
+//                                   if (granted) {
+//                                       releaseCamera();
+//                                       camera = Camera.open(0);
+//                                       try {
+//                                           camera.setPreviewDisplay(surfaceView.getHolder());
+//                                           camera.startPreview();
+//                                       } catch (IOException e) {
+//                                           Log.e(TAG, "Error while trying to display the camera preview", e);
+//                                       }
+//                                   } else {
+//                                       Toast.makeText(MainActivity.this,
+//                                               "Permission denied, can't enable the camera",
+//                                               Toast.LENGTH_SHORT).show();
+//                                   }
+//                               }
+//                           },
+//                        new Action1<Throwable>() {
+//                            @Override
+//                            public void call(Throwable t) {
+//                                Log.e(TAG, "onError", t);
+//                            }
+//                        },
+//                        new Action0() {
+//                            @Override
+//                            public void call() {
+//                                Log.i(TAG, "OnComplete");
+//                            }
+//                        });
+
+        //RxPermissions
+//        RxPermissions.getInstance(this)
+//                .request(Manifest.permission.CAMERA)
+//                .compose(this.<Boolean>bindUntilEvent(ActivityEvent.DESTROY))
+//                .subscribe(new Action1<Boolean>() {
+//                               @Override
+//                               public void call(Boolean granted) {
+//                                   Log.i(TAG, "Permission result " + granted);
+//                                   if (granted) {
+//                                       releaseCamera();
+//                                       camera = Camera.open(0);
+//                                       try {
+//                                           camera.setPreviewDisplay(surfaceView.getHolder());
+//                                           camera.startPreview();
+//                                       } catch (IOException e) {
+//                                           Log.e(TAG, "Error while trying to display the camera preview", e);
+//                                       }
+//                                   } else {
+//                                       Toast.makeText(MainActivity.this,
+//                                               "Permission denied, can't enable the camera",
+//                                               Toast.LENGTH_SHORT).show();
+//                                   }
+//                               }
+//                           },
+//                        new Action1<Throwable>() {
+//                            @Override
+//                            public void call(Throwable t) {
+//                                Log.e(TAG, "onError", t);
+//                            }
+//                        });
+    }
+
+
     @Override
     public void initData() {
         mTitle.setText("老哦 test");
         String[] bttxt = getResources().getStringArray(R.array.test_list);
         if (bttxt != null) {
             for (int i = 0; i < bttxt.length; i++) {
-                Button bt = new Button(this);
+                final Button bt = new Button(this);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 int margin = getResources().getDimensionPixelSize(R.dimen.activity_vertical_margin);
                 lp.setMargins(margin, margin, margin, margin);
                 bt.setId(i);
                 bt.setText(bttxt[i]);
-                bt.setOnClickListener(this);
+
+                //RxBinding示例Demo
+                RxView.clicks(bt).throttleFirst(500, TimeUnit.MILLISECONDS)
+                        .subscribe(new Action1<Void>() {
+                            @Override
+                            public void call(Void aVoid) {
+                                onClick(bt);
+                            }
+                        });
+
+
+
                 bt.setLayoutParams(lp);
                 mContainer.addView(bt);
             }
@@ -52,7 +142,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
-    @Override
+//    @Override
     public void onClick(View v) {
         Intent intent = new Intent();
         switch (v.getId()) {

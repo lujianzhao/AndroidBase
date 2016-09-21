@@ -11,7 +11,6 @@ import android.support.v7.app.ActionBar;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.android.base.common.logutils.LogUtils;
 import com.android.base.common.utils.InputMethodUtils;
 import com.android.base.frame.AppManager;
 import com.android.base.frame.BaseApplication;
@@ -27,11 +26,8 @@ import com.zhy.autolayout.AutoFrameLayout;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
 
-import java.util.List;
-
 import butterknife.ButterKnife;
 import me.yokeyword.fragmentation.SupportActivity;
-import pub.devrel.easypermissions.EasyPermissions;
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
 
@@ -40,7 +36,7 @@ import rx.subjects.BehaviorSubject;
  * 创建时间: 2016/06/13 16:27
  * 描述:
  */
-public abstract class SuperActivity extends SupportActivity implements IBaseActivity, EasyPermissions.PermissionCallbacks,LifecycleProvider<ActivityEvent> {
+public abstract class SuperActivity extends SupportActivity implements IBaseActivity, LifecycleProvider<ActivityEvent> {
 
     private static final String LAYOUT_LINEARLAYOUT = "LinearLayout";
     private static final String LAYOUT_FRAMELAYOUT = "FrameLayout";
@@ -192,27 +188,6 @@ public abstract class SuperActivity extends SupportActivity implements IBaseActi
             finish();
         }
     }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        // EasyPermissions handles the request result.
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-
-    @Override
-    public void onPermissionsGranted(int requestCode, List<String> perms) {
-        LogUtils.d("onPermissionsGranted:" + requestCode + ":" + perms.size());
-    }
-
-    @Override
-    public void onPermissionsDenied(int requestCode, List<String> perms) {
-        LogUtils.d("onPermissionsDenied:" + requestCode + ":" + perms.size());
-    }
-
-
 
     @Override
     public void onDisConnect() {
