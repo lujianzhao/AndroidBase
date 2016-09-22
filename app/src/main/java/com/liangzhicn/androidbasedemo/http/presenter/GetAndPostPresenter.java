@@ -1,9 +1,8 @@
 package com.liangzhicn.androidbasedemo.http.presenter;
 
-import android.support.annotation.NonNull;
-
 import com.android.base.callback.ExecutorCallBack;
 import com.android.base.common.logutils.LogUtils;
+import com.android.base.frame.model.factory.RequiresModel;
 import com.liangzhicn.androidbasedemo.http.contract.GetAndPostContract;
 import com.liangzhicn.androidbasedemo.http.model.GetAndPostModel;
 
@@ -12,17 +11,13 @@ import com.liangzhicn.androidbasedemo.http.model.GetAndPostModel;
  * 创建时间: 2016/06/18 14:50
  * 描述:
  */
-public class GetAndPostPresenter extends GetAndPostContract.Presenter<GetAndPostContract.Model> {
+@RequiresModel(GetAndPostModel.class)
+public class GetAndPostPresenter extends GetAndPostContract.Presenter {
 
     private String mData1;
     private String mData2;
     private String mData3 ="";
 
-    @NonNull
-    @Override
-    protected GetAndPostContract.Model getMvpModel() {
-        return new GetAndPostModel();
-    }
 
     @Override
     public void start() {
@@ -35,30 +30,30 @@ public class GetAndPostPresenter extends GetAndPostContract.Presenter<GetAndPost
      */
     private void test2() {
 
-        mModel.getBlend(new ExecutorCallBack<Object>() {
+        getModel().getBlend(new ExecutorCallBack<Object>() {
 
             @Override
             public void onStart() {
-                mView.showLoadingView();
+                getView().showLoadingView();
             }
 
             @Override
             public void onNext(Object data) {
                 //保存数据
                 mData3 = mData3 + (String) data +"\r\n\r\n";
-                mView.showGet(mData3);
+                getView().showGet(mData3);
             }
 
             @Override
             public void onComplete() {
                 //刷新界面
-                mView.showContentView();
+                getView().showContentView();
             }
 
             @Override
             public void onError(Throwable e) {
                 //加载错误
-                mView.showErrorView();
+                getView().showErrorView();
             }
         });
 
@@ -68,30 +63,30 @@ public class GetAndPostPresenter extends GetAndPostContract.Presenter<GetAndPost
      * 单独的请求.每次请求完毕都会回调
      */
     public void test1() {
-        mModel.getRequest(new ExecutorCallBack<String>() {
+        getModel().getRequest(new ExecutorCallBack<String>() {
 
             @Override
             public void onStart() {
-                mView.showLoadingView();
+                getView().showLoadingView();
             }
 
             @Override
             public void onNext(String data) {
                 //保存数据,操作界面显示
                 mData1 = data;
-                mView.showGet("get请求结果 : \r\n" + mData1 + "\r\n");
+                getView().showGet("get请求结果 : \r\n" + mData1 + "\r\n");
             }
 
             @Override
             public void onComplete() {
                 // 停止加载
-                mView.showContentView();
+                getView().showContentView();
             }
 
             @Override
             public void onError(Throwable e) {
                 //加载错误
-                mView.showErrorView();
+                getView().showErrorView();
                 LogUtils.d(e);
             }
         });

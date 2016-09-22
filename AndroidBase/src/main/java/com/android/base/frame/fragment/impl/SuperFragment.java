@@ -27,15 +27,20 @@ import rx.subjects.BehaviorSubject;
  * 创建时间: 2016/06/13 16:27
  * 描述:
  */
-public abstract class SuperFragment extends SupportFragment  implements IBaseFragment,LifecycleProvider<FragmentEvent> {
+public abstract class SuperFragment extends SupportFragment implements IBaseFragment, LifecycleProvider<FragmentEvent> {
 
     protected View mRootView = null;
 
     private final BehaviorSubject<FragmentEvent> mLifecycleSubject = BehaviorSubject.create();
 
+    /**
+     * @return
+     */
     protected abstract int getContentViewId();
 
     protected abstract void initView(Bundle savedInstanceState);
+
+    protected abstract void initData();
 
     @Override
     @NonNull
@@ -132,32 +137,46 @@ public abstract class SuperFragment extends SupportFragment  implements IBaseFra
         super.onDetach();
     }
 
+    public void gotoActivity(Class<? extends Activity> clazz) {
+        this.gotoActivity(clazz, null, false);
+    }
 
     public void gotoActivity(Class<? extends Activity> clazz, boolean finish) {
-        Intent intent = new Intent(_mActivity, clazz);
-        startActivity(intent);
-        if (finish) {
-            _mActivity.finish();
-        }
+        this.gotoActivity(clazz, null, finish);
     }
 
     public void gotoActivity(Class<? extends Activity> clazz, Bundle bundle, boolean finish) {
-        Intent intent = new Intent(_mActivity, clazz);
-        if (bundle != null) intent.putExtras(bundle);
-        startActivity(intent);
-        if (finish) {
-            _mActivity.finish();
-        }
+        this.gotoActivity(clazz, bundle, 0, finish);
     }
 
     public void gotoActivity(Class<? extends Activity> clazz, Bundle bundle, int flags, boolean finish) {
-        Intent intent = new Intent(_mActivity, clazz);
-        if (bundle != null) intent.putExtras(bundle);
+        Intent intent = new Intent(getActivity(), clazz);
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
         intent.addFlags(flags);
         startActivity(intent);
         if (finish) {
-            _mActivity.finish();
+            getActivity().finish();
         }
+    }
+
+
+    public void gotoActivityForResult(Class<? extends Activity> clazz, int requestCode) {
+        gotoActivityForResult(clazz, requestCode, null);
+    }
+
+    public void gotoActivityForResult(Class<? extends Activity> clazz, int requestCode, @Nullable Bundle bundle) {
+        gotoActivityForResult(clazz, requestCode, bundle, 0);
+    }
+
+    public void gotoActivityForResult(Class<? extends Activity> clazz, int requestCode, @Nullable Bundle bundle, int flags) {
+        Intent intent = new Intent(getActivity(), clazz);
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
+        intent.addFlags(flags);
+        startActivityForResult(intent, requestCode);
     }
 
 }

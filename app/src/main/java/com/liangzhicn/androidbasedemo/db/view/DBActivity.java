@@ -1,12 +1,11 @@
 package com.liangzhicn.androidbasedemo.db.view;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
 import com.android.base.frame.activity.impl.BaseMvpActivity;
-import com.android.base.frame.view.IBaseView;
+import com.android.base.frame.presenter.factory.RequiresPresenter;
 import com.liangzhicn.androidbasedemo.R;
 import com.liangzhicn.androidbasedemo.db.contract.DBContract;
 import com.liangzhicn.androidbasedemo.db.presenter.DBPresenter;
@@ -19,22 +18,11 @@ import butterknife.OnClick;
  * 创建时间: 2016/06/18 14:49
  * 描述:
  */
+@RequiresPresenter(DBPresenter.class)
 public class DBActivity extends BaseMvpActivity<DBContract.Presenter> implements DBContract.View{
 
     @Bind(R.id.text_city)
     TextView textView;
-    
-    @NonNull
-    @Override
-    protected DBContract.Presenter getMvpPresenter() {
-        return new DBPresenter();
-    }
-
-    @NonNull
-    @Override
-    protected IBaseView getMvpView() {
-        return  this;
-    }
 
     @Override
     protected int getContentViewId() {
@@ -48,7 +36,7 @@ public class DBActivity extends BaseMvpActivity<DBContract.Presenter> implements
 
     @OnClick({R.id.insert,R.id.query,R.id.clear})
     public void onBtnClick(View view) {
-        mPresenter.onBtnClick(view);
+        getPresenter().onBtnClick(view);
     }
 
     @Override
@@ -79,5 +67,10 @@ public class DBActivity extends BaseMvpActivity<DBContract.Presenter> implements
     @Override
     public void updateView(String result) {
         textView.setText(result);
+    }
+
+    @Override
+    protected void initData() {
+
     }
 }

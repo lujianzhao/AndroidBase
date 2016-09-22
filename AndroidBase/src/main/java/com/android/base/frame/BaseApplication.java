@@ -26,7 +26,7 @@ public class BaseApplication extends Application {
 
         initLogUtils();
 
-        initRecovery();
+//        initRecovery();
 
         LogUtils.d("BaseApplication onCreate");
 
@@ -98,20 +98,18 @@ public class BaseApplication extends Application {
     private void registerNetWorkStateListener() {
         mNetChangeObserver = new NetChangeObserver() {
             @Override
-            public void onConnect(NetWorkUtil.NetWorkType type) {
-                super.onConnect(type);
+            public void onNetworkConnect(NetWorkUtil.NetWorkType type) {
                 try {
-                    BaseApplication.this.onConnect(type);
+                    BaseApplication.this.onNetWorkConnect(type);
                 } catch (Exception e) {
                     // TODO: handle exception
                 }
             }
 
             @Override
-            public void onDisConnect() {
-                super.onDisConnect();
+            public void onNetworkDisConnect() {
                 try {
-                    BaseApplication.this.onDisConnect();
+                    BaseApplication.this.onNetWorkDisConnect();
                 } catch (Exception e) {
                     // TODO: handle exception
                 }
@@ -134,11 +132,11 @@ public class BaseApplication extends Application {
     /**
      * 当前没有网络连接通知
      */
-    public void onDisConnect() {
+    public void onNetWorkDisConnect() {
         Activity mCurrentActivity = AppManager.getAppManager().topActivity();
         if (mCurrentActivity != null) {
             if (mCurrentActivity instanceof IBaseActivity) {
-                ((IBaseActivity) mCurrentActivity).onDisConnect();
+                ((IBaseActivity) mCurrentActivity).onNetWorkDisConnect();
             }
         }
     }
@@ -146,11 +144,11 @@ public class BaseApplication extends Application {
     /**
      * 网络连接连接时通知
      */
-    protected void onConnect(NetWorkUtil.NetWorkType type) {
+    protected void onNetWorkConnect(NetWorkUtil.NetWorkType type) {
         Activity mCurrentActivity = AppManager.getAppManager().topActivity();
         if (mCurrentActivity != null) {
             if (mCurrentActivity instanceof IBaseActivity) {
-                ((IBaseActivity) mCurrentActivity).onConnect(type);
+                ((IBaseActivity) mCurrentActivity).onNetWorkConnect(type);
             }
         }
     }

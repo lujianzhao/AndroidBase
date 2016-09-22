@@ -9,7 +9,7 @@ public interface IBaseActivity {
     /**
      * 网络断开
      */
-    void onDisConnect();
+    void onNetWorkDisConnect();
 
     /**
      * 网络连接上
@@ -21,5 +21,5 @@ public interface IBaseActivity {
      *             Net3G(3),3G网络
      *             Net4G(4);4G网络
      */
-    void onConnect(NetWorkUtil.NetWorkType type);
+    void onNetWorkConnect(NetWorkUtil.NetWorkType type);
 }

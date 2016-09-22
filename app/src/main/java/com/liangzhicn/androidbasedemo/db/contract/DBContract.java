@@ -1,8 +1,8 @@
 package com.liangzhicn.androidbasedemo.db.contract;
 
 import com.android.base.callback.ExecutorCallBack;
-import com.android.base.frame.model.impl.BaseModel;
-import com.android.base.frame.presenter.impl.ActivityPresenter;
+import com.android.base.frame.model.BaseModel;
+import com.android.base.frame.presenter.BasePresenter;
 import com.android.base.frame.view.IBaseView;
 import com.liangzhicn.androidbasedemo.db.model.domains.City;
 
@@ -45,7 +45,7 @@ public interface DBContract {
         void updateView(String s);
     }
 
-    abstract class Presenter<M extends Model> extends ActivityPresenter<M,View> {
+    abstract class Presenter extends BasePresenter<Model,View> {
 
         public abstract void onBtnClick(android.view.View view);
     }

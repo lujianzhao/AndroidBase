@@ -1,6 +1,5 @@
 package com.liangzhicn.androidbasedemo;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -33,7 +32,6 @@ public class MainActivity extends BaseActivity {//implements View.OnClickListene
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-
     }
 
 
@@ -149,8 +147,8 @@ public class MainActivity extends BaseActivity {//implements View.OnClickListene
         switch (v.getId()) {
             case 0:
                 gotoActivity(DBActivity.class, false);
-                Activity s = null;
-                s.startActivity(null);
+//                Activity s = null;
+//                s.startActivity(null);
 
                 break;
             case 1:

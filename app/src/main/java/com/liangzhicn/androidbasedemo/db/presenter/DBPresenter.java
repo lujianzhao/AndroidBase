@@ -1,10 +1,9 @@
 package com.liangzhicn.androidbasedemo.db.presenter;
 
-import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.android.base.common.assist.Toastor;
 import com.android.base.callback.ExecutorCallBack;
+import com.android.base.frame.model.factory.RequiresModel;
 import com.liangzhicn.androidbasedemo.R;
 import com.liangzhicn.androidbasedemo.db.contract.DBContract;
 import com.liangzhicn.androidbasedemo.db.model.DBModel;
@@ -18,17 +17,12 @@ import java.util.UUID;
  * 创建时间: 2016/06/18 14:50
  * 描述:
  */
-public class DBPresenter extends DBContract.Presenter<DBContract.Model> {
+@RequiresModel(DBModel.class)
+public class DBPresenter extends DBContract.Presenter {
 
     @Override
     public void start() {
 
-    }
-
-    @NonNull
-    @Override
-    protected DBContract.Model getMvpModel() {
-        return new  DBModel();
     }
 
 
@@ -50,10 +44,10 @@ public class DBPresenter extends DBContract.Presenter<DBContract.Model> {
     }
 
     public void clear() {
-        mModel.clearTableDataSync(new ExecutorCallBack<Boolean>() {
+        getModel().clearTableDataSync(new ExecutorCallBack<Boolean>() {
                                       @Override
                                       public void onNext(Boolean data) {
-                                          mView.clearView();
+                                          getView().clearView();
                                       }
                                   }
 
@@ -61,7 +55,7 @@ public class DBPresenter extends DBContract.Presenter<DBContract.Model> {
     }
 
     public void query() {
-        mModel.queryForAllSync(new ExecutorCallBack<List<City>>() {
+        getModel().queryForAllSync(new ExecutorCallBack<List<City>>() {
             @Override
             public void onNext(List<City> data) {
                 queryFinish(data);
@@ -81,7 +75,7 @@ public class DBPresenter extends DBContract.Presenter<DBContract.Model> {
             sb.append("最后一条记录为：\n");
             sb.append(list.get(list.size() - 1).toString()).append("\n\n");
         }
-        mView.updateView(sb.toString());
+        getView().updateView(sb.toString());
     }
 
 
@@ -92,11 +86,11 @@ public class DBPresenter extends DBContract.Presenter<DBContract.Model> {
         city.setCityName("东莞市");
         city.setCityNo(cityUuid);
 
-        mModel.insertSync(city, new ExecutorCallBack<Boolean>() {
+        getModel().insertSync(city, new ExecutorCallBack<Boolean>() {
 
             @Override
             public void onNext(Boolean data) {
-                Toastor.showToast(mActivity, "插入完成");
+//                Toastor.showToast(mActivity, "插入完成");
             }
         });
     }

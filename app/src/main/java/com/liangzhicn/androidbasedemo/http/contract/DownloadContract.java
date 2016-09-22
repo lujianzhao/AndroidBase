@@ -1,8 +1,8 @@
 package com.liangzhicn.androidbasedemo.http.contract;
 
 import com.android.base.callback.ExecutorCallBack;
-import com.android.base.frame.model.impl.BaseModel;
-import com.android.base.frame.presenter.impl.ActivityPresenter;
+import com.android.base.frame.model.BaseModel;
+import com.android.base.frame.presenter.BasePresenter;
 import com.android.base.frame.view.IBaseView;
 import com.android.base.http.progress.domain.ProgressRequest;
 
@@ -27,7 +27,7 @@ public interface DownloadContract {
         void upProgress(long currentSize, long totalSize);
     }
 
-    abstract class Presenter<M extends Model> extends ActivityPresenter<M,View> {
+    abstract class Presenter extends BasePresenter<Model,View> {
 
         /**
          * 开始下载文件

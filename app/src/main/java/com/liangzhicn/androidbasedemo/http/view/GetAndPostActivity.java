@@ -1,13 +1,12 @@
 package com.liangzhicn.androidbasedemo.http.view;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
 import com.android.base.common.assist.Toastor;
 import com.android.base.frame.activity.impl.BaseMvpActivity;
-import com.android.base.frame.view.IBaseView;
+import com.android.base.frame.presenter.factory.RequiresPresenter;
 import com.android.base.widget.LoadProgressLayout;
 import com.liangzhicn.androidbasedemo.R;
 import com.liangzhicn.androidbasedemo.http.contract.GetAndPostContract;
@@ -21,6 +20,7 @@ import butterknife.OnClick;
  * 创建时间: 2016/06/18 14:49
  * 描述:
  */
+@RequiresPresenter(GetAndPostPresenter.class)
 public class GetAndPostActivity extends BaseMvpActivity<GetAndPostContract.Presenter> implements GetAndPostContract.View{
 
     @Bind(R.id.tv_content)
@@ -29,20 +29,6 @@ public class GetAndPostActivity extends BaseMvpActivity<GetAndPostContract.Prese
     @Bind(R.id.progress_layout)
     LoadProgressLayout mProgressLayout;
 
-
-    @NonNull
-    @Override
-    protected GetAndPostContract.Presenter getMvpPresenter() {
-        return new GetAndPostPresenter();
-    }
-
-
-    @NonNull
-    @Override
-    protected IBaseView getMvpView() {
-        return  this;
-    }
-
     @Override
     protected int getContentViewId() {
         return R.layout.activity_get_post;
@@ -50,6 +36,7 @@ public class GetAndPostActivity extends BaseMvpActivity<GetAndPostContract.Prese
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+
 
     }
 
@@ -87,5 +74,10 @@ public class GetAndPostActivity extends BaseMvpActivity<GetAndPostContract.Prese
     @Override
     public void showGet(String data) {
         mContent.setText(mContent.getText().toString()+"\r\n\r\n"+data);
+    }
+
+    @Override
+    protected void initData() {
+
     }
 }

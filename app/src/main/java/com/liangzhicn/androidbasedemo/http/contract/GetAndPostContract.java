@@ -1,8 +1,8 @@
 package com.liangzhicn.androidbasedemo.http.contract;
 
 import com.android.base.callback.ExecutorCallBack;
-import com.android.base.frame.model.impl.BaseModel;
-import com.android.base.frame.presenter.impl.ActivityPresenter;
+import com.android.base.frame.model.BaseModel;
+import com.android.base.frame.presenter.BasePresenter;
 import com.android.base.frame.view.IBaseView;
 
 /**
@@ -39,7 +39,7 @@ public interface GetAndPostContract {
         void showGet(String data);
     }
 
-    abstract class Presenter<M extends Model> extends ActivityPresenter<M,View> {
+    abstract class Presenter extends BasePresenter<Model,View> {
     }
 
 }

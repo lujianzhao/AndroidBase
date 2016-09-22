@@ -3,113 +3,91 @@ package com.android.base.frame.activity.impl;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
 
-import com.android.base.frame.presenter.impl.ActivityPresenter;
-import com.android.base.frame.view.IBaseView;
+import com.android.base.frame.view.ViewWithPresenter;
+import com.android.base.frame.presenter.BasePresenter;
+import com.android.base.frame.presenter.impl.PresenterLifecycleDelegate;
+import com.android.base.frame.presenter.factory.PresenterFactory;
+import com.android.base.frame.presenter.factory.ReflectionPresenterFactory;
+import com.android.base.netstate.NetWorkUtil;
 
 /**
  * Created by Administrator on 2016/5/13.
  */
-public abstract class BaseMvpActivity<P extends ActivityPresenter> extends SuperActivity {
-    public P mPresenter;
+public abstract class BaseMvpActivity<P extends BasePresenter> extends SuperActivity  implements ViewWithPresenter<P> {
 
-    /**
-     * 此方法在对象初始化的时候调用一次,其他时间段请直接使用 mPresenter
-     */
-    @NonNull
-    protected abstract P getMvpPresenter();
 
-    @NonNull
-    protected abstract IBaseView getMvpView();
+    private static final String PRESENTER_STATE_KEY = "presenter_state";
+    private PresenterLifecycleDelegate<P> presenterDelegate = new PresenterLifecycleDelegate<>(ReflectionPresenterFactory.<P>fromViewClass(getClass()));
+
+    @Override
+    public PresenterFactory<P> getPresenterFactory() {
+        return presenterDelegate.getPresenterFactory();
+    }
+
+    @Override
+    public void setPresenterFactory(PresenterFactory<P> presenterFactory) {
+        presenterDelegate.setPresenterFactory(presenterFactory);
+    }
+
+    @Override
+    public P getPresenter() {
+        return presenterDelegate.getPresenter();
+    }
 
 
     @Override
     @CallSuper
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter = getMvpPresenter();
-        mPresenter.initPresenter(this, getMvpView());
-        initView(savedInstanceState);
-        if (mPresenter != null) {
-            mPresenter.onCreate();
-            mPresenter.start();
+
+        if (savedInstanceState != null) {
+            presenterDelegate.onRestoreInstanceState(savedInstanceState.getBundle(PRESENTER_STATE_KEY));
         }
+
+        presenterDelegate.onCreate(this,this);
+
+        initView(savedInstanceState);
+
+        initData();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBundle(PRESENTER_STATE_KEY, presenterDelegate.onSaveInstanceState());
     }
 
 
     @Override
     public void onBackPressedSupport() {
-        if (mPresenter != null) {
-            if (!mPresenter.onBackPressed()) {
-                super.onBackPressedSupport();
-            }
-        } else {
+        if (presenterDelegate == null || !presenterDelegate.onBackPressed()) {
             super.onBackPressedSupport();
         }
-
-    }
-
-    @Override
-    @CallSuper
-    protected void onStart() {
-        super.onStart();
-        if (mPresenter != null) {
-            mPresenter.onStart();
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (mPresenter != null) {
-            mPresenter.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    @Override
-    @CallSuper
-    protected void onResume() {
-        if (mPresenter != null) {
-            mPresenter.onResume();
-        }
-        super.onResume();
-    }
-
-    @Override
-    @CallSuper
-    protected void onPause() {
-        if (mPresenter != null) {
-            mPresenter.onPause();
-        }
-        super.onPause();
-    }
-
-    @Override
-    @CallSuper
-    protected void onStop() {
-        if (mPresenter != null) {
-            mPresenter.onStop();
-        }
-        super.onStop();
     }
 
     @Override
     @CallSuper
     protected void onDestroy() {
-        if (mPresenter != null) {
-            mPresenter.onDestroy();
-            mPresenter = null;
-        }
+        presenterDelegate.onDestroy(!isChangingConfigurations());
         super.onDestroy();
     }
 
-//    public P getPresenter() {
-//        try {
-//            return getPresenterClass().newInstance();
-//        } catch (Exception e) {
-//            throw new RuntimeException("create IDelegate error");
-//        }
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        presenterDelegate.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    @Override
+    public void onNetWorkDisConnect() {
+        presenterDelegate.onNetWorkDisConnect();
+    }
+
+    @Override
+    public void onNetWorkConnect(NetWorkUtil.NetWorkType type) {
+        presenterDelegate.onNetWorkConnect(type);
+    }
 
 }

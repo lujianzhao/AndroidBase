@@ -17,12 +17,12 @@ public class DBModel extends DBContract.Model {
     private BaseRxDao<City> mCityDao;
 
     @Override
-    public void onCreate() {
+    protected void onCreate() {
         mCityDao = new BaseRxDao<>(City.class);
     }
 
     @Override
-    public void onDestroy() {
+    protected void onDestroy() {
         super.onDestroy();
         mCityDao = null;
     }

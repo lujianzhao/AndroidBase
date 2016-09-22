@@ -3,8 +3,8 @@
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
-        android:allowBackup="true"
         android:name=".DemoApplication"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -13,13 +13,15 @@
         <!-- 自动化布局 开始 -->
         <meta-data
             android:name="design_width"
-            android:value="720" />
+            android:value="720"/>
         <meta-data
             android:name="design_height"
-            android:value="1280" />
+            android:value="1280"/>
 
 
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -28,28 +30,23 @@
         </activity>
 
         <activity
-            android:name=".db.view.DBActivity"
-            android:screenOrientation="portrait" >
+            android:name=".db.view.DBActivity">
         </activity>
 
         <activity
-            android:name=".http.HttpActivity"
-            android:screenOrientation="portrait" >
+            android:name=".http.HttpActivity">
         </activity>
 
         <activity
-            android:name=".http.view.GetAndPostActivity"
-            android:screenOrientation="portrait" >
+            android:name=".http.view.GetAndPostActivity">
         </activity>
 
         <activity
-            android:name=".http.view.UploadActivity"
-            android:screenOrientation="portrait" >
+            android:name=".http.view.UploadActivity">
         </activity>
 
         <activity
-            android:name=".http.view.DownloadActivity"
-            android:screenOrientation="portrait" >
+            android:name=".http.view.DownloadActivity">
         </activity>
 
     </application>

@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
  */
 public abstract class BaseFragment extends SuperFragment {
 
-    protected abstract void initData();
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

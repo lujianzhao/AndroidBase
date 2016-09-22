@@ -1,11 +1,13 @@
 package com.liangzhicn.androidbasedemo.http.presenter;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 
 import com.android.base.callback.ExecutorCallBack;
 import com.android.base.common.assist.Toastor;
 import com.android.base.common.logutils.LogUtils;
+import com.android.base.frame.model.factory.RequiresModel;
 import com.android.base.http.progress.domain.ProgressRequest;
 import com.liangzhicn.androidbasedemo.http.contract.UploadContract;
 import com.liangzhicn.androidbasedemo.http.model.UploadModel;
@@ -21,14 +23,29 @@ import java.util.ArrayList;
  * 创建时间: 2016/06/18 14:50
  * 描述:
  */
-public class UploadPresenter extends UploadContract.Presenter<UploadContract.Model> {
+@RequiresModel(UploadModel.class)
+public class UploadPresenter extends UploadContract.Presenter {
 
     private ArrayList<ImageItem> imageItems;
 
-    @NonNull
+
     @Override
-    protected UploadContract.Model getMvpModel() {
-        return new UploadModel();
+    protected void onTakeView(UploadContract.View view) {
+        super.onTakeView(view);
+        LogUtils.d("jaja ");
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedState) {
+        if (savedState != null) {
+            String a = savedState.getString("A");
+            LogUtils.d(""+a);
+        }
+    }
+
+    @Override
+    protected void onSave(Bundle state) {
+        state.putString("A","aaaa");
     }
 
     @Override
@@ -44,18 +61,19 @@ public class UploadPresenter extends UploadContract.Presenter<UploadContract.Mod
         imagePicker.setShowCamera(true);  //显示拍照按钮
         imagePicker.setSelectLimit(9);    //最多选择9张
         imagePicker.setCrop(false);       //不进行裁剪
-        Intent intent = new Intent(mActivity, ImageGridActivity.class);
-        mActivity.startActivityForResult(intent, 100);
+
+        getView().gotoActivityForResult(ImageGridActivity.class,100);
+
     }
 
 
     @Override
     public void formUpload() {
         if (imageItems == null || imageItems.size() == 0) {
-            Toastor.showToast(mActivity, "请选择需上传的图片");
+            Toastor.showToast(getContext(), "请选择需上传的图片");
             return;
         }
-        mModel.formUpload(imageItems, new ExecutorCallBack<ProgressRequest>() {
+        getModel().formUpload(imageItems, new ExecutorCallBack<ProgressRequest>() {
             @Override
             public void onStart() {
                 LogUtils.d("开始上传");
@@ -63,7 +81,7 @@ public class UploadPresenter extends UploadContract.Presenter<UploadContract.Mod
 
             @Override
             public void onNext(ProgressRequest s) {
-                mView.upProgress(s.getCurrentBytes(), s.getContentLength());
+                getView().upProgress(s.getCurrentBytes(), s.getContentLength());
             }
 
             @Override
@@ -98,10 +116,12 @@ public class UploadPresenter extends UploadContract.Presenter<UploadContract.Mod
                     imgs = "--";
                 }
             } else {
-                Toastor.showToast(mActivity, "没有选择图片");
+                Toastor.showToast(getContext(), "没有选择图片");
                 imgs = "--";
             }
-            mView.selectImageResult(imgs);
+            getView().selectImageResult(imgs);
+            getView().ro();
+
         }
     }
 }

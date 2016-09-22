@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.util.AttributeSet;
 import android.view.View;
@@ -15,7 +16,6 @@ import com.android.base.common.utils.InputMethodUtils;
 import com.android.base.frame.AppManager;
 import com.android.base.frame.BaseApplication;
 import com.android.base.frame.activity.IBaseActivity;
-import com.android.base.netstate.NetWorkUtil;
 import com.android.base.netstate.NetworkStateReceiver;
 import com.trello.rxlifecycle.LifecycleProvider;
 import com.trello.rxlifecycle.LifecycleTransformer;
@@ -47,6 +47,8 @@ public abstract class SuperActivity extends SupportActivity implements IBaseActi
     protected abstract int getContentViewId();
 
     protected abstract void initView(Bundle savedInstanceState);
+
+    protected abstract void initData();
 
     @Override
     @NonNull
@@ -160,28 +162,25 @@ public abstract class SuperActivity extends SupportActivity implements IBaseActi
         }
     }
 
+    public void gotoActivity(Class<? extends Activity> clazz) {
+        this.gotoActivity(clazz, null, false);
+    }
+
     public void gotoActivity(Class<? extends Activity> clazz, boolean finish) {
-        Intent intent = new Intent(this, clazz);
-        startActivity(intent);
-        if (finish) {
-            finish();
-        }
+        this.gotoActivity(clazz, null, finish);
     }
 
 
     public void gotoActivity(Class<? extends Activity> clazz, Bundle bundle, boolean finish) {
-        Intent intent = new Intent(this, clazz);
-        if (bundle != null) intent.putExtras(bundle);
-        startActivity(intent);
-        if (finish) {
-            finish();
-        }
+        this.gotoActivity(clazz, bundle, 0, finish);
     }
 
 
     public void gotoActivity(Class<? extends Activity> clazz, Bundle bundle, int flags, boolean finish) {
         Intent intent = new Intent(this, clazz);
-        if (bundle != null) intent.putExtras(bundle);
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
         intent.addFlags(flags);
         startActivity(intent);
         if (finish) {
@@ -189,14 +188,23 @@ public abstract class SuperActivity extends SupportActivity implements IBaseActi
         }
     }
 
-    @Override
-    public void onDisConnect() {
-
+    public void gotoActivityForResult(Class<? extends Activity> clazz, int requestCode) {
+        this.gotoActivityForResult(clazz, requestCode, null);
     }
 
-    @Override
-    public void onConnect(NetWorkUtil.NetWorkType type) {
-
+    public void gotoActivityForResult(Class<? extends Activity> clazz, int requestCode, @Nullable Bundle bundle) {
+        this.gotoActivityForResult(clazz, requestCode, bundle,0);
     }
+
+    public void gotoActivityForResult(Class<? extends Activity> clazz, int requestCode, @Nullable Bundle bundle,int flags) {
+        Intent intent = new Intent(this, clazz);
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
+        intent.addFlags(flags);
+        startActivityForResult(intent, requestCode);
+    }
+
+
 
 }

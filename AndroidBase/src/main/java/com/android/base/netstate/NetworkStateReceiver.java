@@ -111,9 +111,9 @@ public class NetworkStateReceiver extends BroadcastReceiver {
 			NetChangeObserver observer = netChangeObserverArrayList.get(i);
 			if (observer != null) {
 				if (isNetworkAvailable()) {
-					observer.onConnect(netType);
+					observer.onNetworkConnect(netType);
 				} else {
-					observer.onDisConnect();
+					observer.onNetworkDisConnect();
 				}
 			}
 		}

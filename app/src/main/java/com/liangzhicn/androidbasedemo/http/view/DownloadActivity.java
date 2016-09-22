@@ -1,7 +1,6 @@
 package com.liangzhicn.androidbasedemo.http.view;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.format.Formatter;
 import android.view.View;
 import android.widget.Button;
@@ -9,7 +8,7 @@ import android.widget.TextView;
 
 import com.android.base.common.logutils.LogUtils;
 import com.android.base.frame.activity.impl.BaseMvpActivity;
-import com.android.base.frame.view.IBaseView;
+import com.android.base.frame.presenter.factory.RequiresPresenter;
 import com.liangzhicn.androidbasedemo.R;
 import com.liangzhicn.androidbasedemo.http.contract.DownloadContract;
 import com.liangzhicn.androidbasedemo.http.presenter.DownloadPresenter;
@@ -23,6 +22,7 @@ import butterknife.OnClick;
  * 创建时间: 2016/06/23 13:31
  * 描述:
  */
+@RequiresPresenter(DownloadPresenter.class)
 public class DownloadActivity extends BaseMvpActivity<DownloadContract.Presenter> implements DownloadContract.View {
 
     @Bind(R.id.fileDownload)
@@ -40,21 +40,11 @@ public class DownloadActivity extends BaseMvpActivity<DownloadContract.Presenter
     @Bind(R.id.pbProgress)
     NumberProgressBar pbProgress;
 
-    @NonNull
-    @Override
-    protected DownloadContract.Presenter getMvpPresenter() {
-        return new DownloadPresenter();
-    }
 
-    @NonNull
-    @Override
-    protected IBaseView getMvpView() {
-        return this;
-    }
 
     @OnClick(R.id.fileDownload)
     public void fileDownload(View view) {
-        mPresenter.fileDownload();
+        getPresenter().fileDownload();
     }
 
     @Override
@@ -96,5 +86,10 @@ public class DownloadActivity extends BaseMvpActivity<DownloadContract.Presenter
         LogUtils.d(( currentSize  / totalSize )*100.0F+"");
         pbProgress.setMax(100);
         pbProgress.setProgress((int) (( currentSize  / totalSize )*100.0F));
+    }
+
+    @Override
+    protected void initData() {
+
     }
 }

@@ -2,36 +2,54 @@ package com.android.base.frame.fragment.impl;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.android.base.frame.presenter.impl.FragmentPresenter;
-import com.android.base.frame.view.IBaseView;
+import com.android.base.frame.view.ViewWithPresenter;
+import com.android.base.frame.presenter.BasePresenter;
+import com.android.base.frame.presenter.impl.PresenterLifecycleDelegate;
+import com.android.base.frame.presenter.factory.PresenterFactory;
+import com.android.base.frame.presenter.factory.ReflectionPresenterFactory;
 
 /**
  * Created by Administrator on 2016/5/13.
  */
-public abstract class BaseMvpFragment<P extends FragmentPresenter> extends SuperFragment{
+public abstract class BaseMvpFragment<P extends BasePresenter> extends SuperFragment implements ViewWithPresenter<P> {
 
     private boolean mInited = false;
 
     private Bundle mSavedInstanceState;
 
-    public P mPresenter;
+    private static final String PRESENTER_STATE_KEY = "presenter_state";
+    private PresenterLifecycleDelegate<P> presenterDelegate = new PresenterLifecycleDelegate<>(ReflectionPresenterFactory.<P>fromViewClass(getClass()));
 
-    /**
-     * 此方法在对象初始化的时候调用一次,其他时间段请直接使用 mPresenter
-     */
-    @NonNull
-    protected abstract P getMvpPresenter();
+    public PresenterFactory<P> getPresenterFactory() {
+        return presenterDelegate.getPresenterFactory();
+    }
 
-    @NonNull
-    protected abstract IBaseView getMvpView();
+    @Override
+    public void setPresenterFactory(PresenterFactory<P> presenterFactory) {
+        presenterDelegate.setPresenterFactory(presenterFactory);
+    }
+
+    public P getPresenter() {
+        return presenterDelegate.getPresenter();
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSavedInstanceState = savedInstanceState;
+        if (savedInstanceState != null) {
+            mSavedInstanceState = savedInstanceState;
+            presenterDelegate.onRestoreInstanceState(mSavedInstanceState.getBundle(PRESENTER_STATE_KEY));
+        }
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle bundle) {
+        super.onSaveInstanceState(bundle);
+        bundle.putBundle(PRESENTER_STATE_KEY, presenterDelegate.onSaveInstanceState());
     }
 
     @Override
@@ -62,80 +80,35 @@ public abstract class BaseMvpFragment<P extends FragmentPresenter> extends Super
     }
 
     private void initLazyView(Bundle savedInstanceState) {
-        mPresenter = getMvpPresenter();
-        mPresenter.initPresenter(this, getMvpView());
-        initView(savedInstanceState);
-        if(mPresenter !=null){
-            mPresenter.onActivityCreated();
-            mPresenter.start();
-        }
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if(mPresenter !=null){
-            mPresenter.onStart();
-        }
+        presenterDelegate.onCreate(this, getActivity());
+
+        initView(savedInstanceState);
+
+        initData();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(mPresenter !=null){
-            mPresenter.onActivityResult(requestCode, resultCode, data);
+        if (presenterDelegate != null) {
+            presenterDelegate.onActivityResult(requestCode, resultCode, data);
         }
     }
 
     @Override
     public boolean onBackPressedSupport() {
-        if (mPresenter != null) {
-            return mPresenter.onBackPressed();
+        if (presenterDelegate != null) {
+            return presenterDelegate.onBackPressed();
         }
         return super.onBackPressedSupport();
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        if(mPresenter !=null){
-            mPresenter.onResume();
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if(mPresenter !=null){
-            mPresenter.onPause();
-        }
-    }
-
-    @Override
-    public void onStop() {
-        if(mPresenter !=null){
-            mPresenter.onStop();
-        }
-        super.onStop();
-    }
-
-
-    @Override
     public void onDestroy() {
-        if(mPresenter !=null){
-            mPresenter.onDestroy();
-            mPresenter = null;
-        }
         super.onDestroy();
+        presenterDelegate.onDestroy(!getActivity().isChangingConfigurations());
     }
 
-
-//    public P getPresenter(){
-//        try {
-//            return getPresenterClass().newInstance();
-//        } catch (Exception e) {
-//            throw new RuntimeException("create IDelegate error");
-//        }
-//    }
 
 }
