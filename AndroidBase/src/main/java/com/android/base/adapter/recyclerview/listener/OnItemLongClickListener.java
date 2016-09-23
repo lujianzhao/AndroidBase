@@ -1,9 +1,7 @@
 package com.android.base.adapter.recyclerview.listener;
 
 import android.view.View;
-
 import com.android.base.adapter.recyclerview.BaseQuickAdapter;
-
 
 /**
  * create by: allen on 16/8/3.

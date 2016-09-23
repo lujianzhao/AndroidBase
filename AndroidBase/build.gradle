@@ -64,8 +64,8 @@ dependencies {
     //Fragment解决库
     compile 'me.yokeyword:fragmentation:0.7.10'
     //db数据库
-    compile 'com.j256.ormlite:ormlite-core:4.48'
-    compile 'com.j256.ormlite:ormlite-android:4.48'
+    compile 'com.j256.ormlite:ormlite-core:5.0'
+    compile 'com.j256.ormlite:ormlite-android:5.0'
     //动画
     compile 'jp.wasabeef:recyclerview-animators:2.2.4'
     //应用发生错误时,自动重启
@@ -74,7 +74,7 @@ dependencies {
     //Log工具类,目前的版本1.4.2,在com.android.base.common.logutils
 //    compile 'com.apkfuns.logutils:library:1.4.2'
 
-    //BaseRecyclerViewAdapterHelper,目前的版本2.0.8,在com.android.base.adapter.recyclerview
+    //BaseRecyclerViewAdapterHelper,目前的版本2.1.6,在com.android.base.adapter.recyclerview
 
     //Luban,目前的版本1.0.8,在com.android.base.common.luban
 

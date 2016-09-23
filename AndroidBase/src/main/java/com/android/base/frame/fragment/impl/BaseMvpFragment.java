@@ -20,19 +20,19 @@ public abstract class BaseMvpFragment<P extends BasePresenter> extends SuperFrag
     private Bundle mSavedInstanceState;
 
     private static final String PRESENTER_STATE_KEY = "presenter_state";
-    private PresenterLifecycleDelegate<P> presenterDelegate = new PresenterLifecycleDelegate<>(ReflectionPresenterFactory.<P>fromViewClass(getClass()));
+    private PresenterLifecycleDelegate<P> mPresenterDelegate = new PresenterLifecycleDelegate<>(ReflectionPresenterFactory.<P>fromViewClass(getClass()));
 
     public PresenterFactory<P> getPresenterFactory() {
-        return presenterDelegate.getPresenterFactory();
+        return mPresenterDelegate.getPresenterFactory();
     }
 
     @Override
     public void setPresenterFactory(PresenterFactory<P> presenterFactory) {
-        presenterDelegate.setPresenterFactory(presenterFactory);
+        mPresenterDelegate.setPresenterFactory(presenterFactory);
     }
 
     public P getPresenter() {
-        return presenterDelegate.getPresenter();
+        return mPresenterDelegate.getPresenter();
     }
 
 
@@ -41,7 +41,7 @@ public abstract class BaseMvpFragment<P extends BasePresenter> extends SuperFrag
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
             mSavedInstanceState = savedInstanceState;
-            presenterDelegate.onRestoreInstanceState(mSavedInstanceState.getBundle(PRESENTER_STATE_KEY));
+            mPresenterDelegate.onRestoreInstanceState(mSavedInstanceState.getBundle(PRESENTER_STATE_KEY));
         }
 
     }
@@ -49,7 +49,7 @@ public abstract class BaseMvpFragment<P extends BasePresenter> extends SuperFrag
     @Override
     public void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
-        bundle.putBundle(PRESENTER_STATE_KEY, presenterDelegate.onSaveInstanceState());
+        bundle.putBundle(PRESENTER_STATE_KEY, mPresenterDelegate.onSaveInstanceState());
     }
 
     @Override
@@ -79,9 +79,14 @@ public abstract class BaseMvpFragment<P extends BasePresenter> extends SuperFrag
         }
     }
 
+    @Override
+    protected void initData() {
+        getPresenter().start();
+    }
+
     private void initLazyView(Bundle savedInstanceState) {
 
-        presenterDelegate.onCreate(this, getActivity());
+        mPresenterDelegate.onCreate(this, getActivity());
 
         initView(savedInstanceState);
 
@@ -91,15 +96,15 @@ public abstract class BaseMvpFragment<P extends BasePresenter> extends SuperFrag
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (presenterDelegate != null) {
-            presenterDelegate.onActivityResult(requestCode, resultCode, data);
+        if (mPresenterDelegate != null) {
+            mPresenterDelegate.onActivityResult(requestCode, resultCode, data);
         }
     }
 
     @Override
     public boolean onBackPressedSupport() {
-        if (presenterDelegate != null) {
-            return presenterDelegate.onBackPressed();
+        if (mPresenterDelegate != null) {
+            return mPresenterDelegate.onBackPressed();
         }
         return super.onBackPressedSupport();
     }
@@ -107,7 +112,7 @@ public abstract class BaseMvpFragment<P extends BasePresenter> extends SuperFrag
     @Override
     public void onDestroy() {
         super.onDestroy();
-        presenterDelegate.onDestroy(!getActivity().isChangingConfigurations());
+        mPresenterDelegate.onDestroy(!getActivity().isChangingConfigurations());
     }
 
 

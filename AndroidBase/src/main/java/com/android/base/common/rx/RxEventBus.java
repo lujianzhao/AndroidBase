@@ -47,7 +47,13 @@ public class RxEventBus {
      * @return
      */
     public RxEventBus OnEvent(Observable<?> mObservable, Action1<Object> mAction1) {
-        mObservable.observeOn(AndroidSchedulers.mainThread()).subscribe(mAction1);
+        mObservable.observeOn(AndroidSchedulers.mainThread()).subscribe(mAction1, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                throwable.printStackTrace();
+                LogUtils.e(throwable);
+            }
+        });
         return getInstance();
     }
 
@@ -78,6 +84,7 @@ public class RxEventBus {
         }
     }
 
+
     /**
      * 取消监听
      *
@@ -87,6 +94,10 @@ public class RxEventBus {
      */
     @SuppressWarnings("rawtypes")
     public RxEventBus unregister(@NonNull Object tag, @NonNull Observable<?> observable) {
+        if (null == observable) {
+            return getInstance();
+        }
+
         List<Subject> subjects = subjectMapper.get(tag);
         if (null != subjects) {
             subjects.remove((Subject) observable);
@@ -97,6 +108,7 @@ public class RxEventBus {
         }
         return getInstance();
     }
+
 
     public void post(@NonNull Object content) {
         post(content.getClass().getName(), content);
@@ -118,6 +130,8 @@ public class RxEventBus {
             }
         }
     }
+
+
 
     @SuppressWarnings("rawtypes")
     public static boolean isEmpty(Collection<Subject> collection) {

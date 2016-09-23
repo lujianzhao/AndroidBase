@@ -8,38 +8,38 @@ import com.android.base.frame.model.factory.ModelFactory;
  * Created by Administrator on 2016/9/19.
  */
 public class ModelLifecycleDelegate<M extends BaseModel> implements IModel {
-    private ModelFactory<M> modelFactory;
-    private M model;
+    private ModelFactory<M> mModelFactory;
+    private M mModel;
 
     public ModelLifecycleDelegate(ModelFactory<M> modelFactory) {
-        this.modelFactory = modelFactory;
+        this.mModelFactory = modelFactory;
     }
 
-    public ModelFactory<M> getModelFactory() {
-        return modelFactory;
+    public ModelFactory<M> getmModelFactory() {
+        return mModelFactory;
     }
 
-    public void setModelFactory(ModelFactory<M> modelFactory) {
-        if (model != null)
-            throw new IllegalArgumentException("setModelFactory() should be called before onCreate()");
-        this.modelFactory = modelFactory;
+    public void setmModelFactory(ModelFactory<M> mModelFactory) {
+        if (mModel != null)
+            throw new IllegalArgumentException("setmModelFactory() should be called before onCreate()");
+        this.mModelFactory = mModelFactory;
     }
 
-    public M getModel() {
-        if (modelFactory != null) {
-            if (this.model == null) {
-                this.model = modelFactory.createModel();
-                this.model.create();
+    public M getmModel() {
+        if (mModelFactory != null) {
+            if (this.mModel == null) {
+                this.mModel = mModelFactory.createModel();
+                this.mModel.create();
             }
         }
-        return model;
+        return mModel;
     }
 
     @Override
     public void onDestroy() {
-        if (model != null) {
-            model.destroy();
-            model = null;
+        if (mModel != null) {
+            mModel.destroy();
+            mModel = null;
         }
     }
 

@@ -21,7 +21,7 @@ public class DatabaseHelper extends OrmLiteDatabaseHelper {
     /**
      * 数据库版本号,升级数据库只要修改版本号就好.jar会自动升级数据库
      */
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private static DatabaseHelper instance;
 

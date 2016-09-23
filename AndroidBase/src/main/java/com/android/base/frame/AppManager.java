@@ -12,7 +12,7 @@ import java.util.Stack;
  */
 public class AppManager {
 
-    private static Stack<Activity> activityStack;
+    private static Stack<Activity> mActivityStack;
     private static AppManager mInstance;
 
     private AppManager() {
@@ -36,30 +36,30 @@ public class AppManager {
      * 获取当前Activity栈中元素个数
      */
     public int getCount() {
-        return activityStack.size();
+        return mActivityStack.size();
     }
 
     /**
      * 添加Activity到栈
      */
     public void addActivity(Activity activity) {
-        if (activityStack == null) {
-            activityStack = new Stack<>();
+        if (mActivityStack == null) {
+            mActivityStack = new Stack<>();
         }
-        activityStack.add(activity);
+        mActivityStack.add(activity);
     }
 
     /**
      * 获取当前Activity（栈顶Activity）
      */
     public Activity topActivity() {
-        if (activityStack == null) {
+        if (mActivityStack == null) {
             throw new NullPointerException("Activity stack is Null,your Activity must extend KJActivity");
         }
-        if (activityStack.isEmpty()) {
+        if (mActivityStack.isEmpty()) {
             return null;
         }
-        Activity activity = activityStack.lastElement();
+        Activity activity = mActivityStack.lastElement();
         return activity;
     }
 
@@ -68,7 +68,7 @@ public class AppManager {
      */
     public Activity findActivity(Class<?> cls) {
         Activity activity = null;
-        for (Activity aty : activityStack) {
+        for (Activity aty : mActivityStack) {
             if (aty.getClass().equals(cls)) {
                 activity = aty;
                 break;
@@ -81,7 +81,7 @@ public class AppManager {
      * 结束当前Activity（栈顶Activity）
      */
     public void finishActivity() {
-        Activity activity = activityStack.lastElement();
+        Activity activity = mActivityStack.lastElement();
         finishActivity(activity);
     }
 
@@ -91,7 +91,8 @@ public class AppManager {
     public void finishActivity(Activity activity) {
         if (activity != null) {
             if (activity instanceof IBaseActivity) {
-                activityStack.remove(activity);
+                mActivityStack.remove(activity);
+                activity = null;
             }
         }
     }
@@ -100,7 +101,7 @@ public class AppManager {
      * 结束指定的Activity(重载)
      */
     public void finishActivity(Class<?> cls) {
-        for (Activity activity : activityStack) {
+        for (Activity activity : mActivityStack) {
             if (activity.getClass().equals(cls)) {
                 finishActivity(activity);
             }
@@ -113,7 +114,7 @@ public class AppManager {
      * @param cls
      */
     public void finishOthersActivity(Class<?> cls) {
-        for ( Activity activity : activityStack) {
+        for ( Activity activity : mActivityStack) {
             if (!(activity.getClass().equals(cls))) {
                 finishActivity(activity);
             }
@@ -124,12 +125,12 @@ public class AppManager {
      * 结束所有Activity
      */
     public void finishAllActivity() {
-        for (int i = 0, size = activityStack.size(); i < size; i++) {
-            if (null != activityStack.get(i)) {
-                (activityStack.get(i)).finish();
+        for (int i = 0, size = mActivityStack.size(); i < size; i++) {
+            if (null != mActivityStack.get(i)) {
+                (mActivityStack.get(i)).finish();
             }
         }
-        activityStack.clear();
+        mActivityStack.clear();
     }
 
     @Deprecated
@@ -142,7 +143,7 @@ public class AppManager {
      * @return 是否还有activity存活
      */
     public boolean has() {
-        return activityStack!=null && activityStack.size() > 0;
+        return mActivityStack !=null && mActivityStack.size() > 0;
     }
 
     /**

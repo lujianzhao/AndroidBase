@@ -18,23 +18,27 @@ public abstract class BaseMvpActivity<P extends BasePresenter> extends SuperActi
 
 
     private static final String PRESENTER_STATE_KEY = "presenter_state";
-    private PresenterLifecycleDelegate<P> presenterDelegate = new PresenterLifecycleDelegate<>(ReflectionPresenterFactory.<P>fromViewClass(getClass()));
+    private PresenterLifecycleDelegate<P> mPresenterDelegate = new PresenterLifecycleDelegate<>(ReflectionPresenterFactory.<P>fromViewClass(getClass()));
 
     @Override
     public PresenterFactory<P> getPresenterFactory() {
-        return presenterDelegate.getPresenterFactory();
+        return mPresenterDelegate.getPresenterFactory();
     }
 
     @Override
     public void setPresenterFactory(PresenterFactory<P> presenterFactory) {
-        presenterDelegate.setPresenterFactory(presenterFactory);
+        mPresenterDelegate.setPresenterFactory(presenterFactory);
     }
 
     @Override
     public P getPresenter() {
-        return presenterDelegate.getPresenter();
+        return mPresenterDelegate.getPresenter();
     }
 
+    @Override
+    protected void initData() {
+        getPresenter().start();
+    }
 
     @Override
     @CallSuper
@@ -42,10 +46,10 @@ public abstract class BaseMvpActivity<P extends BasePresenter> extends SuperActi
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState != null) {
-            presenterDelegate.onRestoreInstanceState(savedInstanceState.getBundle(PRESENTER_STATE_KEY));
+            mPresenterDelegate.onRestoreInstanceState(savedInstanceState.getBundle(PRESENTER_STATE_KEY));
         }
 
-        presenterDelegate.onCreate(this,this);
+        mPresenterDelegate.onCreate(this,this);
 
         initView(savedInstanceState);
 
@@ -55,13 +59,13 @@ public abstract class BaseMvpActivity<P extends BasePresenter> extends SuperActi
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBundle(PRESENTER_STATE_KEY, presenterDelegate.onSaveInstanceState());
+        outState.putBundle(PRESENTER_STATE_KEY, mPresenterDelegate.onSaveInstanceState());
     }
 
 
     @Override
     public void onBackPressedSupport() {
-        if (presenterDelegate == null || !presenterDelegate.onBackPressed()) {
+        if (mPresenterDelegate == null || !mPresenterDelegate.onBackPressed()) {
             super.onBackPressedSupport();
         }
     }
@@ -69,25 +73,25 @@ public abstract class BaseMvpActivity<P extends BasePresenter> extends SuperActi
     @Override
     @CallSuper
     protected void onDestroy() {
-        presenterDelegate.onDestroy(!isChangingConfigurations());
+        mPresenterDelegate.onDestroy(!isChangingConfigurations());
         super.onDestroy();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        presenterDelegate.onActivityResult(requestCode, resultCode, data);
+        mPresenterDelegate.onActivityResult(requestCode, resultCode, data);
     }
 
 
     @Override
     public void onNetWorkDisConnect() {
-        presenterDelegate.onNetWorkDisConnect();
+        mPresenterDelegate.onNetWorkDisConnect();
     }
 
     @Override
     public void onNetWorkConnect(NetWorkUtil.NetWorkType type) {
-        presenterDelegate.onNetWorkConnect(type);
+        mPresenterDelegate.onNetWorkConnect(type);
     }
 
 }

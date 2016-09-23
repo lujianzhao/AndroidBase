@@ -11,7 +11,7 @@ import com.android.base.frame.presenter.BasePresenter;
  */
 public class ReflectionPresenterFactory<P extends BasePresenter> implements PresenterFactory<P> {
 
-    private Class<P> presenterClass;
+    private Class<P> mPresenterClass;
 
     /**
      * This method returns a {@link ReflectionPresenterFactory} instance if a given view class has
@@ -30,13 +30,13 @@ public class ReflectionPresenterFactory<P extends BasePresenter> implements Pres
     }
 
     public ReflectionPresenterFactory(Class<P> presenterClass) {
-        this.presenterClass = presenterClass;
+        this.mPresenterClass = presenterClass;
     }
 
     @Override
     public P createPresenter() {
         try {
-            return presenterClass.newInstance();
+            return mPresenterClass.newInstance();
         }
         catch (Exception e) {
             throw new RuntimeException(e);

@@ -11,7 +11,7 @@ import com.android.base.frame.model.BaseModel;
  */
 public class ReflectionModelFactory<M extends BaseModel> implements ModelFactory<M> {
 
-    private Class<M> modelClass;
+    private Class<M> mModelClass;
 
     /**
      * This method returns a {@link ReflectionModelFactory} instance if a given view class has
@@ -30,13 +30,13 @@ public class ReflectionModelFactory<M extends BaseModel> implements ModelFactory
     }
 
     public ReflectionModelFactory(Class<M> presenterClass) {
-        this.modelClass = presenterClass;
+        this.mModelClass = presenterClass;
     }
 
     @Override
     public M createModel() {
         try {
-            return modelClass.newInstance();
+            return mModelClass.newInstance();
         }
         catch (Exception e) {
             throw new RuntimeException(e);

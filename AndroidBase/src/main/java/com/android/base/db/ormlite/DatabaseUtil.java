@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 import com.android.base.common.logutils.LogUtils;
-import com.j256.ormlite.misc.JavaxPersistence;
+import com.j256.ormlite.misc.JavaxPersistenceImpl;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTable;
 import com.j256.ormlite.table.TableUtils;
@@ -34,7 +34,8 @@ public class DatabaseUtil {
         if (databaseTable != null &&  !TextUtils.isEmpty(databaseTable.tableName()) && databaseTable.tableName().length() > 0) {
             name = databaseTable.tableName();
         } else {
-            name = JavaxPersistence.getEntityName(clazz);
+            name =new JavaxPersistenceImpl().getEntityName(clazz);
+//            name = JavaxPersistence.getEntityName(clazz);
             if (name == null) {
                 name = clazz.getSimpleName().toLowerCase();
             }

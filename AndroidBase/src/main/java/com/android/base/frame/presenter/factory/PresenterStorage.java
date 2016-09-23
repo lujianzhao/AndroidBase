@@ -11,8 +11,8 @@ public enum PresenterStorage {
 
     INSTANCE;
 
-    private HashMap<String, BasePresenter> idToPresenter = new HashMap<>();
-    private HashMap<BasePresenter, String> presenterToId = new HashMap<>();
+    private HashMap<String, BasePresenter> mIdToPresenter = new HashMap<>();
+    private HashMap<BasePresenter, String> mPresenterToId = new HashMap<>();
 
     /**
      * Adds a presenter to the storage
@@ -21,12 +21,12 @@ public enum PresenterStorage {
      */
     public void add(final BasePresenter presenter) {
         String id = presenter.getClass().getSimpleName() + "/" + System.nanoTime() + "/" + (int)(Math.random() * Integer.MAX_VALUE);
-        idToPresenter.put(id, presenter);
-        presenterToId.put(presenter, id);
+        mIdToPresenter.put(id, presenter);
+        mPresenterToId.put(presenter, id);
         presenter.addOnDestroyListener(new BasePresenter.OnDestroyListener() {
             @Override
             public void onDestroy() {
-                idToPresenter.remove(presenterToId.remove(presenter));
+                mIdToPresenter.remove(mPresenterToId.remove(presenter));
                 presenter.removeOnDestroyListener(this);
             }
         });
@@ -41,7 +41,7 @@ public enum PresenterStorage {
      */
     public <P> P getPresenter(String id) {
         //noinspection unchecked
-        return (P)idToPresenter.get(id);
+        return (P) mIdToPresenter.get(id);
     }
 
     /**
@@ -51,7 +51,7 @@ public enum PresenterStorage {
      * @return if of the presenter.
      */
     public String getId(BasePresenter presenter) {
-        return presenterToId.get(presenter);
+        return mPresenterToId.get(presenter);
     }
 
     /**
@@ -59,7 +59,7 @@ public enum PresenterStorage {
      * Use this method for testing purposes only.
      */
     public void clear() {
-        idToPresenter.clear();
-        presenterToId.clear();
+        mIdToPresenter.clear();
+        mPresenterToId.clear();
     }
 }

@@ -87,12 +87,12 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         ConnectionSource cs = getConnectionSource();
-        Object conn = cs.getSpecialConnection();
+        DatabaseConnection conn = cs.getSpecialConnection(null);
         boolean clearSpecial = false;
         if (conn == null) {
             conn = new AndroidDatabaseConnection(db, true, this.cancelQueriesEnabled);
             try {
-                cs.saveSpecialConnection((DatabaseConnection) conn);
+                cs.saveSpecialConnection(conn);
                 clearSpecial = true;
             } catch (SQLException var11) {
                 throw new IllegalStateException("Could not save special connection", var11);
@@ -103,7 +103,7 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
             this.onDowngrade(cs, oldVersion, newVersion);
         } finally {
             if (clearSpecial) {
-                cs.clearSpecialConnection((DatabaseConnection) conn);
+                cs.clearSpecialConnection( conn);
             }
         }
     }

@@ -38,8 +38,15 @@ public abstract class SuperFragment extends SupportFragment implements IBaseFrag
      */
     protected abstract int getContentViewId();
 
+    /**
+     * 初始化View
+     * @param savedInstanceState
+     */
     protected abstract void initView(Bundle savedInstanceState);
 
+    /**
+     * 开始加载数据
+     */
     protected abstract void initData();
 
     @Override
