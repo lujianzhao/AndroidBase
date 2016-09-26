@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
 
+import com.android.base.widget.selector.injection.SelectorInjection;
+
 public class SelectorImageButton extends ImageButton implements SelectorView {
 
     private SelectorInjection injection;
@@ -12,12 +14,12 @@ public class SelectorImageButton extends ImageButton implements SelectorView {
         this(context, null);
     }
 
-    public SelectorImageButton(Context context, AttributeSet attrs, int defStyle) {
-        this(context, attrs);
+    public SelectorImageButton(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
     }
 
-    public SelectorImageButton(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    public SelectorImageButton(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
         injection = initSelectorInjection(context, attrs);
         injection.injection(this);
     }

@@ -1,4 +1,4 @@
-package com.android.base.widget.selector;
+package com.android.base.widget.selector.injection;
 
 import android.content.Context;
 import android.content.res.ColorStateList;

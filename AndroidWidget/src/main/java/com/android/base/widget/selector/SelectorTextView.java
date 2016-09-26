@@ -2,8 +2,10 @@ package com.android.base.widget.selector;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.widget.CheckedTextView;
+
+import com.android.base.widget.selector.helper.AppCompatTextViewHelper;
+import com.android.base.widget.selector.injection.SelectorInjection;
 
 /**
  * <p>
@@ -35,8 +37,10 @@ public class SelectorTextView extends CheckedTextView implements SelectorView {
         injection = initSelectorInjection(context, attrs);
         injection.injection(this);
 
+        new AppCompatTextViewHelper(this).loadFromAttributes(attrs, defStyle);
+
         setClickable(true);
-        setGravity(Gravity.CENTER);
+//        setGravity(Gravity.CENTER);
     }
 
     @Override

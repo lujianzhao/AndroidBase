@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.CompoundButton;
 
+import com.android.base.widget.selector.injection.SelectorInjection;
+
 /**
  * @author Kale
  * @date 2016/3/14
