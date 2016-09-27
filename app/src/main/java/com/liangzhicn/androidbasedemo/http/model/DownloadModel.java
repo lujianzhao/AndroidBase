@@ -20,7 +20,7 @@ public class DownloadModel extends DownloadContract.Model {
     @Override
     public void fileDownload(String path, final ExecutorCallBack<ProgressRequest> requestDataCallBack) {
         GetAndPostService mGetAndPostService = GetAndPostClient.getInstance("http://server.jeasonlzy.com/OkHttpUtils/").createService(GetAndPostService.class);
-        mRxManager.add(RxUtil.getDownloadObservable(mGetAndPostService.downloadFile(), path).compose(RxUtil.<ProgressRequest>applySchedulersProgress()).subscribe(new Subscriber<ProgressRequest>() {
+        getRxManager().add(RxUtil.getDownloadObservable(mGetAndPostService.downloadFile(), path).compose(RxUtil.<ProgressRequest>applySchedulersProgress()).subscribe(new Subscriber<ProgressRequest>() {
             @Override
             public void onStart() {
                 requestDataCallBack.onStart();

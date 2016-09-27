@@ -15,17 +15,17 @@ public class ModelLifecycleDelegate<M extends BaseModel> implements IModel {
         this.mModelFactory = modelFactory;
     }
 
-    public ModelFactory<M> getmModelFactory() {
+    public ModelFactory<M> getModelFactory() {
         return mModelFactory;
     }
 
-    public void setmModelFactory(ModelFactory<M> mModelFactory) {
+    public void setModelFactory(ModelFactory<M> mModelFactory) {
         if (mModel != null)
             throw new IllegalArgumentException("setmModelFactory() should be called before onCreate()");
         this.mModelFactory = mModelFactory;
     }
 
-    public M getmModel() {
+    public M getModel() {
         if (mModelFactory != null) {
             if (this.mModel == null) {
                 this.mModel = mModelFactory.createModel();

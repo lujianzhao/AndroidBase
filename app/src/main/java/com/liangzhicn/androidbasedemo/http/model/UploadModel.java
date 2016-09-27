@@ -34,7 +34,7 @@ public class UploadModel extends UploadContract.Model {
         // 添加上传进度监听
         final PublishSubject<ProgressRequest> objectPublishSubject = PublishSubject.create();
         // 此处是为了可以自由的选择监听单独文件的进度还是监听总进度.总进度可以使用.map来转变
-        mRxManager.add(objectPublishSubject.compose(RxUtil.<ProgressRequest>applySchedulersProgress()).subscribe(new Action1<ProgressRequest>() {
+        getRxManager().add(objectPublishSubject.compose(RxUtil.<ProgressRequest>applySchedulersProgress()).subscribe(new Action1<ProgressRequest>() {
             @Override
             public void call(ProgressRequest progressRequest) {
                 requestDataCallBack.onNext(progressRequest);
@@ -55,7 +55,7 @@ public class UploadModel extends UploadContract.Model {
         }
         GetAndPostService mGetAndPostService = GetAndPostClient.getInstance("http://server.jeasonlzy.com/OkHttpUtils/").createService(GetAndPostService.class);
         //开始上传,rxJava的生命周期交由mRxManager来管理.
-        mRxManager.add(mGetAndPostService.uploadImage(params).compose(RxUtil.<ResponseBody>applySchedulersForRetrofit()).subscribe(new Subscriber<ResponseBody>() {
+        getRxManager().add(mGetAndPostService.uploadImage(params).compose(RxUtil.<ResponseBody>applySchedulersForRetrofit()).subscribe(new Subscriber<ResponseBody>() {
             @Override
             public void onCompleted() {
                 requestDataCallBack.onComplete();

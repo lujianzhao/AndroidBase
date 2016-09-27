@@ -25,7 +25,7 @@ public class GetAndPostModel extends GetAndPostContract.Model {
             mGetAndPostService = GetAndPostClient.getInstance(ApiConfig.URL_BASE).createService(GetAndPostService.class);
         }
 
-        mRxManager.add(mGetAndPostService.getGet().compose(RxUtil.<String>applySchedulersForRetrofit()).subscribe(new Subscriber<String>() {
+        getRxManager().add(mGetAndPostService.getGet().compose(RxUtil.<String>applySchedulersForRetrofit()).subscribe(new Subscriber<String>() {
             @Override
             public void onCompleted() {
                 requestCallBack.onComplete();
@@ -54,7 +54,7 @@ public class GetAndPostModel extends GetAndPostContract.Model {
             mGetAndPostService = GetAndPostClient.getInstance(ApiConfig.URL_BASE).createService(GetAndPostService.class);
         }
 
-        mRxManager.add(mGetAndPostService.getPost().compose(RxUtil.<String>applySchedulersForRetrofit()).subscribe(new Subscriber<String>() {
+        getRxManager().add(mGetAndPostService.getPost().compose(RxUtil.<String>applySchedulersForRetrofit()).subscribe(new Subscriber<String>() {
             @Override
             public void onCompleted() {
                 requestCallBack.onComplete();
@@ -93,7 +93,7 @@ public class GetAndPostModel extends GetAndPostContract.Model {
         Observable<String> compose2 = mGetAndPostService.getPost().compose(RxUtil.<String>applySchedulersForRetrofit());
 
 
-        mRxManager.add(Observable.mergeDelayError(compose1, compose2)
+        getRxManager().add(Observable.mergeDelayError(compose1, compose2)
                 .subscribe(new Subscriber<Object>() {
                     @Override
                     public void onCompleted() {

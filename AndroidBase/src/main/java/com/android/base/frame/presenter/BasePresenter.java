@@ -21,15 +21,15 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * Created by Administrator on 2016/9/19.
  */
-public class BasePresenter<M extends BaseModel, V extends IBaseView> implements PresenterWithModel {
+public class BasePresenter<M extends BaseModel, V extends IBaseView> implements PresenterWithModel<M> {
 
-    private V view;
+    private V mView;
 
     private CopyOnWriteArrayList<OnDestroyListener> onDestroyListeners = new CopyOnWriteArrayList<>();
 
     private ModelLifecycleDelegate<M> modelDelegate = new ModelLifecycleDelegate<>(ReflectionModelFactory.<M>fromViewClass(getClass()));
 
-    protected RxManager rxManager = new RxManager();
+    private RxManager mRxManager = new RxManager();
 
     private Context mContext;
 
@@ -54,7 +54,7 @@ public class BasePresenter<M extends BaseModel, V extends IBaseView> implements 
     }
 
     /**
-     * This method is being called when a user leaves view.
+     * This method is being called when a user leaves mView.
      * <p>
      * This method is intended for overriding.
      */
@@ -72,19 +72,19 @@ public class BasePresenter<M extends BaseModel, V extends IBaseView> implements 
     }
 
     /**
-     * This method is being called when a view gets attached to it.
+     * This method is being called when a mView gets attached to it.
      * Normally this happens during {@link Activity#onResume()}, {@link android.app.Fragment#onResume()}
      * and {@link android.view.View#onAttachedToWindow()}.
      * <p>
      * This method is intended for overriding.
      *
-     * @param view a view that should be taken
+     * @param view a mView that should be taken
      */
     protected void onTakeView(V view) {
     }
 
     /**
-     * This method is being called when a view gets detached from the presenter.
+     * This method is being called when a mView gets detached from the presenter.
      * Normally this happens during {@link Activity#onPause()} ()}, {@link Fragment#onDestroyView()}
      * and {@link android.view.View#onDetachedFromWindow()}.
      * <p>
@@ -123,7 +123,11 @@ public class BasePresenter<M extends BaseModel, V extends IBaseView> implements 
 
 
     public V getView() {
-        return view;
+        return mView;
+    }
+
+    protected RxManager getRxManager() {
+        return mRxManager;
     }
 
     /**
@@ -143,9 +147,9 @@ public class BasePresenter<M extends BaseModel, V extends IBaseView> implements 
 
         modelDelegate.onDestroy();
 
-        if (rxManager != null) {
-            rxManager.clear();
-            rxManager = null;
+        if (mRxManager != null) {
+            mRxManager.clear();
+            mRxManager = null;
         }
 
         onDestroy();
@@ -159,48 +163,44 @@ public class BasePresenter<M extends BaseModel, V extends IBaseView> implements 
     }
 
     /**
-     * Attaches a view to the presenter.
+     * Attaches a mView to the presenter.
      *
-     * @param view a view to attach.
+     * @param view a mView to attach.
      */
     public void takeView(V view, Context context) {
-        this.view = view;
+        this.mView = view;
         this.mContext = context;
         onTakeView(view);
     }
 
     /**
-     * Detaches the presenter from a view.
+     * Detaches the presenter from a mView.
      */
     public void dropView() {
         onDropView();
-        this.view = null;
+        this.mView = null;
     }
 
 
     @Override
-    public ModelFactory getModelFactory() {
-
-        return modelDelegate.getmModelFactory();
+    public ModelFactory<M> getModelFactory() {
+        return modelDelegate.getModelFactory();
     }
 
+
     @Override
-    public void setModelFactory(ModelFactory modelFactory) {
-        modelDelegate.setmModelFactory(modelFactory);
+    public void setModelFactory(ModelFactory<M> modelFactory) {
+        modelDelegate.setModelFactory(modelFactory);
     }
 
     public M getModel() {
-        return modelDelegate.getmModel();
+        return modelDelegate.getModel();
     }
 
 
     public Context getContext() {
         return mContext;
     }
-
-
-
-
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
     }
