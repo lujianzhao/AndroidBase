@@ -74,7 +74,7 @@ dependencies {
     //Log工具类,目前的版本1.4.2,在com.android.base.common.logutils
 //    compile 'com.apkfuns.logutils:library:1.4.2'
 
-    //BaseRecyclerViewAdapterHelper,目前的版本2.1.6,在com.android.base.adapter.recyclerview
+    //BaseRecyclerViewAdapterHelper,目前的版本2.1.7,在com.android.base.adapter.recyclerview
 
     //Luban,目前的版本1.0.8,在com.android.base.common.luban
 

@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.android.base.callback.ExecutorCallBack;
+import com.android.base.callback.ExecutorUploadCallBack;
 import com.android.base.common.assist.Toastor;
 import com.android.base.common.logutils.LogUtils;
 import com.android.base.frame.model.factory.RequiresModel;
@@ -16,7 +16,10 @@ import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.loader.GlideImageLoader;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.ResponseBody;
 
 /**
  * 作者: lujianzhao
@@ -73,7 +76,7 @@ public class UploadPresenter extends UploadContract.Presenter {
             Toastor.showToast(getContext(), "请选择需上传的图片");
             return;
         }
-        getModel().formUpload(imageItems, new ExecutorCallBack<ProgressRequest>() {
+        getModel().formUpload(imageItems, new ExecutorUploadCallBack<ProgressRequest, ResponseBody>() {
             @Override
             public void onStart() {
                 LogUtils.d("开始上传");
@@ -85,8 +88,14 @@ public class UploadPresenter extends UploadContract.Presenter {
             }
 
             @Override
-            public void onComplete() {
-                LogUtils.d("所有文件上传完成");
+            public void onComplete(ResponseBody responseData) {
+                String string = "";
+                try {
+                     string = responseData.string();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                LogUtils.d("所有文件上传完成,服务器返回值:"+string);
             }
 
             @Override

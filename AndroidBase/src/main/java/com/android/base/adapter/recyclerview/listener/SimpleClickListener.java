@@ -18,6 +18,7 @@ import static com.android.base.adapter.recyclerview.BaseQuickAdapter.FOOTER_VIEW
 import static com.android.base.adapter.recyclerview.BaseQuickAdapter.HEADER_VIEW;
 import static com.android.base.adapter.recyclerview.BaseQuickAdapter.LOADING_VIEW;
 
+
 /**
  * Created by AllenCoder on 2016/8/03.
  * <p>

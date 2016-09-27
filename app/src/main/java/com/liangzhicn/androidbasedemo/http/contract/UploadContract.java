@@ -1,6 +1,6 @@
 package com.liangzhicn.androidbasedemo.http.contract;
 
-import com.android.base.callback.ExecutorCallBack;
+import com.android.base.callback.ExecutorUploadCallBack;
 import com.android.base.frame.model.BaseModel;
 import com.android.base.frame.presenter.BasePresenter;
 import com.android.base.frame.view.IBaseView;
@@ -8,6 +8,8 @@ import com.android.base.http.progress.domain.ProgressRequest;
 import com.lzy.imagepicker.bean.ImageItem;
 
 import java.util.ArrayList;
+
+import okhttp3.ResponseBody;
 
 /**
  * Created by Administrator on 2016/4/27.
@@ -21,7 +23,7 @@ public interface UploadContract {
          * @param imageItems
          * @param requestDataCallBack
          */
-        public abstract void formUpload(ArrayList<ImageItem> imageItems, ExecutorCallBack<ProgressRequest> requestDataCallBack);
+        public abstract void formUpload(ArrayList<ImageItem> imageItems, ExecutorUploadCallBack<ProgressRequest, ResponseBody> requestDataCallBack);
 
     }
 
