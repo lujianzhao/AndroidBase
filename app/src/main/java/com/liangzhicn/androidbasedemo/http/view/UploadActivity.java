@@ -61,12 +61,12 @@ public class UploadActivity extends BaseMvpActivity<UploadContract.Presenter>imp
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        initSmartExecutor();
-
-        if (flag) {
-            flag = false;
-            ro();
-        }
+//        initSmartExecutor();
+//
+//        if (flag) {
+//            flag = false;
+//            ro();
+//        }
 
     }
 
@@ -166,10 +166,5 @@ public class UploadActivity extends BaseMvpActivity<UploadContract.Presenter>imp
         LogUtils.d(( currentSize  / totalSize )*100.0F+"");
         pbProgress.setMax(100);
         pbProgress.setProgress((int) (( currentSize  / totalSize )*100.0F));
-    }
-
-    @Override
-    protected void initData() {
-
     }
 }

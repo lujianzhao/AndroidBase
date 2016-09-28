@@ -36,8 +36,6 @@ public class GetAndPostActivity extends BaseMvpActivity<GetAndPostContract.Prese
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-
-
     }
 
 
@@ -74,10 +72,5 @@ public class GetAndPostActivity extends BaseMvpActivity<GetAndPostContract.Prese
     @Override
     public void showGet(String data) {
         mContent.setText(mContent.getText().toString()+"\r\n\r\n"+data);
-    }
-
-    @Override
-    protected void initData() {
-
     }
 }

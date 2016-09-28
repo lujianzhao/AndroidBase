@@ -20,67 +20,67 @@ public class PresenterLifecycleDelegate<P extends BasePresenter> implements IPre
     private static final String PRESENTER_KEY = "presenter";
     private static final String PRESENTER_ID_KEY = "presenter_id";
 
-    private PresenterFactory<P> presenterFactory;
-    private P presenter;
-    private Bundle bundle;
+    private PresenterFactory<P> mPresenterFactory;
+    private P mPresenter;
+    private Bundle mBundle;
 
-    private boolean presenterHasView;
+    private boolean mPresenterHasView;
 
     public PresenterLifecycleDelegate(PresenterFactory<P> presenterFactory) {
-        this.presenterFactory = presenterFactory;
+        this.mPresenterFactory = presenterFactory;
     }
 
     public PresenterFactory<P> getPresenterFactory() {
-        return presenterFactory;
+        return mPresenterFactory;
     }
 
     public void setPresenterFactory(PresenterFactory<P> presenterFactory) {
-        if (presenter != null)
+        if (mPresenter != null)
             throw new IllegalArgumentException("setPresenterFactory() should be called before onResume()");
-        this.presenterFactory = presenterFactory;
+        this.mPresenterFactory = presenterFactory;
     }
 
     public P getPresenter() {
-        if (presenterFactory != null) {
-            if (presenter == null && bundle != null) {
-                presenter = PresenterStorage.INSTANCE.getPresenter(bundle.getString(PRESENTER_ID_KEY));
+        if (mPresenterFactory != null) {
+            if (mPresenter == null && mBundle != null) {
+                mPresenter = PresenterStorage.INSTANCE.getPresenter(mBundle.getString(PRESENTER_ID_KEY));
             }
 
-            if (presenter == null) {
-                presenter = presenterFactory.createPresenter();
-                PresenterStorage.INSTANCE.add(presenter);
-                presenter.create(bundle == null ? null : bundle.getBundle(PRESENTER_KEY));
+            if (mPresenter == null) {
+                mPresenter = mPresenterFactory.createPresenter();
+                PresenterStorage.INSTANCE.add(mPresenter);
+                mPresenter.create(mBundle == null ? null : mBundle.getBundle(PRESENTER_KEY));
             }
-            bundle = null;
+            mBundle = null;
         }
-        return presenter;
+        return mPresenter;
     }
 
     public Bundle onSaveInstanceState() {
         Bundle bundle = new Bundle();
         getPresenter();
-        if (presenter != null) {
+        if (mPresenter != null) {
             Bundle presenterBundle = new Bundle();
-            presenter.save(presenterBundle);
+            mPresenter.save(presenterBundle);
 
             bundle.putBundle(PRESENTER_KEY, presenterBundle);
-            bundle.putString(PRESENTER_ID_KEY, PresenterStorage.INSTANCE.getId(presenter));
+            bundle.putString(PRESENTER_ID_KEY, PresenterStorage.INSTANCE.getId(mPresenter));
         }
         return bundle;
     }
 
     public void onRestoreInstanceState(Bundle presenterState) {
-        if (presenter != null)
+        if (mPresenter != null)
             throw new IllegalArgumentException("onRestoreInstanceState() should be called before onResume()");
-        this.bundle = ParcelFn.unmarshall(ParcelFn.marshall(presenterState));
+        this.mBundle = ParcelFn.unmarshall(ParcelFn.marshall(presenterState));
     }
 
     @Override
     public void onCreate(Object view, Context context) {
         getPresenter();
-        if(presenter!=null){
-            presenter.takeView((IBaseView) view,context);
-            presenterHasView = true;
+        if(mPresenter!=null){
+            mPresenter.takeView((IBaseView) view,context);
+            mPresenterHasView = true;
         }
     }
 
@@ -90,15 +90,15 @@ public class PresenterLifecycleDelegate<P extends BasePresenter> implements IPre
      * {@link android.view.View#onDetachedFromWindow()}
      */
     public void onDestroy(boolean isFinal) {
-        if (presenter != null) {
-            if (presenterHasView) {
-                presenter.dropView();
-                presenterHasView = false;
+        if (mPresenter != null) {
+            if (mPresenterHasView) {
+                mPresenter.dropView();
+                mPresenterHasView = false;
             }
 
             if (isFinal) {
-                presenter.destroy();
-                presenter = null;
+                mPresenter.destroy();
+                mPresenter = null;
             }
         }
     }
@@ -107,15 +107,15 @@ public class PresenterLifecycleDelegate<P extends BasePresenter> implements IPre
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(presenter!=null){
-            presenter.onActivityResult( requestCode,  resultCode,  data);
+        if(mPresenter!=null){
+            mPresenter.onActivityResult( requestCode,  resultCode,  data);
         }
     }
 
     @Override
     public boolean onBackPressed() {
-        if(presenter!=null){
-            return  presenter.onBackPressed();
+        if(mPresenter!=null){
+            return  mPresenter.onBackPressed();
         }
         return false;
     }
@@ -125,8 +125,8 @@ public class PresenterLifecycleDelegate<P extends BasePresenter> implements IPre
      * 网络断开
      */
     public void onNetWorkDisConnect(){
-        if (presenter != null) {
-            presenter.onNetWorkDisConnect();
+        if (mPresenter != null) {
+            mPresenter.onNetWorkDisConnect();
         }
     }
 
@@ -141,8 +141,8 @@ public class PresenterLifecycleDelegate<P extends BasePresenter> implements IPre
      *             Net4G(4);4G网络
      */
     public void onNetWorkConnect(NetWorkUtil.NetWorkType type){
-        if (presenter != null) {
-            presenter.onNetWorkConnect(type);
+        if (mPresenter != null) {
+            mPresenter.onNetWorkConnect(type);
         }
     }
 }

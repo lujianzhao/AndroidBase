@@ -71,7 +71,6 @@ public class BaseClient implements IRetrofit {
                     .addNetworkInterceptor(new CacheInterceptor(context))
                     //设置缓存路径以及大小
                     .cache(new Cache(file, 1024 * 1024 * 100));
-            mOkhttpBuilder.interceptors().add(new CacheInterceptor(context));
         }
     }
 
