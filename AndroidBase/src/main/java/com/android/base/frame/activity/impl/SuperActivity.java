@@ -150,6 +150,8 @@ public abstract class SuperActivity extends SupportActivity implements IBaseActi
     protected void onDestroy() {
         ButterKnife.unbind(this);
         mLifecycleSubject.onNext(ActivityEvent.DESTROY);
+
+
         NetworkStateReceiver.unRegisterNetworkStateReceiver(this);
         super.onDestroy();
         AppManager.getAppManager().finishActivity(this);

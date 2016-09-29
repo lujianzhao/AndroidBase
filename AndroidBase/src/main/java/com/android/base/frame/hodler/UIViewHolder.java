@@ -21,30 +21,28 @@ public abstract class UIViewHolder<T> {
 
     protected Context mContext;
 
-    protected RxManager mRxManager = new RxManager();
+    private RxManager mRxManager = new RxManager();
 
     public abstract void refreshUI(T data);
 
     public UIViewHolder(Context context, ViewGroup parent, int layoutId) {
         mContext = context;
         mConvertView = LayoutInflater.from(context).inflate(layoutId, parent, false);
-        ButterKnife.bind(this,mConvertView);
+        ButterKnife.bind(this, mConvertView);
         AutoUtils.autoSize(mConvertView);
     }
 
-    public View getConvertView() {
+    protected View getConvertView() {
         return mConvertView;
+    }
+
+    protected RxManager getRxManager() {
+        return mRxManager;
     }
 
     public void onDestroy() {
         ButterKnife.unbind(this);
-        if (mRxManager != null) {
-            mRxManager.clear();
-            mRxManager = null;
-        }
-        mContext = null;
-        mConvertView = null;
-
+        mRxManager.clear();
     }
 
 }

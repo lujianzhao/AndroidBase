@@ -96,23 +96,18 @@ public abstract class BaseMvpFragment<P extends BasePresenter> extends SuperFrag
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (mPresenterDelegate != null) {
-            mPresenterDelegate.onActivityResult(requestCode, resultCode, data);
-        }
+        mPresenterDelegate.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     public boolean onBackPressedSupport() {
-        if (mPresenterDelegate != null) {
-            return mPresenterDelegate.onBackPressed();
-        }
-        return super.onBackPressedSupport();
+        return mPresenterDelegate.onBackPressed();
     }
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         mPresenterDelegate.onDestroy(!getActivity().isChangingConfigurations());
+        super.onDestroy();
     }
 
 

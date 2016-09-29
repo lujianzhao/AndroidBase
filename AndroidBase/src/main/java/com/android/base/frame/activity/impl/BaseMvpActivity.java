@@ -14,7 +14,7 @@ import com.android.base.netstate.NetWorkUtil;
 /**
  * Created by Administrator on 2016/5/13.
  */
-public abstract class BaseMvpActivity<P extends BasePresenter> extends SuperActivity  implements ViewWithPresenter<P> {
+public abstract class BaseMvpActivity<P extends BasePresenter> extends SuperActivity implements ViewWithPresenter<P> {
 
 
     private static final String PRESENTER_STATE_KEY = "presenter_state";
@@ -49,7 +49,7 @@ public abstract class BaseMvpActivity<P extends BasePresenter> extends SuperActi
             mPresenterDelegate.onRestoreInstanceState(savedInstanceState.getBundle(PRESENTER_STATE_KEY));
         }
 
-        mPresenterDelegate.onCreate(this,this);
+        mPresenterDelegate.onCreate(this, this);
 
         initView(savedInstanceState);
 
@@ -65,7 +65,7 @@ public abstract class BaseMvpActivity<P extends BasePresenter> extends SuperActi
 
     @Override
     public void onBackPressedSupport() {
-        if (mPresenterDelegate == null || !mPresenterDelegate.onBackPressed()) {
+        if (!mPresenterDelegate.onBackPressed()) {
             super.onBackPressedSupport();
         }
     }

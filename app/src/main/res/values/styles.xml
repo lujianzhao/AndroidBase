@@ -7,10 +7,23 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <!--初始化时窗口是透明,初始化完成后主界面再显示出来-->
-        <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@style/AnimationActivity</item>
+
     </style>
+
+    <style name="AnimationActivity" parent="@android:style/Animation.Activity">
+        <!--进入-->
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:activityCloseEnterAnimation">@anim/push_in_left</item>
+        <!--退出的-->
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_right</item>
+        <item name="android:activityCloseExitAnimation">@anim/push_out_left</item>
+    </style>
+
+
+
+
 
     <declare-styleable name="NumberProgressBar">
         <attr name="progress_current" format="integer"/>

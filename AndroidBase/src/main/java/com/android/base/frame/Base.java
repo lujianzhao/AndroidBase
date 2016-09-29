@@ -14,18 +14,19 @@ import android.util.DisplayMetrics;
  */
 public class Base {
 
-    private static Context context;
+    private static Context mContext;
 
     public static void initialize(@NonNull Context context) {
-        Base.context = context;
+        mContext = context;
+    }
+
+    public static void release() {
+        mContext = null;
     }
 
     public static Context getContext() {
         synchronized (Base.class) {
-            if (Base.context == null)
-                throw new NullPointerException("Call Base.initialize(context) within your Application onCreate() method.");
-
-            return Base.context.getApplicationContext();
+            return mContext.getApplicationContext();
         }
     }
 

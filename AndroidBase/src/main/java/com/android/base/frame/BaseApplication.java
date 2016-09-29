@@ -26,7 +26,7 @@ public class BaseApplication extends Application {
 
         initLogUtils();
 
-//        initRecovery();
+        initRecovery();
 
         LogUtils.d("BaseApplication onCreate");
 
@@ -171,7 +171,7 @@ public class BaseApplication extends Application {
         //注销网络监听
         unRegisterNetWorkStateListener();
 
-
+        Base.release();
     }
 
 }
