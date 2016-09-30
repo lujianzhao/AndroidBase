@@ -20,7 +20,7 @@ public abstract class BaseMvpFragment<P extends BasePresenter> extends SuperFrag
     private Bundle mSavedInstanceState;
 
     private static final String PRESENTER_STATE_KEY = "presenter_state";
-    private PresenterLifecycleDelegate<P> mPresenterDelegate = new PresenterLifecycleDelegate<>(ReflectionPresenterFactory.<P>fromViewClass(getClass()));
+    private final PresenterLifecycleDelegate<P> mPresenterDelegate = new PresenterLifecycleDelegate<>(ReflectionPresenterFactory.<P>fromViewClass(getClass()));
 
     public PresenterFactory<P> getPresenterFactory() {
         return mPresenterDelegate.getPresenterFactory();
@@ -106,6 +106,7 @@ public abstract class BaseMvpFragment<P extends BasePresenter> extends SuperFrag
 
     @Override
     public void onDestroy() {
+        mSavedInstanceState = null;
         mPresenterDelegate.onDestroy(!getActivity().isChangingConfigurations());
         super.onDestroy();
     }

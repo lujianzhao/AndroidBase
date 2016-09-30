@@ -32,8 +32,9 @@ public abstract class BaseModel {
     }
 
     public void destroy() {
-        mRxManager.clear();
         onDestroy();
+        mRxManager.clear();
+        mRxManager = null;
     }
 
     protected RxManager getRxManager() {

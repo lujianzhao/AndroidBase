@@ -21,7 +21,7 @@ public abstract class UIViewHolder<T> {
 
     protected Context mContext;
 
-    private RxManager mRxManager = new RxManager();
+    private final RxManager mRxManager = new RxManager();
 
     public abstract void refreshUI(T data);
 
@@ -42,6 +42,10 @@ public abstract class UIViewHolder<T> {
 
     public void onDestroy() {
         ButterKnife.unbind(this);
+
+        mConvertView = null;
+        mContext = null;
+
         mRxManager.clear();
     }
 

@@ -27,9 +27,9 @@ public class BasePresenter<M extends BaseModel, V extends IBaseView> implements 
 
     private CopyOnWriteArrayList<OnDestroyListener> onDestroyListeners = new CopyOnWriteArrayList<>();
 
-    private ModelLifecycleDelegate<M> modelDelegate = new ModelLifecycleDelegate<>(ReflectionModelFactory.<M>fromViewClass(getClass()));
+    private final ModelLifecycleDelegate<M> modelDelegate = new ModelLifecycleDelegate<>(ReflectionModelFactory.<M>fromViewClass(getClass()));
 
-    private RxManager mRxManager = new RxManager();
+    private final RxManager mRxManager = new RxManager();
 
     private Context mContext;
 
@@ -141,15 +141,17 @@ public class BasePresenter<M extends BaseModel, V extends IBaseView> implements 
      * Destroys the presenter, calling all {@link BasePresenter.OnDestroyListener} callbacks.
      */
     public void destroy() {
+        onDestroy();
+
         for (OnDestroyListener listener : onDestroyListeners) {
             listener.onDestroy();
         }
+        onDestroyListeners.clear();
+        onDestroyListeners = null;
 
         modelDelegate.onDestroy();
 
         mRxManager.clear();
-
-        onDestroy();
     }
 
     /**
@@ -176,6 +178,7 @@ public class BasePresenter<M extends BaseModel, V extends IBaseView> implements 
     public void dropView() {
         onDropView();
         this.mView = null;
+        this.mContext = null;
     }
 
 

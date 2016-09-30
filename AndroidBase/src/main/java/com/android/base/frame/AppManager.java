@@ -133,11 +133,6 @@ public class AppManager {
         mActivityStack.clear();
     }
 
-    @Deprecated
-    public void AppExit(Context cxt) {
-        appExit(cxt);
-    }
-
     /**
      *
      * @return 是否还有activity存活

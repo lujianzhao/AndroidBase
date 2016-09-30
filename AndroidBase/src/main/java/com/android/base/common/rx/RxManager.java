@@ -16,7 +16,7 @@ import rx.subscriptions.CompositeSubscription;
  */
 public class RxManager  {
 
-    public RxEventBus mRxBus = RxEventBus.getInstance();
+    private RxEventBus mRxBus = RxEventBus.getInstance();
     private Map<String, Observable<?>> mObservables;// 管理观察源
     private CompositeSubscription mCompositeSubscription;// 管理订阅者者
 
@@ -49,6 +49,13 @@ public class RxManager  {
         for (Map.Entry<String, Observable<?>> entry : mObservables.entrySet()) {
             mRxBus.unregister(entry.getKey(), entry.getValue());// 移除观察
         }
+
+        mObservables.clear();
+        mObservables = null;
+
+        mCompositeSubscription = null;
+
+        mRxBus = null;
     }
 
     public void post(Object tag, Object content) {

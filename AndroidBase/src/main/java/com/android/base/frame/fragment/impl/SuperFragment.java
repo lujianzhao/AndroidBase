@@ -140,6 +140,7 @@ public abstract class SuperFragment extends SupportFragment implements IBaseFrag
 
     @Override
     public void onDetach() {
+        mRootView = null;
         mLifecycleSubject.onNext(FragmentEvent.DETACH);
         super.onDetach();
     }
