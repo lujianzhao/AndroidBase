@@ -58,7 +58,7 @@ public class RxUtil {
                 return observable
                         .subscribeOn(Schedulers.io())
                         .unsubscribeOn(Schedulers.io())
-                        .sample(100, TimeUnit.MILLISECONDS)
+                        .sample(200, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread());
             }
         };
@@ -137,17 +137,19 @@ public class RxUtil {
                         if (is != null) {
                             try {
                                 is.close();
-                                is = null;
                             } catch (IOException e) {
                                 LogUtils.e(e);
+                            }finally {
+                                is = null;
                             }
                         }
                         if (fos != null) {
                             try {
                                 fos.close();
-                                fos = null;
                             } catch (IOException e) {
                                 LogUtils.e(e);
+                            }finally {
+                                fos = null;
                             }
                         }
                     }

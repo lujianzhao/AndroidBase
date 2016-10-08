@@ -56,16 +56,17 @@ public class UploadModel extends UploadContract.Model {
         GetAndPostService mGetAndPostService = GetAndPostClient.getInstance("http://server.jeasonlzy.com/OkHttpUtils/").createService(GetAndPostService.class);
         //开始上传,rxJava的生命周期交由mRxManager来管理.
         getRxManager().add(mGetAndPostService.uploadImage(params).compose(RxUtil.<ResponseBody>applySchedulersForRetrofit()).subscribe(new Subscriber<ResponseBody>() {
-            @Override
-            public void onCompleted() {
-                requestDataCallBack.onComplete();
-            }
 
             @Override
             public void onStart() {
                 requestDataCallBack.onStart();
             }
 
+
+            @Override
+            public void onCompleted() {
+                requestDataCallBack.onComplete();
+            }
 
             @Override
             public void onError(Throwable e) {

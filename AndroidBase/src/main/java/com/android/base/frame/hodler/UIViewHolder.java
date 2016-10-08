@@ -32,7 +32,7 @@ public abstract class UIViewHolder<T> {
         AutoUtils.autoSize(mConvertView);
     }
 
-    protected View getConvertView() {
+    public View getConvertView() {
         return mConvertView;
     }
 

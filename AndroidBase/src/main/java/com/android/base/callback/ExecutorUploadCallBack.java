@@ -13,7 +13,7 @@ public abstract class ExecutorUploadCallBack<T,R>  extends ExecutorCallBack<T> {
 
     /**
      * 上传完毕返回的结果
-     * @param data
+     * @param responseData
      */
     public void onComplete(R responseData) {
     }

@@ -29,10 +29,9 @@ import okio.Sink;
 import rx.subjects.PublishSubject;
 
 /**
- * 包装的请求体，处理进度
- * User:lizhangqu(513163535@qq.com)
- * Date:2015-09-02
- * Time: 17:15
+ * 作者: lujianzhao
+ * 创建时间: 2016/06/14 15:51
+ * 描述:
  */
 public class ProgressRequestBody extends RequestBody {
     //实际的待包装请求体
@@ -105,9 +104,9 @@ public class ProgressRequestBody extends RequestBody {
     private Sink sink(Sink sink) {
         return new ForwardingSink(sink) {
             //当前写入字节数
-            long bytesWritten = 0L;
+            private long bytesWritten = 0L;
             //总字节长度，避免多次调用contentLength()方法
-            long contentLength = 0L;
+            private long contentLength = 0L;
 
             @Override
             public void write(Buffer source, long byteCount) throws IOException {
