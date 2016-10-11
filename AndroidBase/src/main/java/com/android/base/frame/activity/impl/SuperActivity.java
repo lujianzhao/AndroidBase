@@ -46,9 +46,9 @@ public abstract class SuperActivity extends SupportActivity implements IBaseActi
 
     protected abstract int getContentViewId();
 
-    protected abstract void initView(Bundle savedInstanceState);
+    protected abstract void onInitView(Bundle savedInstanceState);
 
-    protected abstract void initData();
+    protected abstract void onInitData();
 
     @Override
     @NonNull
@@ -166,6 +166,10 @@ public abstract class SuperActivity extends SupportActivity implements IBaseActi
 
     public void gotoActivity(Class<? extends Activity> clazz) {
         this.gotoActivity(clazz, null, false);
+    }
+
+    public void gotoActivity(Class<? extends Activity> clazz, Bundle bundle) {
+        this.gotoActivity(clazz, bundle, false);
     }
 
     public void gotoActivity(Class<? extends Activity> clazz, boolean finish) {

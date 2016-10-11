@@ -9,7 +9,7 @@ import com.android.base.common.rx.RxManager;
  */
 public abstract class BaseModel {
 
-    private RxManager mRxManager = new RxManager();
+    private  final RxManager mRxManager = new RxManager();
 
     /**
      * This method is called after model construction.
@@ -34,7 +34,6 @@ public abstract class BaseModel {
     public void destroy() {
         onDestroy();
         mRxManager.clear();
-        mRxManager = null;
     }
 
     protected RxManager getRxManager() {

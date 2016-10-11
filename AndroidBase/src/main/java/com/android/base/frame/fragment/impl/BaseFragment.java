@@ -12,7 +12,15 @@ public abstract class BaseFragment extends SuperFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initView(savedInstanceState);
-        initData();
+        onInitView(savedInstanceState);
+        onInitData();
+    }
+
+    @Override
+    protected void onInitView(Bundle savedInstanceState) {
+    }
+
+    @Override
+    protected void onInitData() {
     }
 }

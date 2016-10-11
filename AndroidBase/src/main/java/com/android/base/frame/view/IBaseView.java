@@ -11,6 +11,8 @@ public interface IBaseView {
 
     void gotoActivity(Class<? extends Activity> clazz);
 
+    void gotoActivity(Class<? extends Activity> clazz, Bundle bundle);
+
     void gotoActivity(Class<? extends Activity> clazz, boolean finish);
 
     void gotoActivity(Class<? extends Activity> clazz, Bundle bundle, boolean finish);

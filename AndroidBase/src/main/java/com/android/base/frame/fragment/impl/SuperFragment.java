@@ -42,12 +42,12 @@ public abstract class SuperFragment extends SupportFragment implements IBaseFrag
      * 初始化View
      * @param savedInstanceState
      */
-    protected abstract void initView(Bundle savedInstanceState);
+    protected abstract void onInitView(Bundle savedInstanceState);
 
     /**
      * 开始加载数据
      */
-    protected abstract void initData();
+    protected abstract void onInitData();
 
     @Override
     @NonNull
@@ -86,7 +86,14 @@ public abstract class SuperFragment extends SupportFragment implements IBaseFrag
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mRootView = inflater.inflate(getContentViewId(), container, false);
+        if (mRootView != null) {
+            ViewGroup parent = (ViewGroup) mRootView.getParent();
+            if (parent != null) {
+                parent.removeView(mRootView);
+            }
+        } else {
+            mRootView = inflater.inflate(getContentViewId(), container, false);
+        }
         return mRootView;
     }
 
@@ -149,9 +156,14 @@ public abstract class SuperFragment extends SupportFragment implements IBaseFrag
         this.gotoActivity(clazz, null, false);
     }
 
+    public void gotoActivity(Class<? extends Activity> clazz, Bundle bundle) {
+        this.gotoActivity(clazz, bundle, false);
+    }
+
     public void gotoActivity(Class<? extends Activity> clazz, boolean finish) {
         this.gotoActivity(clazz, null, finish);
     }
+
 
     public void gotoActivity(Class<? extends Activity> clazz, Bundle bundle, boolean finish) {
         this.gotoActivity(clazz, bundle, 0, finish);

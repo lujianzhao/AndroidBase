@@ -37,8 +37,10 @@ public class ModelLifecycleDelegate<M extends BaseModel> implements IModel {
 
     @Override
     public void onDestroy() {
-        mModel.destroy();
-        mModel = null;
+        if (mModel != null) {
+            mModel.destroy();
+            mModel = null;
+        }
         mModelFactory = null;
     }
 

@@ -885,7 +885,7 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
     }
 
     /**
-     * set anim to start when loading
+     * set anim to onStart when loading
      *
      * @param anim
      * @param index

@@ -36,8 +36,11 @@ public abstract class BaseMvpActivity<P extends BasePresenter> extends SuperActi
     }
 
     @Override
-    protected void initData() {
-        getPresenter().start();
+    protected void onInitView(Bundle savedInstanceState) {
+    }
+
+    @Override
+    protected void onInitData() {
     }
 
     @Override
@@ -51,9 +54,14 @@ public abstract class BaseMvpActivity<P extends BasePresenter> extends SuperActi
 
         mPresenterDelegate.onCreate(this, this);
 
-        initView(savedInstanceState);
+        onInitView(savedInstanceState);
 
         initData();
+    }
+
+    private void initData() {
+        onInitData();
+        getPresenter().onStart();
     }
 
     @Override

@@ -19,7 +19,7 @@ public class TimeCounter {
     }
 
     /**
-     * Count start.
+     * Count onStart.
      */
     public long start() {
         t = System.currentTimeMillis();

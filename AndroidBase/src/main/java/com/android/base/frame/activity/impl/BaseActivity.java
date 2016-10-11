@@ -14,8 +14,16 @@ public abstract class BaseActivity extends SuperActivity {
     @CallSuper
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initView(savedInstanceState);
-        initData();
+        onInitView(savedInstanceState);
+        onInitData();
+    }
+
+    @Override
+    protected void onInitView(Bundle savedInstanceState) {
+    }
+
+    @Override
+    protected void onInitData() {
     }
 
     @Override

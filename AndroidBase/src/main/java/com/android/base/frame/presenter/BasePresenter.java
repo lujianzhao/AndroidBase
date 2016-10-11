@@ -50,7 +50,7 @@ public class BasePresenter<M extends BaseModel, V extends IBaseView> implements 
      * 在{@link com.android.base.frame.fragment.impl.BaseMvpFragment#initData()},
      * {@link com.android.base.frame.activity.impl.BaseMvpActivity#initData()} 调用
      */
-    public void start() {
+    public void onStart() {
     }
 
     /**

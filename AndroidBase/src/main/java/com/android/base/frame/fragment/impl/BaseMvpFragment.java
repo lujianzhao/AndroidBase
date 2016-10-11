@@ -4,11 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.android.base.frame.view.ViewWithPresenter;
 import com.android.base.frame.presenter.BasePresenter;
-import com.android.base.frame.presenter.impl.PresenterLifecycleDelegate;
 import com.android.base.frame.presenter.factory.PresenterFactory;
 import com.android.base.frame.presenter.factory.ReflectionPresenterFactory;
+import com.android.base.frame.presenter.impl.PresenterLifecycleDelegate;
+import com.android.base.frame.view.ViewWithPresenter;
 
 /**
  * Created by Administrator on 2016/5/13.
@@ -35,14 +35,24 @@ public abstract class BaseMvpFragment<P extends BasePresenter> extends SuperFrag
         return mPresenterDelegate.getPresenter();
     }
 
+    @Override
+    protected void onInitView(Bundle savedInstanceState) {
+    }
+
+    @Override
+    protected void onInitData() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (savedInstanceState != null) {
             mSavedInstanceState = savedInstanceState;
             mPresenterDelegate.onRestoreInstanceState(mSavedInstanceState.getBundle(PRESENTER_STATE_KEY));
         }
+
+        mPresenterDelegate.onCreate(this, getActivity());
 
     }
 
@@ -57,13 +67,13 @@ public abstract class BaseMvpFragment<P extends BasePresenter> extends SuperFrag
         super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState == null) {
-            if (!isHidden()) {
+            if (!mInited &&!isHidden()) {
                 mInited = true;
                 initLazyView(null);
             }
         } else {
             // isSupportHidden()仅在saveIns tanceState!=null时有意义,是库帮助记录Fragment状态的方法
-            if (!isSupportHidden()) {
+            if (!mInited &&!isSupportHidden()) {
                 mInited = true;
                 initLazyView(savedInstanceState);
             }
@@ -79,18 +89,17 @@ public abstract class BaseMvpFragment<P extends BasePresenter> extends SuperFrag
         }
     }
 
-    @Override
-    protected void initData() {
-        getPresenter().start();
-    }
 
     private void initLazyView(Bundle savedInstanceState) {
 
-        mPresenterDelegate.onCreate(this, getActivity());
-
-        initView(savedInstanceState);
+        onInitView(savedInstanceState);
 
         initData();
+    }
+
+    private void initData() {
+        onInitData();
+        getPresenter().onStart();
     }
 
     @Override
@@ -103,6 +112,7 @@ public abstract class BaseMvpFragment<P extends BasePresenter> extends SuperFrag
     public boolean onBackPressedSupport() {
         return mPresenterDelegate.onBackPressed();
     }
+
 
     @Override
     public void onDestroy() {
