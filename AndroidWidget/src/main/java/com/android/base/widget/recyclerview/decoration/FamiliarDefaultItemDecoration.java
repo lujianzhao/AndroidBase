@@ -35,6 +35,8 @@ public class FamiliarDefaultItemDecoration extends RecyclerView.ItemDecoration {
     private float mUnDivisibleValue = 0;
     private boolean isDivisible = true;
 
+    private boolean mIsMarginDividersEnabled = false;
+
     public FamiliarDefaultItemDecoration(FamiliarRecyclerView familiarRecyclerView, Drawable dividerVertical, Drawable dividerHorizontal, int dividerDrawableSizeVertical, int dividerDrawableSizeHorizontal) {
         this.mFamiliarRecyclerView = familiarRecyclerView;
         this.mVerticalDividerDrawable = dividerVertical;
@@ -447,7 +449,7 @@ public class FamiliarDefaultItemDecoration extends RecyclerView.ItemDecoration {
         }
 
         int topOrLeftSize;
-        if ((!isHeaderDividersEnabled || headersCount == 0) && isGridItemLayoutFirstRow(position, headersCount)) {
+        if ((!isHeaderDividersEnabled || headersCount == 0) && isGridItemLayoutFirstRow(position, headersCount) && !mIsMarginDividersEnabled) {
             topOrLeftSize = 0;
         } else {
             topOrLeftSize = mOrientation == OrientationHelper.VERTICAL ? mHorizontalDividerDrawableHeight : mVerticalDividerDrawableHeight;
@@ -458,14 +460,24 @@ public class FamiliarDefaultItemDecoration extends RecyclerView.ItemDecoration {
             if (mOrientation == OrientationHelper.HORIZONTAL) {
                 outRect.set(topOrLeftSize, leftOrTopOffset, 0, mItemViewBothSidesMargin);
             } else {
-                outRect.set(leftOrTopOffset, topOrLeftSize, mItemViewBothSidesMargin, 0);
+
+                if (mIsMarginDividersEnabled) {
+                    outRect.set(leftOrTopOffset, topOrLeftSize, topOrLeftSize, 0);
+                } else {
+                    outRect.set(leftOrTopOffset, topOrLeftSize, mItemViewBothSidesMargin, 0);
+                }
             }
         } else if (isGridItemLayoutFirstColumn(position, headersCount, view)) {
             // first column
             if (mOrientation == OrientationHelper.HORIZONTAL) {
                 outRect.set(topOrLeftSize, mItemViewBothSidesMargin, 0, rightOrBottomOffset);
             } else {
-                outRect.set(mItemViewBothSidesMargin, topOrLeftSize, rightOrBottomOffset, 0);
+                if (mIsMarginDividersEnabled) {
+                    outRect.set(topOrLeftSize, topOrLeftSize, rightOrBottomOffset, 0);
+                } else {
+                    outRect.set(mItemViewBothSidesMargin, topOrLeftSize, rightOrBottomOffset, 0);
+                }
+
             }
         } else {
             // middle column
@@ -537,4 +549,7 @@ public class FamiliarDefaultItemDecoration extends RecyclerView.ItemDecoration {
         return false;
     }
 
+    public void setMarginDividersEnabled(boolean isMarginDividersEnabled) {
+        mIsMarginDividersEnabled = isMarginDividersEnabled;
+    }
 }

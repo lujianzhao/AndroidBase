@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    buildToolsVersion "24.0.3"
 
     defaultConfig {
         minSdkVersion 16
@@ -42,8 +42,8 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.2.0'
     //RxLifecycle
-    compile 'com.trello:rxlifecycle:0.8.0'
-    compile 'com.trello:rxlifecycle-android:0.8.0'
+    compile 'com.trello:rxlifecycle:1.0'
+    compile 'com.trello:rxlifecycle-android:1.0'
     //RxBinding
     compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
     //下面3个视情况增加
@@ -56,26 +56,26 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'jp.wasabeef:glide-transformations:2.0.1'
     //6.0权限处理库
-    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
+    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.8.2@aar'
     //Retrofit网络请求
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     compile 'org.ligboy.retrofit2:converter-fastjson-android:2.1.0'
     //Fragment解决库
-    compile 'me.yokeyword:fragmentation:0.7.10'
+    compile 'me.yokeyword:fragmentation:0.7.13'
     //db数据库
     compile 'com.j256.ormlite:ormlite-core:5.0'
     compile 'com.j256.ormlite:ormlite-android:5.0'
     //动画
     compile 'jp.wasabeef:recyclerview-animators:2.2.4'
     //应用发生错误时,自动重启
-    compile 'com.zxy.android:recovery:0.0.5'
+    compile 'com.zxy.android:recovery:0.0.8'
 
     //Log工具类,目前的版本1.4.2,在com.android.base.common.logutils
 //    compile 'com.apkfuns.logutils:library:1.4.2'
 
-    //BaseRecyclerViewAdapterHelper,目前的版本2.1.7,在com.android.base.adapter.recyclerview
+    //BaseRecyclerViewAdapterHelper,目前的版本2.5.0,在com.android.base.adapter.recyclerview
 
-    //Luban,目前的版本1.0.8,在com.android.base.common.luban
+    //Luban,目前的版本1.0.9,在com.android.base.common.luban
 
 }

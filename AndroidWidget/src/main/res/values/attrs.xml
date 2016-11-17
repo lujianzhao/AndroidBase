@@ -70,6 +70,7 @@
         <attr name="frv_headerDividersEnabled" format="boolean" />
         <attr name="frv_footerDividersEnabled" format="boolean" />
         <attr name="frv_isNotShowGridEndDivider" format="boolean" />
+        <attr name="frv_isMarginDividersEnabled" format="boolean" />
     </declare-styleable>
 
     <color name="default_color">#00000000</color>

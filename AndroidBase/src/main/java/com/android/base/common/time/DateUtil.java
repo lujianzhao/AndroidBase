@@ -116,6 +116,29 @@ public class DateUtil {
     }
 
     /**
+     * 格式到分
+     *
+     * @return time -> MM月dd日 HH:mm
+     */
+    public static String getMinute(long time) {
+
+        return new SimpleDateFormat("MM月dd日 HH:mm").format(time);
+
+    }
+
+
+    /**
+     * 格式到分
+     *
+     * @return time -> MM月dd日 HH:mm
+     */
+    public static String getMinuteWithYear(long time) {
+
+        return new SimpleDateFormat("yyyy年MM月dd日 HH:mm").format(time);
+
+    }
+
+    /**
      * 格式到天
      *
      * @return time -> yyyy-MM-dd
@@ -125,6 +148,8 @@ public class DateUtil {
         return new SimpleDateFormat("yyyy-MM-dd").format(time);
 
     }
+
+
 
     /**
      * 格式到毫秒

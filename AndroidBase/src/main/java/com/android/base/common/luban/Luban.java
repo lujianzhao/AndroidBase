@@ -26,8 +26,6 @@ public class Luban {
     private static final int FIRST_GEAR = 1;
     public static final int THIRD_GEAR = 3;
 
-    private static final String DEFAULT_DISK_CACHE_DIR = "luban_disk_cache";
-
     private static volatile Luban INSTANCE;
 
     private final File mCacheDir;
@@ -58,57 +56,66 @@ public class Luban {
             throw new NullPointerException("the image file cannot be null, please call .load() before this method!");
         }
 
-        if (compressListener != null)
-            compressListener.onStart();
+        if (compressListener != null) compressListener.onStart();
 
         if (gear == Luban.FIRST_GEAR)
-            Observable.just(mFile).map(new Func1<File, File>() {
-                @Override
-                public File call(File file) {
-                    return firstCompress(file);
-                }
-            }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).doOnError(new Action1<Throwable>() {
-                @Override
-                public void call(Throwable throwable) {
-                    if (compressListener != null)
-                        compressListener.onError(throwable);
-                }
-            }).onErrorResumeNext(Observable.<File>empty()).filter(new Func1<File, Boolean>() {
-                @Override
-                public Boolean call(File file) {
-                    return file != null;
-                }
-            }).subscribe(new Action1<File>() {
-                @Override
-                public void call(File file) {
-                    if (compressListener != null)
-                        compressListener.onSuccess(file);
-                }
-            });
+            Observable.just(mFile)
+                    .map(new Func1<File, File>() {
+                        @Override
+                        public File call(File file) {
+                            return firstCompress(file);
+                        }
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnError(new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            if (compressListener != null) compressListener.onError(throwable);
+                        }
+                    })
+                    .onErrorResumeNext(Observable.<File>empty())
+                    .filter(new Func1<File, Boolean>() {
+                        @Override
+                        public Boolean call(File file) {
+                            return file != null;
+                        }
+                    })
+                    .subscribe(new Action1<File>() {
+                        @Override
+                        public void call(File file) {
+                            if (compressListener != null) compressListener.onSuccess(file);
+                        }
+                    });
         else if (gear == Luban.THIRD_GEAR)
-            Observable.just(mFile).map(new Func1<File, File>() {
-                @Override
-                public File call(File file) {
-                    return thirdCompress(file);
-                }
-            }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).doOnError(new Action1<Throwable>() {
-                @Override
-                public void call(Throwable throwable) {
-                    if (compressListener != null)
-                        compressListener.onError(throwable);
-                }
-            }).onErrorResumeNext(Observable.<File>empty()).filter(new Func1<File, Boolean>() {
-                @Override
-                public Boolean call(File file) {
-                    return file != null;
-                }
-            }).subscribe(new Action1<File>() {
-                @Override
-                public void call(File file) {
-                    if (compressListener != null)
-                        compressListener.onSuccess(file);
-                }
-            });
+            Observable.just(mFile)
+                    .map(new Func1<File, File>() {
+                        @Override
+                        public File call(File file) {
+                            return thirdCompress(file);
+                        }
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnError(new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            if (compressListener != null) compressListener.onError(throwable);
+                        }
+                    })
+                    .onErrorResumeNext(Observable.<File>empty())
+                    .filter(new Func1<File, Boolean>() {
+                        @Override
+                        public Boolean call(File file) {
+                            return file != null;
+                        }
+                    })
+                    .subscribe(new Action1<File>() {
+                        @Override
+                        public void call(File file) {
+                            if (compressListener != null) compressListener.onSuccess(file);
+                        }
+                    });
 
         return this;
     }
@@ -128,6 +135,9 @@ public class Luban {
         return this;
     }
 
+    /**
+     * @deprecated
+     */
     public Luban setFilename(String filename) {
         this.filename = filename;
         return this;
@@ -148,13 +158,12 @@ public class Luban {
                     return thirdCompress(file);
                 }
             });
-        else
-            return Observable.empty();
+        else return Observable.empty();
     }
 
     private File thirdCompress(@NonNull File file) {
         String thumb = mCacheDir.getAbsolutePath() + File.separator +
-                (TextUtils.isEmpty(filename) ? System.currentTimeMillis() : filename);
+                (TextUtils.isEmpty(filename) ? System.currentTimeMillis() : filename) + ".jpg";
 
         double size;
         String filePath = file.getAbsolutePath();
@@ -172,8 +181,7 @@ public class Luban {
 
         if (scale <= 1 && scale > 0.5625) {
             if (height < 1664) {
-                if (file.length() / 1024 < 150)
-                    return file;
+                if (file.length() / 1024 < 150) return file;
 
                 size = (width * height) / Math.pow(1664, 2) * 150;
                 size = size < 60 ? 60 : size;
@@ -195,8 +203,7 @@ public class Luban {
                 size = size < 100 ? 100 : size;
             }
         } else if (scale <= 0.5625 && scale > 0.5) {
-            if (height < 1280 && file.length() / 1024 < 200)
-                return file;
+            if (height < 1280 && file.length() / 1024 < 200) return file;
 
             int multiple = height / 1280 == 0 ? 1 : height / 1280;
             thumbW = width / multiple;
@@ -220,7 +227,8 @@ public class Luban {
         int shortSide = 1280;
 
         String filePath = file.getAbsolutePath();
-        String thumbFilePath = mCacheDir.getAbsolutePath() + File.separator + (TextUtils.isEmpty(filename) ? System.currentTimeMillis() : filename);
+        String thumbFilePath = mCacheDir.getAbsolutePath() + File.separator +
+                (TextUtils.isEmpty(filename) ? System.currentTimeMillis() : filename) + ".jpg";
 
         long size = 0;
         long maxSize = file.length() / 5;
@@ -390,7 +398,6 @@ public class Luban {
      * @param size     the file size of image   期望大小
      */
     private File saveImage(String filePath, Bitmap bitmap, long size) {
-
         if (bitmap == null) {
             LogUtils.e("bitmap cannot be null");
             throw new NullPointerException("bitmap cannot be null");
@@ -398,8 +405,7 @@ public class Luban {
 
         File result = new File(filePath.substring(0, filePath.lastIndexOf("/")));
 
-        if (!result.exists() && !result.mkdirs())
-            return null;
+        if (!result.exists() && !result.mkdirs()) return null;
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         int options = 100;
@@ -410,12 +416,14 @@ public class Luban {
             options -= 6;
             bitmap.compress(Bitmap.CompressFormat.JPEG, options, stream);
         }
+        bitmap.recycle();
 
         try {
             FileOutputStream fos = new FileOutputStream(filePath);
             fos.write(stream.toByteArray());
             fos.flush();
             fos.close();
+            stream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

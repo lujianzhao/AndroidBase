@@ -20,10 +20,6 @@ public class Base {
         mContext = context;
     }
 
-    public static void release() {
-        mContext = null;
-    }
-
     public static Context getContext() {
         synchronized (Base.class) {
             return mContext.getApplicationContext();

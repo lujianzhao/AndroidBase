@@ -47,12 +47,13 @@ public class NetworkStateReceiver extends BroadcastReceiver {
 		receiver = NetworkStateReceiver.this;
 		if (intent.getAction().equalsIgnoreCase(ANDROID_NET_CHANGE_ACTION)) {
 			// TALogger.i(NetworkStateReceiver.this, "网络状态改变.");
-			if (!NetWorkUtil.isAvailable(context)) {
+			netType = NetWorkUtil.getNetworkType(context);
+
+			if (!NetWorkUtil.isAvailable(context) || netType == NetWorkUtil.NetWorkType.UnKnown) {
 				// TALogger.i(NetworkStateReceiver.this, "没有网络连接.");
 				networkAvailable = false;
 			} else {
 				// TALogger.i(NetworkStateReceiver.this, "网络连接成功.");
-				netType = NetWorkUtil.getNetworkType(context);
 				networkAvailable = true;
 			}
 			notifyObserver();

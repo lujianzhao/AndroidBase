@@ -24,7 +24,7 @@ public class DbCache {
     /**
      * 所有缓存的总集，以表名为key，value为对应数据表下，所有查询条件的数据总集，每条查询对应的数据以json格式保存
      */
-    private LruCache<String, Map<String, String>> mLruCache;
+    private volatile LruCache<String, Map<String, String>> mLruCache;
 
     private static DbCache mInstance;
 
@@ -67,7 +67,12 @@ public class DbCache {
             LogUtils.i("--------add cache");
             tableCache = new HashMap<>();
             tableCache.put(query, JSON.toJSONString(value));
-            mLruCache.put(tableName, tableCache);
+            try {
+                mLruCache.put(tableName, tableCache);
+            } catch (Exception e) {
+                initCache();
+            }
+
         } else {
             LogUtils.i("--------update cache");
             tableCache.put(query,  JSON.toJSONString(value));

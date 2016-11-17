@@ -9,6 +9,13 @@ import android.support.annotation.Nullable;
  */
 public interface IBaseView {
 
+
+    void finishActivity();
+
+    void finishActivity(int resultCode);
+
+    void finishActivity(Bundle bundle);
+
     void gotoActivity(Class<? extends Activity> clazz);
 
     void gotoActivity(Class<? extends Activity> clazz, Bundle bundle);

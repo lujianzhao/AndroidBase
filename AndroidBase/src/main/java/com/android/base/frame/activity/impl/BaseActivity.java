@@ -3,12 +3,15 @@ package com.android.base.frame.activity.impl;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 
+import com.android.base.common.rx.RxManager;
 import com.android.base.netstate.NetWorkUtil;
 
 /**
  * Created by Administrator on 2016/5/13.
  */
 public abstract class BaseActivity extends SuperActivity {
+
+    private final RxManager mRxManager = new RxManager();
 
     @Override
     @CallSuper
@@ -20,6 +23,16 @@ public abstract class BaseActivity extends SuperActivity {
 
     @Override
     protected void onInitView(Bundle savedInstanceState) {
+    }
+
+    protected RxManager getRxManager() {
+        return mRxManager;
+    }
+
+    @Override
+    protected void onDestroy() {
+        mRxManager.clear();
+        super.onDestroy();
     }
 
     @Override

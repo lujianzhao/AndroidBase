@@ -53,11 +53,13 @@ public class DataKeeper {
     public Object get(String key, Cipher cipher) {
         try {
             String hex = get(key, (String) null);
-            if (hex == null) return null;
+            if (hex == null)
+                return null;
             byte[] bytes = HexUtil.decodeHex(hex.toCharArray());
-            if (cipher != null) bytes = cipher.decrypt(bytes);
+            if (cipher != null)
+                bytes = cipher.decrypt(bytes);
             Object obj = ByteUtil.byteToObject(bytes);
-            LogUtils.i( key + " get: " + obj);
+            LogUtils.i(key + " get: " + obj);
             return obj;
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,12 +76,13 @@ public class DataKeeper {
 
     public void put(String key, Object ser, Cipher cipher) {
         try {
-            LogUtils.i( key + " put: " + ser);
+            LogUtils.i(key + " put: " + ser);
             if (ser == null) {
                 sp.edit().remove(key).apply();
             } else {
                 byte[] bytes = ByteUtil.objectToByte(ser);
-                if (cipher != null) bytes = cipher.encrypt(bytes);
+                if (cipher != null)
+                    bytes = cipher.encrypt(bytes);
                 put(key, HexUtil.encodeHexStr(bytes));
             }
         } catch (Exception e) {
@@ -87,12 +90,12 @@ public class DataKeeper {
         }
     }
 
+    public void remove(String key) {
+        sp.edit().remove(key).apply();
+    }
+
     public void put(String key, String value) {
-        if (value == null) {
-            sp.edit().remove(key).apply();
-        } else {
-            sp.edit().putString(key, value).apply();
-        }
+        sp.edit().putString(key, value).apply();
     }
 
     public void put(String key, boolean value) {
@@ -107,7 +110,7 @@ public class DataKeeper {
         sp.edit().putLong(key, value).apply();
     }
 
-    public void putInt(String key, int value) {
+    public void put(String key, int value) {
         sp.edit().putInt(key, value).apply();
     }
 

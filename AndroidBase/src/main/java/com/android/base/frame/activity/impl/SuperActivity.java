@@ -133,27 +133,27 @@ public abstract class SuperActivity extends SupportActivity implements IBaseActi
     @Override
     @CallSuper
     protected void onPause() {
-        mLifecycleSubject.onNext(ActivityEvent.PAUSE);
         InputMethodUtils.hideSoftInput(this);
         super.onPause();
+        mLifecycleSubject.onNext(ActivityEvent.PAUSE);
     }
 
     @Override
     @CallSuper
     protected void onStop() {
-        mLifecycleSubject.onNext(ActivityEvent.STOP);
         super.onStop();
+        mLifecycleSubject.onNext(ActivityEvent.STOP);
     }
 
     @Override
     @CallSuper
     protected void onDestroy() {
-        ButterKnife.unbind(this);
-        mLifecycleSubject.onNext(ActivityEvent.DESTROY);
-
-
-        NetworkStateReceiver.unRegisterNetworkStateReceiver(this);
         super.onDestroy();
+        mLifecycleSubject.onNext(ActivityEvent.DESTROY);
+        NetworkStateReceiver.unRegisterNetworkStateReceiver(this);
+
+        ButterKnife.unbind(this);
+
         AppManager.getAppManager().finishActivity(this);
         if (isFinishing()) {
             if (!AppManager.getAppManager().has()) {
@@ -162,6 +162,25 @@ public abstract class SuperActivity extends SupportActivity implements IBaseActi
                 }
             }
         }
+    }
+
+    public void finishActivity() {
+        finish();
+    }
+
+    public void finishActivity(int resultCode) {
+        setResult(resultCode);
+        finish();
+    }
+
+
+    public void finishActivity(Bundle bundle) {
+        Intent intent = new Intent();
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
+        setResult(Activity.RESULT_OK,intent);
+        finish();
     }
 
     public void gotoActivity(Class<? extends Activity> clazz) {

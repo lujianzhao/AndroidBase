@@ -89,7 +89,7 @@ public class FlipLoadingLayout extends LoadingLayout {
 
 	@Override
 	protected void pullToRefreshImpl() {
-		// Only start reset Animation, we've previously show the rotate anim
+		// Only onStart reset Animation, we've previously show the rotate anim
 		if (mRotateAnimation == mHeaderImage.getAnimation()) {
 			mHeaderImage.startAnimation(mResetRotateAnimation);
 		}

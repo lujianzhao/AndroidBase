@@ -15,7 +15,7 @@ public abstract class ExecutorUploadCallBack<T,R>  extends ExecutorCallBack<T> {
      * 上传完毕返回的结果
      * @param responseData
      */
-    public void onComplete(R responseData) {
+    public void onCompleted(R responseData) {
     }
 
     public void onError(Throwable e) {

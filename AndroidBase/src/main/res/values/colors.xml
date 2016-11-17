@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPressed">#3F51B5</color>
-    <color name="colorSelected">#0b9a27</color>
+    <!--<color name="colorPressed">@android:color/white</color>-->
+    <color name="colorSelected">#e74253</color>
 
 </resources>

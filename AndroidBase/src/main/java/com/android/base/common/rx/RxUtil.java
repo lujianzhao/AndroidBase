@@ -56,10 +56,10 @@ public class RxUtil {
             @Override
             public Observable<T> call(Observable<T> observable) {
                 return observable
-                        .subscribeOn(Schedulers.io())
-                        .unsubscribeOn(Schedulers.io())
                         .sample(200, TimeUnit.MILLISECONDS)
-                        .observeOn(AndroidSchedulers.mainThread());
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .unsubscribeOn(Schedulers.io());
             }
         };
     }
@@ -71,8 +71,8 @@ public class RxUtil {
             public Observable<T> call(Observable<T> observable) {
                 return observable
                         .subscribeOn(Schedulers.io())
-                        .unsubscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread());
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .unsubscribeOn(Schedulers.io());
             }
         };
     }

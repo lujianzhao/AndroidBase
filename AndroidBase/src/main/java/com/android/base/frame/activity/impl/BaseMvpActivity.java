@@ -81,8 +81,8 @@ public abstract class BaseMvpActivity<P extends BasePresenter> extends SuperActi
     @Override
     @CallSuper
     protected void onDestroy() {
-        mPresenterDelegate.onDestroy(!isChangingConfigurations());
         super.onDestroy();
+        mPresenterDelegate.onDestroy(!isChangingConfigurations());
     }
 
     @Override

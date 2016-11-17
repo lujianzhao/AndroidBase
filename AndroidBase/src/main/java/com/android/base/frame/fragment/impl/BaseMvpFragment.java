@@ -116,9 +116,9 @@ public abstract class BaseMvpFragment<P extends BasePresenter> extends SuperFrag
 
     @Override
     public void onDestroy() {
+        super.onDestroy();
         mSavedInstanceState = null;
         mPresenterDelegate.onDestroy(!getActivity().isChangingConfigurations());
-        super.onDestroy();
     }
 
 

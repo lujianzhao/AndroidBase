@@ -32,6 +32,13 @@ import java.io.File;
  */
 public class WebViewFragment extends BaseFragment {
 
+
+    public interface OnPageFinishedListener{
+        void onPageFinished(WebView view, String url);
+    }
+
+
+
     /**
      * 5.0以上的系统
      */
@@ -54,20 +61,32 @@ public class WebViewFragment extends BaseFragment {
 
     private boolean hasInited = false;
 
+    private OnPageFinishedListener mListener;
+
+    public void setOnPageFinishedListener(OnPageFinishedListener listener) {
+        mListener = listener;
+    }
+
     @Override
     protected int getContentViewId() {
         return R.layout.frag_webview;
     }
 
     @Override
-    protected void initView(Bundle savedInstanceState) {
+    protected void onInitView(Bundle savedInstanceState) {
         initView(mRootView);
         initWebView();
     }
 
     @Override
-    protected void initData() {
-
+    public void onDestroy() {
+        super.onDestroy();
+        mWebView = null;
+        mProgressBar = null;
+        mUploadMessage = null;
+        mFilePathCallback = null;
+        mCameraPhotoPath = null;
+        mListener = null;
     }
 
     @Override
@@ -226,10 +245,15 @@ public class WebViewFragment extends BaseFragment {
                 if (mProgressBar != null) {
                     mProgressBar.setVisibility(View.GONE);
                 }
+
+                if (mListener != null) {
+                    mListener.onPageFinished(view,url);
+                }
             }
         });
 
     }
+
 
 
 

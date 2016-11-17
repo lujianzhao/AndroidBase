@@ -24,7 +24,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.LayoutParams;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,20 +53,21 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 /**
  * https://github.com/CymChad/BaseRecyclerViewAdapterHelper
  */
-public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends RecyclerView.Adapter<K> {
 
     private boolean mNextLoadEnable = false;
     private boolean mLoadingMoreEnable = false;
     private boolean mFirstOnlyEnable = true;
     private boolean mOpenAnimationEnable = false;
     private boolean mEmptyEnable;
+    private boolean mIsUseEmpty = true;
     private boolean mHeadAndEmptyEnable;
     private boolean mFootAndEmptyEnable;
     private Interpolator mInterpolator = new LinearInterpolator();
     private int mDuration = 300;
     private int mLastPosition = -1;
     private RequestLoadMoreListener mRequestLoadMoreListener;
-    @AnimationType
+    //@AnimationType
     private BaseAnimation mCustomAnimation;
     private BaseAnimation mSelectAnimation = new AlphaInAnimation();
     private LinearLayout mHeaderLayout;
@@ -75,7 +75,6 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
     private LinearLayout mCopyHeaderLayout = null;
     private LinearLayout mCopyFooterLayout = null;
     private int pageSize = -1;
-    private View mContentView;
     /**
      * View to show if there are no items to show.
      */
@@ -99,11 +98,16 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
     private View mLoadingView;
 
     public void onScrollStop() {
-        Glide.with(mContext).resumeRequests();
+        if (mContext != null) {
+            Glide.with(mContext).resumeRequests();
+        }
+
     }
 
     public void onScrolling() {
-        Glide.with(mContext).pauseRequests();
+        if (mContext != null) {
+            Glide.with(mContext).pauseRequests();
+        }
     }
 
     @IntDef({ALPHAIN, SCALEIN, SLIDEIN_BOTTOM, SLIDEIN_LEFT, SLIDEIN_RIGHT})
@@ -184,11 +188,6 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
         this(0, data);
     }
 
-    public BaseQuickAdapter(View contentView, List<T> data) {
-        this(0, data);
-        mContentView = contentView;
-    }
-
     /**
      * remove the item associated with the specified position of adapter
      *
@@ -250,7 +249,7 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
      */
     public void addData(T data) {
         mData.add(data);
-        notifyItemInserted(mData.size());
+        notifyItemInserted(mData.size() - 1);
     }
 
     /**
@@ -275,10 +274,9 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
      */
     public void addData(List<T> newData) {
         this.mData.addAll(newData);
-        if (mNextLoadEnable) {
-            mLoadingMoreEnable = false;
-        }
-        notifyItemRangeChanged(mData.size() - newData.size() + getHeaderLayoutCount(), newData.size());
+        hideLoadingMore();
+//        notifyItemRangeInserted(mData.size() - newData.size() + getHeaderLayoutCount(), newData.size());
+        notifyDataSetChanged();
     }
 
     /**
@@ -293,10 +291,14 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
      * same as addData(List<T>) but for when data is manually added to the adapter
      */
     public void dataAdded() {
+        hideLoadingMore();
+        notifyDataSetChanged();
+    }
+
+    public void hideLoadingMore() {
         if (mNextLoadEnable) {
             mLoadingMoreEnable = false;
         }
-        notifyDataSetChanged();
     }
 
     /**
@@ -382,7 +384,7 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
     public int getItemCount() {
         int i = isLoadMore() ? 1 : 0;
         int count = mData.size() + i + getHeaderLayoutCount() + getFooterLayoutCount();
-        if (mData.size() == 0 && mEmptyView != null) {
+        if (mData.size() == 0 && mEmptyView != null && mIsUseEmpty) {
             /**
              *  setEmptyView(false) and add emptyView
              */
@@ -415,6 +417,7 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
      */
     @Override
     public int getItemViewType(int position) {
+        autoLoadMore(position);
         /**
          * if set headView and positon =0
          */
@@ -478,8 +481,8 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
     }
 
     @Override
-    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        BaseViewHolder baseViewHolder = null;
+    public K onCreateViewHolder(ViewGroup parent, int viewType) {
+        K baseViewHolder = null;
         this.mContext = parent.getContext();
         this.mLayoutInflater = LayoutInflater.from(mContext);
         switch (viewType) {
@@ -487,13 +490,13 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
                 baseViewHolder = getLoadingView(parent);
                 break;
             case HEADER_VIEW:
-                baseViewHolder = new BaseViewHolder(mHeaderLayout);
+                baseViewHolder = createBaseViewHolder(mHeaderLayout);
                 break;
             case EMPTY_VIEW:
-                baseViewHolder = new BaseViewHolder(mEmptyView == mCopyEmptyLayout ? mCopyEmptyLayout : mEmptyView);
+                baseViewHolder = createBaseViewHolder(mEmptyView == mCopyEmptyLayout ? mCopyEmptyLayout : mEmptyView);
                 break;
             case FOOTER_VIEW:
-                baseViewHolder = new BaseViewHolder(mFooterLayout);
+                baseViewHolder = createBaseViewHolder(mFooterLayout);
                 break;
             default:
                 baseViewHolder = onCreateDefViewHolder(parent, viewType);
@@ -503,11 +506,11 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
     }
 
 
-    private BaseViewHolder getLoadingView(ViewGroup parent) {
+    private K getLoadingView(ViewGroup parent) {
         if (mLoadingView == null) {
             return createBaseViewHolder(parent, R.layout.def_loading);
         }
-        return new BaseViewHolder(mLoadingView);
+        return createBaseViewHolder(mLoadingView);
     }
 
     /**
@@ -518,7 +521,7 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
      * @param holder
      */
     @Override
-    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+    public void onViewAttachedToWindow(K holder) {
         super.onViewAttachedToWindow(holder);
         int type = holder.getItemViewType();
         if (type == EMPTY_VIEW || type == HEADER_VIEW || type == FOOTER_VIEW || type == LOADING_VIEW) {
@@ -560,18 +563,6 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
                 }
             });
         }
-        recyclerView.post(new Runnable() {
-            @Override
-            public void run() {
-                if (mRequestLoadMoreListener != null && pageSize == -1) {
-                    RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-                    int visibleItemCount = layoutManager.getChildCount();
-                    Log.e("visibleItemCount", visibleItemCount + "");
-                    openLoadMore(visibleItemCount);
-                }
-            }
-        });
-
     }
 
     private boolean flag = true;
@@ -596,15 +587,14 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
      * @see #getDefItemViewType(int)
      */
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int positions) {
+    public void onBindViewHolder(K holder, int positions) {
         int viewType = holder.getItemViewType();
 
         switch (viewType) {
             case 0:
-                convert((BaseViewHolder) holder, mData.get(holder.getLayoutPosition() - getHeaderLayoutCount()));
+                convert(holder, mData.get(holder.getLayoutPosition() - getHeaderLayoutCount()));
                 break;
             case LOADING_VIEW:
-                addLoadMore(holder);
                 break;
             case HEADER_VIEW:
                 break;
@@ -613,22 +603,28 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
             case FOOTER_VIEW:
                 break;
             default:
-                convert((BaseViewHolder) holder, mData.get(holder.getLayoutPosition() - getHeaderLayoutCount()));
-                onBindDefViewHolder((BaseViewHolder) holder, mData.get(holder.getLayoutPosition() - getHeaderLayoutCount()));
+                convert(holder, mData.get(holder.getLayoutPosition() - getHeaderLayoutCount()));
                 break;
         }
-
     }
 
-    protected BaseViewHolder onCreateDefViewHolder(ViewGroup parent, int viewType) {
+    protected K onCreateDefViewHolder(ViewGroup parent, int viewType) {
         return createBaseViewHolder(parent, mLayoutResId);
     }
 
-    protected BaseViewHolder createBaseViewHolder(ViewGroup parent, int layoutResId) {
-        if (mContentView == null) {
-            return new BaseViewHolder(getItemView(layoutResId, parent));
-        }
-        return new BaseViewHolder(mContentView);
+    protected K createBaseViewHolder(ViewGroup parent, int layoutResId) {
+        return createBaseViewHolder(getItemView(layoutResId, parent));
+    }
+
+    /**
+     * if you want to use subclass of BaseViewHolder in the adapter,
+     * you must override the method to create new ViewHolder.
+     *
+     * @param view view
+     * @return new ViewHolder
+     */
+    protected K createBaseViewHolder(View view) {
+        return (K) new BaseViewHolder(view);
     }
 
     /**
@@ -665,11 +661,25 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
      *               the effect of this method is the same as that of {@link #addHeaderView(View)}.
      */
     public void addHeaderView(View header, int index) {
+        addHeaderView(header, index, LinearLayout.VERTICAL);
+    }
+
+    /**
+     * @param header
+     * @param index
+     * @param orientation
+     */
+    public void addHeaderView(View header, int index, int orientation) {
         if (mHeaderLayout == null) {
             if (mCopyHeaderLayout == null) {
                 mHeaderLayout = new LinearLayout(header.getContext());
-                mHeaderLayout.setOrientation(LinearLayout.VERTICAL);
-                mHeaderLayout.setLayoutParams(new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+                if (orientation == LinearLayout.VERTICAL) {
+                    mHeaderLayout.setOrientation(LinearLayout.VERTICAL);
+                    mHeaderLayout.setLayoutParams(new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+                } else {
+                    mHeaderLayout.setOrientation(LinearLayout.HORIZONTAL);
+                    mHeaderLayout.setLayoutParams(new LayoutParams(WRAP_CONTENT, MATCH_PARENT));
+                }
                 mCopyHeaderLayout = mHeaderLayout;
             } else {
                 mHeaderLayout = mCopyHeaderLayout;
@@ -833,6 +843,15 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
     }
 
     /**
+     * Set whether to use empty view
+     *
+     * @param isUseEmpty
+     */
+    public void isUseEmpty(boolean isUseEmpty) {
+        mIsUseEmpty = isUseEmpty;
+    }
+
+    /**
      * When the current adapter is empty, the BaseQuickAdapter can display a special view
      * called the empty view. The empty view is used to provide feedback to the user
      * that no data is available in this AdapterView.
@@ -845,17 +864,29 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
 
 
     /**
-     *
+     * Finished pull to refresh on the load
      */
     public void loadComplete() {
         mNextLoadEnable = false;
         mLoadingMoreEnable = false;
-        this.notifyItemChanged(getItemCount());
+        notifyDataSetChanged();
     }
 
+    private int mAutoLoadMoreSize = 1;
+    public void setAutoLoadMoreSize(int autoLoadMoreSize) {
+        if (autoLoadMoreSize > 1) {
+            mAutoLoadMoreSize = autoLoadMoreSize;
+        }
+    }
 
-    private void addLoadMore(RecyclerView.ViewHolder holder) {
-        if (isLoadMore() && !mLoadingMoreEnable) {
+    private void autoLoadMore(int position) {
+        if (!isLoadMore()) {
+            return;
+        }
+        if (position < getItemCount() - mAutoLoadMoreSize) {
+            return;
+        }
+        if (!mLoadingMoreEnable) {
             mLoadingMoreEnable = true;
             mRequestLoadMoreListener.onLoadMoreRequested();
         }
@@ -885,7 +916,7 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
     }
 
     /**
-     * set anim to onStart when loading
+     * set anim to start when loading
      *
      * @param anim
      * @param index
@@ -915,15 +946,6 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
         return mLayoutInflater.inflate(layoutResId, parent, false);
     }
 
-
-    /**
-     * @see #convert(BaseViewHolder, Object) ()
-     * @deprecated This method is deprecated
-     * {@link #convert(BaseViewHolder, Object)} depending on your use case.
-     */
-    @Deprecated
-    protected void onBindDefViewHolder(BaseViewHolder holder, T item) {
-    }
 
     public interface RequestLoadMoreListener {
 
@@ -993,7 +1015,7 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
      * @param helper A fully initialized helper.
      * @param item   The item that needs to be displayed.
      */
-    protected abstract void convert(BaseViewHolder helper, T item);
+    protected abstract void convert(K helper, T item);
 
     /**
      * Get the row id associated with the specified position in the list.
@@ -1206,7 +1228,7 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
         return collapse(position, animate, true);
     }
 
-    private int getItemPosition(T item) {
+    protected int getItemPosition(T item) {
         return item != null && mData != null && !mData.isEmpty() ? mData.indexOf(item) : -1;
     }
 
@@ -1226,5 +1248,45 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
         } else {
             return null;
         }
+    }
+
+    /**
+     * Get the parent item position of the IExpandable item
+     *
+     * @return return the closest parent item position of the IExpandable.
+     * if the IExpandable item's level is 0, return itself position.
+     * if the item's level is negative which mean do not implement this, return a negative
+     * if the item is not exist in the data list, return a negative.
+     */
+    public int getParentPosition(@NonNull T item) {
+        int position = getItemPosition(item);
+        if (position == -1) {
+            return -1;
+        }
+
+        // if the item is IExpandable, return a closest IExpandable item position whose level smaller than this.
+        // if it is not, return the closest IExpandable item position whose level is not negative
+        int level;
+        if (item instanceof IExpandable) {
+            level = ((IExpandable) item).getLevel();
+        } else {
+            level = Integer.MAX_VALUE;
+        }
+        if (level == 0) {
+            return position;
+        } else if (level == -1) {
+            return -1;
+        }
+
+        for (int i = position; i >= 0; i--) {
+            T temp = mData.get(i);
+            if (temp instanceof IExpandable) {
+                IExpandable expandable = (IExpandable) temp;
+                if (expandable.getLevel() >= 0 && expandable.getLevel() < level) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 }

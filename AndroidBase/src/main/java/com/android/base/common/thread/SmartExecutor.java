@@ -59,12 +59,24 @@ public class SmartExecutor implements Executor {
     private SchedulePolicy schedulePolicy = SchedulePolicy.FirstInFistRun;
     private OverloadPolicy overloadPolicy = OverloadPolicy.DiscardOldTaskInQueue;
 
+    private static SmartExecutor instance = null;
 
-    public SmartExecutor() {
+    public static  SmartExecutor getInstance() {
+        if (instance == null) {
+            synchronized (SmartExecutor.class) {
+                if (instance == null) {
+                    instance = new SmartExecutor();
+                }
+            }
+        }
+        return instance;
+    }
+
+    private SmartExecutor() {
         initThreadPool();
     }
 
-    public SmartExecutor(int coreSize, int queueSize) {
+    private SmartExecutor(int coreSize, int queueSize) {
         this.coreSize = coreSize;
         this.queueSize = queueSize;
         initThreadPool();

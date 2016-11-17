@@ -36,6 +36,8 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.zhy.autolayout.utils.AutoUtils;
+
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 
@@ -62,13 +64,13 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
     Object associatedObject;
 
 
-    protected BaseViewHolder(View view) {
+    public BaseViewHolder(View view) {
         super(view);
         this.views = new SparseArray<View>();
         this.childClickViewIds = new LinkedHashSet<>();
         this.itemChildLongClickViewIds = new LinkedHashSet<>();
         convertView = view;
-
+        AutoUtils.auto(convertView);
     }
 
     public HashSet<Integer> getItemChildLongClickViewIds() {
@@ -490,7 +492,6 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
         }
         return (T) view;
     }
-
 
     /**
      * Retrieves the last converted object on this view.

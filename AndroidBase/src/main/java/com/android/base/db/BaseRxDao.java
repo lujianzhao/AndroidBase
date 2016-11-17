@@ -7,6 +7,7 @@ import com.android.base.common.rx.RxUtil;
 import com.android.base.db.ormlite.DatabaseUtil;
 import com.android.base.db.ormlite.DbCache;
 import com.android.base.db.ormlite.OrmLiteDao;
+import com.j256.ormlite.dao.Dao;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -42,6 +43,38 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
         this.cache = cache;
         tableName = DatabaseUtil.extractTableName(cls);
     }
+
+
+    /**
+     * 增加或更新一条记录
+     */
+    public Dao.CreateOrUpdateStatus createOrUpdate(T t) {
+        Dao.CreateOrUpdateStatus result = super.createOrUpdate(t);
+        boolean flag = result.isCreated() || (result.isUpdated() && result.getNumLinesChanged() > 0);
+        if (flag) {
+            DbCache.getInstance().clearByTable(tableName);
+        }
+        return result;
+    }
+
+    /**
+     * 增加或更新一条记录
+     */
+    public Subscription createOrUpdateSync(final T t, final ExecutorCallBack<Dao.CreateOrUpdateStatus> listener) {
+        return subscribe(new Callable<Dao.CreateOrUpdateStatus>() {
+            @Override
+            public Dao.CreateOrUpdateStatus call() {
+                return createOrUpdate(t);
+            }
+        }, new Action1<Dao.CreateOrUpdateStatus>() {
+            @Override
+            public void call(Dao.CreateOrUpdateStatus result) {
+                listener.onNext(result);
+            }
+        });
+    }
+
+
 
     /**
      * 增加一条记录
@@ -155,6 +188,99 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
             }
         });
     }
+
+    /**
+     * 分页排序查询
+     *
+     * @param orderColumn 排序列名
+     * @param ascending   true为升序,false为降序
+     * @param offset      搜索下标
+     * @param count       搜索条数
+     * @return
+     */
+    public List<T> queryForAllForPagesByOrder(String orderColumn, boolean ascending, Long offset, Long count) {
+        if (!cache) {
+            return super.queryForAllForPagesByOrder(orderColumn,ascending,offset,count);
+        }
+        String json = DbCache.getInstance().getCache(tableName, "queryForAllForPagesByOrder"+orderColumn+String.valueOf(ascending)+String.valueOf(offset)+String.valueOf(count));
+        List<T> result = JSON.parseArray(json, clazz);
+        if (result != null) {
+            LogUtils.d("---------query from cache--");
+            return result;
+        }
+        result = super.queryForAllForPagesByOrder(orderColumn,ascending,offset,count);
+        DbCache.getInstance().addCache(tableName, "queryForAllForPagesByOrder"+orderColumn+String.valueOf(ascending)+String.valueOf(offset)+String.valueOf(count), result);
+        return result;
+    }
+
+    /**
+     * 分页排序查询
+     *
+     * @param orderColumn 排序列名
+     * @param ascending   true为升序,false为降序
+     * @param offset      搜索下标
+     * @param count       搜索条数
+     * @return
+     */
+    public Subscription queryForAllForPagesByOrderSync(final String orderColumn, final boolean ascending, final Long offset, final Long count, final ExecutorCallBack<List<T>> listener) {
+        return subscribe(new Callable<List<T>>() {
+            @Override
+            public List<T> call() {
+                return queryForAllForPagesByOrder(orderColumn,ascending,offset,count);
+            }
+        }, new Action1<List<T>>() {
+            @Override
+            public void call(List<T> result) {
+                listener.onNext(result);
+            }
+        });
+    }
+
+
+    /**
+     * 排序查询
+     *
+     * @param orderColumn 排序的列
+     * @param ascending   true为升序,false为降序
+     * @return
+     */
+    public List<T> queryForAllByOrder(String orderColumn, boolean ascending) {
+        if (!cache) {
+            return super.queryForAllByOrder(orderColumn,ascending);
+        }
+        String json = DbCache.getInstance().getCache(tableName, "queryForAllByOrder"+orderColumn+String.valueOf(ascending));
+        List<T> result = JSON.parseArray(json, clazz);
+        if (result != null) {
+            LogUtils.d("---------query from cache--");
+            return result;
+        }
+        result = super.queryForAllByOrder(orderColumn,ascending);
+        DbCache.getInstance().addCache(tableName, "queryForAllByOrder"+orderColumn+String.valueOf(ascending), result);
+        return result;
+    }
+
+    /**
+     * 排序查询
+     *
+     * @param orderColumn 排序的列
+     * @param ascending   true为升序,false为降序
+     * @return
+     */
+    public Subscription queryForAllByOrderSync(final String orderColumn, final boolean ascending, final ExecutorCallBack<List<T>> listener) {
+        return subscribe(new Callable<List<T>>() {
+            @Override
+            public List<T> call() {
+                return queryForAllByOrder(orderColumn,ascending);
+            }
+        }, new Action1<List<T>>() {
+            @Override
+            public void call(List<T> result) {
+                listener.onNext(result);
+            }
+        });
+    }
+
+
 
     public List<T> queryForAll() {
         if (!cache) {

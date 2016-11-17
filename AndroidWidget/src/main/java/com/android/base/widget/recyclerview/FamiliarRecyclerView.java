@@ -9,7 +9,6 @@ import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
-import android.widget.Adapter;
 
 import com.android.base.adapter.recyclerview.BaseQuickAdapter;
 import com.android.base.glide.recyclerview.ListPreloaderQuickAdapter;
@@ -47,6 +46,9 @@ public class FamiliarRecyclerView extends RecyclerView {
     private boolean isFooterDividersEnabled = false;
     private boolean isDefaultItemDecoration = true;
     private boolean isNotShowGridEndDivider = false;
+
+    private boolean isMarginDividersEnabled = false;
+
     private int mLayoutManagerType;
     private Drawable mDefAllDivider;
     private int mDefAllDividerHeight;
@@ -79,6 +81,7 @@ public class FamiliarRecyclerView extends RecyclerView {
         isHeaderDividersEnabled = ta.getBoolean(R.styleable.FamiliarRecyclerView_frv_headerDividersEnabled, false);
         isFooterDividersEnabled = ta.getBoolean(R.styleable.FamiliarRecyclerView_frv_footerDividersEnabled, false);
         isNotShowGridEndDivider = ta.getBoolean(R.styleable.FamiliarRecyclerView_frv_isNotShowGridEndDivider, false);
+        isMarginDividersEnabled = ta.getBoolean(R.styleable.FamiliarRecyclerView_frv_isMarginDividersEnabled, false);
         if (ta.hasValue(R.styleable.FamiliarRecyclerView_frv_layoutManager)) {
             int layoutManagerType = ta.getInt(R.styleable.FamiliarRecyclerView_frv_layoutManager, DEF_LAYOUT_MANAGER_TYPE);
             int layoutManagerOrientation = ta.getInt(R.styleable.FamiliarRecyclerView_frv_layoutManagerOrientation, DEF_LAYOUT_MANAGER_ORIENTATION);
@@ -291,6 +294,7 @@ public class FamiliarRecyclerView extends RecyclerView {
         mFamiliarDefaultItemDecoration.setHeaderDividersEnabled(isHeaderDividersEnabled);
         mFamiliarDefaultItemDecoration.setFooterDividersEnabled(isFooterDividersEnabled);
         mFamiliarDefaultItemDecoration.setNotShowGridEndDivider(isNotShowGridEndDivider);
+        mFamiliarDefaultItemDecoration.setMarginDividersEnabled(isMarginDividersEnabled);
 
         if (null != getAdapter()) {
             needInitAddItemDescration = false;

@@ -1,8 +1,7 @@
 package com.android.base.glide.recyclerview;
 
-import android.view.View;
-
 import com.android.base.adapter.recyclerview.BaseQuickAdapter;
+import com.android.base.adapter.recyclerview.BaseViewHolder;
 import com.bumptech.glide.ListPreloader;
 
 import java.util.List;
@@ -12,19 +11,11 @@ import java.util.List;
  * 创建时间: 2016/08/23 15:12
  * 描述:
  */
-public abstract class ListPreloaderQuickAdapter<T> extends BaseQuickAdapter<T> implements ListPreloader.PreloadModelProvider<T>{
+public abstract class ListPreloaderQuickAdapter<T> extends BaseQuickAdapter<T,BaseViewHolder> implements ListPreloader.PreloadModelProvider<T>{
 
 
     public ListPreloaderQuickAdapter(int layoutResId, List<T> data) {
         super(layoutResId, data);
-    }
-
-    public ListPreloaderQuickAdapter(List<T> data) {
-        super(data);
-    }
-
-    public ListPreloaderQuickAdapter(View contentView, List<T> data) {
-        super(contentView, data);
     }
 
     @Override

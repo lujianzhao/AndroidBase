@@ -52,14 +52,14 @@ public class TopBar extends FrameLayout {
     private LayoutParams leftParams, rightParams, titleParams;
 
     //创建接口对象
-    public TopbarClickListener listener;
+    public OnTopbarClickListener listener;
 
     public String getLeftText() {
         return leftText;
     }
 
     //定义一个事件接口
-    public interface TopbarClickListener {
+    public interface OnTopbarClickListener {
         void leftClick();
 
         void rightClick();
@@ -68,7 +68,7 @@ public class TopBar extends FrameLayout {
     }
 
     //创建为事件接口赋值的方法
-    public void setOnTopBarClickListener(TopbarClickListener listener) {
+    public void setOnTopBarClickListener(OnTopbarClickListener listener) {
         this.listener = listener;
     }
 

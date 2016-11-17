@@ -1,38 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:background="@drawable/pressed_bg"
                 android:orientation="vertical">
 
     <View
         android:id="@+id/line"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/black"/>
+        android:layout_height="1px"
+        android:background="#f3f3f3"/>
 
-    <ImageView
-        android:layout_below="@+id/line"
-        android:id="@+id/tab_icon"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"
-        android:src="@drawable/widget_bar_me_nor"
-        />
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tab_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tab_icon"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"
-        android:clickable="true"
-        android:text="哈哈"
-        android:textSize="12sp"/>
+        <ImageView
+            android:layout_below="@+id/line"
+            android:layout_marginTop="3dp"
+            android:id="@+id/tab_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:src="@drawable/widget_bar_me_nor"
+            />
+
+        <TextView
+            android:id="@+id/tab_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tab_icon"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:gravity="center_horizontal"
+            android:clickable="true"
+            android:text="哈哈"
+            android:textSize="10sp"/>
+
+    </LinearLayout>
+
+
 
     <!--<TextView-->
     <!--android:id="@+id/tab_mes"-->

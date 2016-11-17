@@ -138,7 +138,7 @@ public final class OverscrollHelper {
 					// Check the mode supports the overscroll direction, and
 					// then move scroll
 					if (mode.showHeaderLoadingLayout()) {
-						// If we're currently at zero, we're about to start
+						// If we're currently at zero, we're about to onStart
 						// overscrolling, so change the state
 						if (currentScrollValue == 0) {
 							view.setState(State.OVERSCROLLING);
@@ -150,7 +150,7 @@ public final class OverscrollHelper {
 					// Check the mode supports the overscroll direction, and
 					// then move scroll
 					if (mode.showFooterLoadingLayout()) {
-						// If we're currently at zero, we're about to start
+						// If we're currently at zero, we're about to onStart
 						// overscrolling, so change the state
 						if (currentScrollValue == 0) {
 							view.setState(State.OVERSCROLLING);

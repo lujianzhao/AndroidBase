@@ -3,6 +3,7 @@ package com.android.base.frame;
 import android.app.Activity;
 import android.app.Application;
 
+import com.android.base.common.assist.Check;
 import com.android.base.common.logutils.LogLevel;
 import com.android.base.common.logutils.LogUtils;
 import com.android.base.common.utils.HandlerUtil;
@@ -13,6 +14,9 @@ import com.android.base.netstate.NetWorkUtil;
 import com.android.base.netstate.NetworkStateReceiver;
 import com.zxy.recovery.callback.RecoveryCallback;
 import com.zxy.recovery.core.Recovery;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BaseApplication extends Application {
 
@@ -54,7 +58,6 @@ public class BaseApplication extends Application {
 
                     @Override
                     public void stackTrace(String stackTrace) {
-                        LogUtils.e(stackTrace);
                         onErrorHappens(stackTrace);
                     }
 
@@ -67,9 +70,30 @@ public class BaseApplication extends Application {
                     public void exception(String throwExceptionType, String throwClassName, String throwMethodName, int throwLineNumber) {
 
                     }
+
+                    @Override
+                    public void throwable(Throwable throwable) {
+                        LogUtils.e(throwable);
+                    }
                 })
                 .silent(true, Recovery.SilentMode.RECOVER_ACTIVITY_STACK)
                 .init(this);
+
+
+        List<Class<? extends Activity>> skipActivities = getSkipActivities();
+        if (!Check.isEmpty(skipActivities)) {
+            for (Class clazz : skipActivities) {
+                Recovery.getInstance().skip(clazz);
+            }
+        }
+    }
+
+    /**
+     *
+     * @return 不进行错误捕获的 Activitys
+     */
+    public List<Class<? extends Activity>> getSkipActivities() {
+        return new ArrayList<>();
     }
 
     /**
@@ -163,15 +187,12 @@ public class BaseApplication extends Application {
             HandlerUtil.HANDLER.removeCallbacksAndMessages(null);
         }
 
-        //关闭数据库连接
-        if (null != getOrmLiteDatabaseHelper()) {
-            getOrmLiteDatabaseHelper().close();
-        }
+        AppManager.getAppManager().appExit();
 
         //注销网络监听
         unRegisterNetWorkStateListener();
 
-        Base.release();
     }
+
 
 }

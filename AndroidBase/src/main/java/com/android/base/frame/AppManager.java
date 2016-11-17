@@ -1,7 +1,6 @@
 package com.android.base.frame;
 
 import android.app.Activity;
-import android.content.Context;
 
 import com.android.base.frame.activity.IBaseActivity;
 
@@ -131,6 +130,7 @@ public class AppManager {
             }
         }
         mActivityStack.clear();
+        mActivityStack = null;
     }
 
     /**
@@ -144,9 +144,10 @@ public class AppManager {
     /**
      * 应用程序退出
      */
-    public void appExit(Context context) {
+    public void appExit() {
         try {
             finishAllActivity();
+            mInstance = null;
             Runtime.getRuntime().exit(0);
         } catch (Exception e) {
             Runtime.getRuntime().exit(-1);

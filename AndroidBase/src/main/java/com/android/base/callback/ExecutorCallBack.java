@@ -11,7 +11,7 @@ public abstract class ExecutorCallBack<T>  {
     public void onStart() {
     }
 
-    public void onComplete() {
+    public void onCompleted() {
     }
 
     public void onError(Throwable e) {

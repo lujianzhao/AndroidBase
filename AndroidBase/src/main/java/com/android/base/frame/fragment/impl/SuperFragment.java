@@ -119,7 +119,6 @@ public abstract class SuperFragment extends SupportFragment implements IBaseFrag
     @Override
     public void onPause() {
         mLifecycleSubject.onNext(FragmentEvent.PAUSE);
-        hideSoftInput();
         super.onPause();
     }
 
@@ -150,6 +149,24 @@ public abstract class SuperFragment extends SupportFragment implements IBaseFrag
         mRootView = null;
         mLifecycleSubject.onNext(FragmentEvent.DETACH);
         super.onDetach();
+    }
+
+    public void finishActivity() {
+        getActivity().finish();
+    }
+
+    public void finishActivity(int resultCode) {
+        getActivity().setResult(resultCode);
+        getActivity().finish();
+    }
+
+    public void finishActivity(Bundle bundle) {
+        Intent intent = new Intent();
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
+        getActivity().setResult(Activity.RESULT_OK,intent);
+        getActivity().finish();
     }
 
     public void gotoActivity(Class<? extends Activity> clazz) {

@@ -43,9 +43,9 @@ public class BaseClient implements IRetrofit {
         //okhttp3 提供的日志系统
         LoggerInterceptor logging = new LoggerInterceptor();
         mOkhttpBuilder = new OkHttpClient.Builder()
-                .readTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
-                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(7676, TimeUnit.SECONDS)
+                .writeTimeout(7676, TimeUnit.SECONDS)
+                .connectTimeout(15, TimeUnit.SECONDS)
                 .addInterceptor(logging)
                 .cookieJar(cookieJar);
 
@@ -60,7 +60,7 @@ public class BaseClient implements IRetrofit {
      * @param flag
      * @param context
      */
-    public void enableCache(boolean flag, Context context) {
+    protected void enableCache(boolean flag, Context context) {
         if (flag) {
             File file = new File(FileUtil.getCacheDir(), DEFAULT_DISK_CACHE_DIR);
             FileUtil.createDirs(file);
@@ -79,7 +79,7 @@ public class BaseClient implements IRetrofit {
      * @param interceptor
      * @return
      */
-    public void addExtraInterceptor(Interceptor interceptor) {
+    protected void addExtraInterceptor(Interceptor interceptor) {
         mOkhttpBuilder.interceptors().add(interceptor);
     }
 
