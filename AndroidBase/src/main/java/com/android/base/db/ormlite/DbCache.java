@@ -10,10 +10,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by huangzj on 2016/3/2.
- * <p/>
  * 数据库查询后的缓存数据
  */
+@Deprecated
 public class DbCache {
 
     /**

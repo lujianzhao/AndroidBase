@@ -1,10 +1,9 @@
-package com.android.base.db;
+package com.android.base.db.ormlite;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.android.base.common.logutils.LogUtils;
-import com.android.base.db.ormlite.DatabaseHandler;
 import com.j256.ormlite.android.AndroidDatabaseConnection;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
@@ -14,15 +13,12 @@ import com.j256.ormlite.support.DatabaseConnection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 
 /**
  * ormlite操作数据库Helper
- * <p/>
- * Created by huangzj on 2016/2/24.
  */
 public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
 
@@ -36,7 +32,6 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
     public OrmLiteDatabaseHelper(Context context, String databaseName, SQLiteDatabase.CursorFactory factory, int databaseVersion) {
         super(context, databaseName, factory, databaseVersion);
         daoMap = new HashMap<>();
-        LogUtils.i("OrmLiteDatabaseHelper 创建");
     }
 
     /**
@@ -45,7 +40,7 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
      * @param clazz 表的列结构bean
      * @param <T>
      */
-    protected  <T> void registerTable(Class<T> clazz) {
+    public <T> void registerTable(Class<T> clazz) {
         if (tableHandlers == null) {
             tableHandlers = new ArrayList<>();
         }
@@ -57,12 +52,12 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase, ConnectionSource connectionSource) {
-        for (DatabaseHandler handler : tableHandlers) {
-            try {
+        try {
+            for (DatabaseHandler handler : tableHandlers) {
                 handler.create(connectionSource);
-            } catch (SQLException e) {
-                LogUtils.e("database create fail", e);
             }
+        } catch (SQLException e) {
+            LogUtils.e("database create fail", e);
         }
     }
 
@@ -72,12 +67,12 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, ConnectionSource cs, int oldVersion, int newVersion) {
         LogUtils.i("数据库升级了" + " oldVersion = " + oldVersion + " newVersion = " + newVersion);
-        for (DatabaseHandler handler : tableHandlers) {
-            try {
+        try {
+            for (DatabaseHandler handler : tableHandlers) {
                 handler.onUpgrade(db, cs, oldVersion, newVersion);
-            } catch (SQLException e) {
-                LogUtils.e("database upgrade fail", e);
             }
+        } catch (SQLException e) {
+            LogUtils.e("database upgrade fail", e);
         }
     }
 
@@ -103,7 +98,7 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
             this.onDowngrade(cs, oldVersion, newVersion);
         } finally {
             if (clearSpecial) {
-                cs.clearSpecialConnection( conn);
+                cs.clearSpecialConnection(conn);
             }
         }
     }
@@ -132,6 +127,12 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
         }
     }
 
+    /**
+     * 获取dao
+     *
+     * @param cls 表结构bean
+     * @return
+     */
     public synchronized Dao getDao(Class cls) {
         Dao dao;
         String clsName = cls.getSimpleName();
@@ -153,14 +154,14 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
     public void close() {
         super.close();
         synchronized (this) {
-            Iterator<Map.Entry<String, Dao>> it = daoMap.entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry<String, Dao> entry = it.next();
+            if (daoMap != null) {
+                daoMap.clear();
+                daoMap = null;
+            }
 
-                Dao dao = entry.setValue(null);
-                dao = null;
-
-                it.remove();
+            if (tableHandlers != null) {
+                tableHandlers.clear();
+                tableHandlers = null;
             }
         }
         LogUtils.i("OrmLiteDatabaseHelper 关闭");
@@ -170,7 +171,7 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
      * 判断新注册的数据表是否有效
      *
      * @param handler 数据表对应的DatabaseHandler
-     * @return
+     * @return true：有效；false；无效
      */
     private boolean isValidTable(DatabaseHandler handler) {
         if (tableHandlers == null || handler == null) {

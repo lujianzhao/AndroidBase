@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
+import com.android.base.common.assist.Check;
 import com.android.base.common.logutils.LogUtils;
 import com.j256.ormlite.misc.JavaxPersistenceImpl;
 import com.j256.ormlite.support.ConnectionSource;
@@ -16,8 +17,6 @@ import java.util.List;
 
 /**
  * 数据库处理的辅助工具
- * <p/>
- * Created by huangzj on 2016/1/23.
  */
 public class DatabaseUtil {
 
@@ -31,11 +30,10 @@ public class DatabaseUtil {
     public static <T> String extractTableName(Class<T> clazz) {
         DatabaseTable databaseTable = clazz.getAnnotation(DatabaseTable.class);
         String name;
-        if (databaseTable != null &&  !TextUtils.isEmpty(databaseTable.tableName()) && databaseTable.tableName().length() > 0) {
+        if (databaseTable != null && !Check.isEmpty(databaseTable.tableName())) {
             name = databaseTable.tableName();
         } else {
             name =new JavaxPersistenceImpl().getEntityName(clazz);
-//            name = JavaxPersistence.getEntityName(clazz);
             if (name == null) {
                 name = clazz.getSimpleName().toLowerCase();
             }
@@ -73,7 +71,6 @@ public class DatabaseUtil {
         List<ColumnStruct> columnStruct = new ArrayList<>();
         try {
             String struct = TableUtils.getCreateTableStatements(connectionSource, clazz).get(0);
-            LogUtils.i("新的建表语句：" + struct);
             columnStruct = getColumnStruct(struct);
         } catch (SQLException e) {
             LogUtils.e("",e);
@@ -99,7 +96,6 @@ public class DatabaseUtil {
                 int columnIndex = cursor.getColumnIndex("sql");
                 if (-1 != columnIndex && cursor.getCount() > 0) {
                     String struct = cursor.getString(columnIndex);
-                    LogUtils.i("旧的建表语句：" + struct);
                     columnStruct = getColumnStruct(struct);
                 } else {
                     LogUtils.i("不存在旧表");
@@ -108,7 +104,7 @@ public class DatabaseUtil {
                 LogUtils.i("数据库操作失败");
             }
         } catch (Exception e) {
-            LogUtils.e("", e);
+            LogUtils.e( e);
         } finally {
             if (cursor != null) {
                 cursor.close();
@@ -176,6 +172,7 @@ public class DatabaseUtil {
         for (int i = 0; i < size; i++) {
             ColumnStruct struct = list.get(i);
             if (columnName.equals(struct.getColumnName())) {
+                // 列结构集合中已存在对应列，修改对应列结构
                 StringBuilder sb = new StringBuilder(struct.getColumnLimit());
                 sb.append(" ");
                 sb.append(limit);
@@ -183,7 +180,7 @@ public class DatabaseUtil {
                 return;
             }
         }
-
+        // 列结构集合中不存在对应列，添加进列结构
         list.add(new ColumnStruct(columnName, limit));
     }
 

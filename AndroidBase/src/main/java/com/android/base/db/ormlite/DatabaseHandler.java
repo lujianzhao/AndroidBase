@@ -8,7 +8,6 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +15,6 @@ import java.util.List;
  * <p/>
  * 需要自定义升级方案的数据表可继承改类，重写对应方法
  * <p/>
- * Created by huangzj on 2016/1/25.
  */
 public class DatabaseHandler<T> {
 
@@ -57,7 +55,6 @@ public class DatabaseHandler<T> {
                                   List<ColumnStruct> newStruct) throws SQLException {
         if (DatabaseUtil.hasChangeColumnLimit(oldStruct, newStruct)) {
             LogUtils.d("数据表已有字段的描述改变");
-            // 字段的限制条件改变时，要保证数据的无损一直没有想到完美的方案，欢迎完善
             // 已有字段描述改变了，删除旧表，重建新表
             reset(cs);
         } else {
@@ -69,40 +66,11 @@ public class DatabaseHandler<T> {
                 LogUtils.d("表发生了变化");
                 // 判断列的变化情况：增加、减少、增减
                 List<String> deleteList = DatabaseUtil.getDeleteColumns(oldColumns, newColumns);
-                // 自增的列不纳入数据拷贝的范围
-//                deleteList = DatabaseUtil.addGeneratedId(deleteList, oldStruct);
                 upgradeByCopy(db, cs, getCopyColumns(oldColumns, deleteList));
             } else {
                 LogUtils.i("表没有发生变化,不需要更新数据表");
             }
         }
-    }
-
-    /**
-     * 新增列的方式更新
-     */
-    private void upgradeByAdd(SQLiteDatabase db, List<String> addList, List<ColumnStruct> newStruct) {
-        List<ColumnStruct> addColumn = new ArrayList<>();
-        for (String columnName : addList) {
-            ColumnStruct columnStruct = DatabaseUtil.existColumn(columnName, newStruct);
-            if (columnStruct != null) {
-                addColumn.add(new ColumnStruct(columnName, columnStruct.getColumnLimit()));
-            }
-        }
-
-        for (ColumnStruct addStruct : addColumn) {
-            db.execSQL(appendAddColumn(addStruct));
-        }
-    }
-
-    private String appendAddColumn(ColumnStruct addStruct) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("ALTER TABLE ");
-        sb.append(tableName);
-        sb.append(" ADD COLUMN ");
-        sb.append('`').append(addStruct.getColumnName()).append('`').append(' ');
-        sb.append(addStruct.getColumnLimit()).append(' ');
-        return sb.toString();
     }
 
     /**
@@ -112,31 +80,33 @@ public class DatabaseHandler<T> {
      */
     private void upgradeByCopy(SQLiteDatabase db, ConnectionSource cs, String columns) throws SQLException {
         db.beginTransaction();
+
+        String tempTableName = tableName + "_temp";
+        String sql = "ALTER TABLE " + tableName + " RENAME TO " + tempTableName;
         try {
-            //Rename table
-            String tempTableName = tableName + "_temp";
-            String sql = "ALTER TABLE " + tableName + " RENAME TO " + tempTableName;
+            //rename table
             db.execSQL(sql);
 
-            //Create table
+            //create table
             try {
                 sql = TableUtils.getCreateTableStatements(cs, clazz).get(0);
                 db.execSQL(sql);
             } catch (Exception e) {
-                LogUtils.e("", e);
+                LogUtils.e( e);
                 TableUtils.createTable(cs, clazz);
             }
             sql = "INSERT INTO " + tableName + " (" + columns + ") " +
                     " SELECT " + columns + " FROM " + tempTableName;
             db.execSQL(sql);
 
-            //Drop temp table
+            //drop temp table
             sql = "DROP TABLE IF EXISTS " + tempTableName;
             db.execSQL(sql);
 
             db.setTransactionSuccessful();
         } catch (Exception e) {
-            throw new SQLException("update fail");
+            LogUtils.e( e);
+            throw new SQLException("upgrade database table struct fail");
         } finally {
             db.endTransaction();
         }

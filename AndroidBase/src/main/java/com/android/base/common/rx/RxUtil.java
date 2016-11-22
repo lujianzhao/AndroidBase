@@ -77,7 +77,7 @@ public class RxUtil {
         };
     }
 
-    public static <T> Observable<T> getObservable(final Callable<T> callable) {
+    public static <T> Observable<T> getDBObservable(final Callable<T> callable) {
         return Observable.create(
                 new Observable.OnSubscribe<T>() {
                     @Override

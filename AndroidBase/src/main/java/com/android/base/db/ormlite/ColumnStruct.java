@@ -1,8 +1,6 @@
 package com.android.base.db.ormlite;
 
 /**
- * Created by huangzj on 2016/1/25.
- * <p/>
  * 数据库表中列的结构
  */
 public class ColumnStruct {

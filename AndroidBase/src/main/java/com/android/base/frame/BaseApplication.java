@@ -7,7 +7,6 @@ import com.android.base.common.assist.Check;
 import com.android.base.common.logutils.LogLevel;
 import com.android.base.common.logutils.LogUtils;
 import com.android.base.common.utils.HandlerUtil;
-import com.android.base.db.OrmLiteDatabaseHelper;
 import com.android.base.frame.activity.IBaseActivity;
 import com.android.base.netstate.NetChangeObserver;
 import com.android.base.netstate.NetWorkUtil;
@@ -36,14 +35,7 @@ public class BaseApplication extends Application {
 
         registerNetWorkStateListener();// 注册网络状态监测器
 
-    }
 
-    /**
-     * 有数据库时,请重载该方法
-     * @return OrmLiteDatabaseHelper实现类
-     */
-    public OrmLiteDatabaseHelper getOrmLiteDatabaseHelper() {
-        return null;
     }
 
     /**

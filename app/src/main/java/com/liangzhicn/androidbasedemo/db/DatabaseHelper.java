@@ -2,7 +2,7 @@ package com.liangzhicn.androidbasedemo.db;
 
 import android.content.Context;
 
-import com.android.base.db.OrmLiteDatabaseHelper;
+import com.android.base.db.ormlite.OrmLiteDatabaseHelper;
 import com.liangzhicn.androidbasedemo.db.model.domains.City;
 
 
