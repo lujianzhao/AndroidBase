@@ -18,9 +18,8 @@ public class GetAndPostPresenter extends GetAndPostContract.Presenter {
     private String mData2;
     private String mData3 ="";
 
-
     @Override
-    public void start() {
+    public void onStart() {
         test1();
 //        test2();
     }
@@ -45,7 +44,7 @@ public class GetAndPostPresenter extends GetAndPostContract.Presenter {
             }
 
             @Override
-            public void onComplete() {
+            public void onCompleted() {
                 //刷新界面
                 getView().showContentView();
             }
@@ -78,7 +77,7 @@ public class GetAndPostPresenter extends GetAndPostContract.Presenter {
             }
 
             @Override
-            public void onComplete() {
+            public void onCompleted() {
                 // 停止加载
                 getView().showContentView();
             }

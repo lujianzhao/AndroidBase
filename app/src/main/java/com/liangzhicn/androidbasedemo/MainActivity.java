@@ -1,7 +1,6 @@
 package com.liangzhicn.androidbasedemo;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -28,10 +27,6 @@ public class MainActivity extends BaseActivity {//implements View.OnClickListene
     @Override
     protected int getContentViewId() {
         return R.layout.activity_main;
-    }
-
-    @Override
-    protected void initView(Bundle savedInstanceState) {
     }
 
 
@@ -109,9 +104,8 @@ public class MainActivity extends BaseActivity {//implements View.OnClickListene
 //                        });
     }
 
-
     @Override
-    public void initData() {
+    protected void onInitData() {
         mTitle.setText("老哦 test");
         String[] bttxt = getResources().getStringArray(R.array.test_list);
         if (bttxt != null) {

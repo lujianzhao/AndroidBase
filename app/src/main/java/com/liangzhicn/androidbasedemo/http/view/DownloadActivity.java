@@ -1,6 +1,5 @@
 package com.liangzhicn.androidbasedemo.http.view;
 
-import android.os.Bundle;
 import android.text.format.Formatter;
 import android.view.View;
 import android.widget.Button;
@@ -72,10 +71,7 @@ public class DownloadActivity extends BaseMvpActivity<DownloadContract.Presenter
         return R.layout.activity_file_download;
     }
 
-    @Override
-    protected void initView(Bundle savedInstanceState) {
 
-    }
 
     @Override
     public void upProgress(long currentSize, long totalSize) {
@@ -88,8 +84,5 @@ public class DownloadActivity extends BaseMvpActivity<DownloadContract.Presenter
         pbProgress.setProgress((int) (( currentSize  / totalSize )*100.0F));
     }
 
-    @Override
-    protected void initData() {
 
-    }
 }

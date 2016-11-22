@@ -60,15 +60,15 @@ public class UploadActivity extends BaseMvpActivity<UploadContract.Presenter>imp
     }
 
     @Override
-    protected void initView(Bundle savedInstanceState) {
-//        initSmartExecutor();
+    protected void onInitView(Bundle savedInstanceState) {
+        //        initSmartExecutor();
 //
 //        if (flag) {
 //            flag = false;
 //            ro();
 //        }
-
     }
+
 
     public void ro() {
         mainExecutor.submit(new Runnable() {
@@ -100,7 +100,7 @@ public class UploadActivity extends BaseMvpActivity<UploadContract.Presenter>imp
         if (mainExecutor == null) {
             // set this temporary parameter, just for test
             // 智能并发调度控制器：设置[最大并发数]，和[等待队列]大小仅供测试，具体根据实际场景设置。
-            mainExecutor = new SmartExecutor();
+            mainExecutor = SmartExecutor.getInstance();
 
             // 打开调试和日志，发布时建议关闭。
             mainExecutor.setDebug(true);

@@ -19,12 +19,6 @@ import java.io.File;
 @RequiresModel(DownloadModel.class)
 public class DownloadPresenter extends DownloadContract.Presenter{
 
-
-    @Override
-    public void start() {
-
-    }
-
     @Override
     public void fileDownload() {
         getModel().fileDownload(Environment.getExternalStorageDirectory().getPath() + File.separator + "app_newkey_release_8_4.apk", new ExecutorCallBack<ProgressRequest>() {
@@ -35,7 +29,7 @@ public class DownloadPresenter extends DownloadContract.Presenter{
             }
 
             @Override
-            public void onComplete() {
+            public void onCompleted() {
                 LogUtils.d("下载完成");
             }
 

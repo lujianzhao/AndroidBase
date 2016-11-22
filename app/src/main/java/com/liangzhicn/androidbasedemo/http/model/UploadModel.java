@@ -65,7 +65,7 @@ public class UploadModel extends UploadContract.Model {
 
             @Override
             public void onCompleted() {
-                requestDataCallBack.onComplete();
+                requestDataCallBack.onCompleted();
             }
 
             @Override
@@ -75,7 +75,7 @@ public class UploadModel extends UploadContract.Model {
 
             @Override
             public void onNext(ResponseBody s) {
-                requestDataCallBack.onComplete(s);
+                requestDataCallBack.onCompleted(s);
             }
         }));
     }

@@ -28,7 +28,7 @@ public class GetAndPostModel extends GetAndPostContract.Model {
         getRxManager().add(mGetAndPostService.getGet().compose(RxUtil.<String>applySchedulersForRetrofit()).subscribe(new Subscriber<String>() {
             @Override
             public void onCompleted() {
-                requestCallBack.onComplete();
+                requestCallBack.onCompleted();
             }
 
             @Override
@@ -57,7 +57,7 @@ public class GetAndPostModel extends GetAndPostContract.Model {
         getRxManager().add(mGetAndPostService.getPost().compose(RxUtil.<String>applySchedulersForRetrofit()).subscribe(new Subscriber<String>() {
             @Override
             public void onCompleted() {
-                requestCallBack.onComplete();
+                requestCallBack.onCompleted();
             }
 
             @Override
@@ -97,7 +97,7 @@ public class GetAndPostModel extends GetAndPostContract.Model {
                 .subscribe(new Subscriber<Object>() {
                     @Override
                     public void onCompleted() {
-                        requestCallBack.onComplete();
+                        requestCallBack.onCompleted();
                     }
 
                     @Override

@@ -29,7 +29,7 @@ public class DownloadModel extends DownloadContract.Model {
             @Override
             public void onCompleted() {
                 LogUtils.d("下载完成 onCompleted");
-                requestDataCallBack.onComplete();
+                requestDataCallBack.onCompleted();
             }
 
             @Override

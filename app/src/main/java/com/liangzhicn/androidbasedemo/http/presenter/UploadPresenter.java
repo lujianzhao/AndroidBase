@@ -51,10 +51,6 @@ public class UploadPresenter extends UploadContract.Presenter {
         state.putString("A","aaaa");
     }
 
-    @Override
-    public void start() {
-
-    }
 
     @Override
     public void selectImage() {
@@ -88,7 +84,7 @@ public class UploadPresenter extends UploadContract.Presenter {
             }
 
             @Override
-            public void onComplete(ResponseBody responseData) {
+            public void onCompleted(ResponseBody responseData) {
                 String string = "";
                 try {
                      string = responseData.string();

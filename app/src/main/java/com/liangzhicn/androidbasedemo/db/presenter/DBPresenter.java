@@ -20,11 +20,6 @@ import java.util.UUID;
 @RequiresModel(DBModel.class)
 public class DBPresenter extends DBContract.Presenter {
 
-    @Override
-    public void start() {
-
-    }
-
 
     @Override
     public void onBtnClick(View view) {

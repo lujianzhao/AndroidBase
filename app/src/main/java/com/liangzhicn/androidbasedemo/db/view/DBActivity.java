@@ -1,6 +1,5 @@
 package com.liangzhicn.androidbasedemo.db.view;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
@@ -27,11 +26,6 @@ public class DBActivity extends BaseMvpActivity<DBContract.Presenter> implements
     @Override
     protected int getContentViewId() {
         return R.layout.activity_db;
-    }
-
-    @Override
-    protected void initView(Bundle savedInstanceState) {
-
     }
 
     @OnClick({R.id.insert,R.id.query,R.id.clear})
@@ -69,8 +63,4 @@ public class DBActivity extends BaseMvpActivity<DBContract.Presenter> implements
         textView.setText(result);
     }
 
-    @Override
-    protected void initData() {
-
-    }
 }
