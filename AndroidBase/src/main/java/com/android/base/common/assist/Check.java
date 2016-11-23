@@ -4,10 +4,11 @@ import android.content.Intent;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * 辅助判断
- * 
+ *
  * @author lujianzhao
  * @date 2013-6-10下午5:50:57
  */
@@ -29,8 +30,18 @@ public class Check {
 		return isNull(m) || m.isEmpty();
 	}
 
-	public static boolean isNull(Object o) {
+
+	private static boolean isNull(Object o) {
 		return o == null;
+	}
+
+	/**
+	 * 是否是中国大陆加港澳台手机号码
+	 * @param mobile
+	 * @return
+	 */
+	public static boolean isMobilePhoneNumber(String  mobile) {
+		return Pattern.matches("^[1][3-8]\\d{9}$|^([6|9])\\d{7}$|^[0][9]\\d{8}$|^[6]([8|6])\\d{5}$", mobile);
 	}
 
 	/**
@@ -40,6 +51,6 @@ public class Check {
 	 * @return
 	 */
 	public static boolean isBundleEmpty(Intent intent) {
-		return (intent == null) && (intent.getExtras() == null);
+		return (intent == null) || (intent.getExtras() == null);
 	}
 }

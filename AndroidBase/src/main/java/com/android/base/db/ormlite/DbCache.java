@@ -4,6 +4,7 @@ import android.support.v4.util.LruCache;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
+import com.android.base.common.assist.Check;
 import com.android.base.common.logutils.LogUtils;
 
 import java.util.HashMap;
@@ -48,7 +49,7 @@ public class DbCache {
             protected int sizeOf(String key, Map<String, String> value) {
                 // 此处计算内存占用比较麻烦，所以使用了条数作为缓存限制
                 // 如果大家有好的建议欢迎提出
-                return value.size();
+                return Check.isEmpty(value) ? 0 : value.size();
             }
         };
     }
@@ -74,7 +75,7 @@ public class DbCache {
 
         } else {
             LogUtils.i("--------update cache");
-            tableCache.put(query,  JSON.toJSONString(value));
+            tableCache.put(query, JSON.toJSONString(value));
         }
     }
 
