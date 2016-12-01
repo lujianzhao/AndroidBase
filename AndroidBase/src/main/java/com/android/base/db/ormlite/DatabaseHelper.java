@@ -30,17 +30,14 @@ public class DatabaseHelper extends OrmLiteDatabaseHelper {
         if (null == DATABASE_NAME || DATABASE_VERSION < 0) {
             throw new IllegalStateException("database name or database version not initialize");
         }
-        DatabaseHelper inst = instance;
-        if (inst == null) {
+        if (instance == null) {
             synchronized (DatabaseHelper.class) {
-                inst = instance;
-                if (inst == null) {
-                    inst = new DatabaseHelper(context);
-                    instance = inst;
+                if (instance == null) {
+                    instance = new DatabaseHelper(context);
                 }
             }
         }
-        return inst;
+        return instance;
     }
 
     /**

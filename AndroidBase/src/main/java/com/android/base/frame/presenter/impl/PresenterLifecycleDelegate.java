@@ -120,6 +120,20 @@ public class PresenterLifecycleDelegate<P extends BasePresenter> implements IPre
         return false;
     }
 
+    @Override
+    public void onResume() {
+        if(mPresenter!=null){
+            mPresenter.onResume();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        if(mPresenter!=null){
+            mPresenter.onPause();
+        }
+    }
+
 
     /**
      * 网络断开

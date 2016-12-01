@@ -11,6 +11,7 @@ import com.android.base.frame.activity.IBaseActivity;
 import com.android.base.netstate.NetChangeObserver;
 import com.android.base.netstate.NetWorkUtil;
 import com.android.base.netstate.NetworkStateReceiver;
+import com.zhy.autolayout.config.AutoLayoutConifg;
 import com.zxy.recovery.callback.RecoveryCallback;
 import com.zxy.recovery.core.Recovery;
 
@@ -32,6 +33,8 @@ public class BaseApplication extends Application {
         initRecovery();
 
         LogUtils.d("BaseApplication onCreate");
+
+        AutoLayoutConifg.getInstance().useDeviceSize();
 
         registerNetWorkStateListener();// 注册网络状态监测器
 

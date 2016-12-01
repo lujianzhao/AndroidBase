@@ -4,6 +4,7 @@ import com.android.base.common.logutils.LogUtils;
 import com.android.base.frame.Base;
 import com.android.base.frame.BaseApplication;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.misc.TransactionManager;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.PreparedQuery;
@@ -296,7 +297,7 @@ public class OrmLiteDao<T> {
             PreparedQuery<T> preparedQuery = queryBuilder.prepare();
             count = ormLiteDao.countOf(preparedQuery);
         } catch (SQLException e) {
-            LogUtils.e( e);
+            LogUtils.e(e);
         }
         return count;
     }
@@ -315,7 +316,6 @@ public class OrmLiteDao<T> {
         }
         return list;
     }
-
 
 
     /**
@@ -352,7 +352,6 @@ public class OrmLiteDao<T> {
         }
         return list;
     }
-
 
 
     /**
@@ -434,10 +433,6 @@ public class OrmLiteDao<T> {
     }
 
 
-
-
-
-
     /**
      * 排序查询
      *
@@ -505,7 +500,7 @@ public class OrmLiteDao<T> {
             queryBuilder.orderBy(orderColumn, ascending);
             list = queryBuilder.query();
         } catch (SQLException e) {
-            LogUtils.e( e);
+            LogUtils.e(e);
         }
         return list;
     }
@@ -530,7 +525,7 @@ public class OrmLiteDao<T> {
             queryBuilder.limit(count);
             list = queryBuilder.query();
         } catch (SQLException e) {
-            LogUtils.e( e);
+            LogUtils.e(e);
         }
         return list;
     }
@@ -607,7 +602,7 @@ public class OrmLiteDao<T> {
             queryBuilder.where().eq(columnName, value);
             t = queryBuilder.queryForFirst();
         } catch (SQLException e) {
-            LogUtils.e( e);
+            LogUtils.e(e);
         }
         return t;
     }
@@ -695,7 +690,7 @@ public class OrmLiteDao<T> {
             where.or(where.gt(columnName, value), where.lt(columnName, value));
             list = queryBuilder.query();
         } catch (SQLException e) {
-            LogUtils.e( e);
+            LogUtils.e(e);
         }
         return list;
     }
@@ -799,7 +794,7 @@ public class OrmLiteDao<T> {
     }
 
     /**
-     * 过滤数据实体中值为null的字段
+     * 过滤数据实体中DatabaseField注解的字段值为null的字段
      *
      * @param t   过滤后不包含null字段的数据
      * @param obj 被过滤的数据
@@ -811,24 +806,31 @@ public class OrmLiteDao<T> {
         Class<?> cls = t.getClass();
         for (Field field : fields) {
             field.setAccessible(true);
-            if (field.getName().equals("id")) {
+
+            if (field.getAnnotation(DatabaseField.class) == null || "id".equals(field.getName())) {
                 continue;
             }
-            Object valueObj = field.get(obj);
+
+            Object valueObj = null;
+            try {
+                valueObj = field.get(obj);
+            } catch (IllegalAccessException e) {
+                LogUtils.e(e);
+            }
             if (valueObj != null) {
                 Field f = cls.getDeclaredField(field.getName());
                 if (f != null) {
                     f.setAccessible(true);
                     f.set(t, valueObj);
                 } else {
-                    LogUtils.e( "no this field:" + field.getName());
+                    LogUtils.e("no this field:" + field.getName());
                 }
             }
         }
     }
 
     /**
-     * 获取对象属性值不为空的属性名称和属性值
+     * 获取对象DatabaseField注解的属性值不为空的属性名称和属性值
      *
      * @param obj 数据实体对象
      * @return 属性名称和属性值键值对集合
@@ -838,6 +840,11 @@ public class OrmLiteDao<T> {
         Field[] fields = obj.getClass().getDeclaredFields();
         for (Field field : fields) {
             field.setAccessible(true);
+
+            if (field.getAnnotation(DatabaseField.class) == null) {
+                continue;
+            }
+
             Object valueObj = null;
             try {
                 valueObj = field.get(obj);

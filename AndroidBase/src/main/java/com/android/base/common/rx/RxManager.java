@@ -46,15 +46,16 @@ public class RxManager  {
 
     public void clear() {
         RxUtil.unsubscribeIfNotNull(mCompositeSubscription);// 取消订阅
-        for (Map.Entry<String, Observable<?>> entry : mObservables.entrySet()) {
-            mRxBus.unregister(entry.getKey(), entry.getValue());// 移除观察
+
+        if (mObservables != null) {
+            for (Map.Entry<String, Observable<?>> entry : mObservables.entrySet()) {
+                mRxBus.unregister(entry.getKey(), entry.getValue());// 移除观察
+            }
+            mObservables.clear();
+            mObservables = null;
         }
 
-        mObservables.clear();
-        mObservables = null;
-
         mCompositeSubscription = null;
-
         mRxBus = null;
     }
 

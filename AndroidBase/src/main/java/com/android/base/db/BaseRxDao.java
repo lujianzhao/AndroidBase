@@ -1,7 +1,7 @@
 package com.android.base.db;
 
+import com.android.base.callback.ExecutorCallBack;
 import com.android.base.common.rx.RxUtil;
-import com.android.base.db.ormlite.DbCallBack;
 import com.android.base.db.ormlite.OrmLiteDao;
 import com.j256.ormlite.dao.Dao;
 
@@ -10,8 +10,8 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
-import rx.functions.Action1;
 
 /**
  * Created by lujianzhao on 2016/2/29.
@@ -23,7 +23,6 @@ import rx.functions.Action1;
 public class BaseRxDao<T> extends OrmLiteDao<T> {
 
     /**
-     *
      * @param cls 表结构clazz
      */
     public BaseRxDao(Class<T> cls) {
@@ -33,87 +32,62 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
     /**
      * 增加或更新一条记录
      */
-    public Subscription createOrUpdateSync(final T t, final DbCallBack<Dao.CreateOrUpdateStatus> listener) {
+    public Subscription createOrUpdateSync(final T t, final ExecutorCallBack<Dao.CreateOrUpdateStatus> listener) {
         return subscribe(new Callable<Dao.CreateOrUpdateStatus>() {
             @Override
             public Dao.CreateOrUpdateStatus call() {
                 return createOrUpdate(t);
             }
-        }, new Action1<Dao.CreateOrUpdateStatus>() {
-            @Override
-            public void call(Dao.CreateOrUpdateStatus result) {
-                listener.onComplete(result);
-            }
-        });
+        }, listener);
     }
 
     /**
      * 增加一条记录
      */
-    public Subscription insert(final T t, final DbCallBack<Boolean> listener) {
+    public Subscription insert(final T t, final ExecutorCallBack<Boolean> listener) {
         return subscribe(new Callable<Boolean>() {
             @Override
             public Boolean call() {
                 return insert(t);
             }
-        }, new Action1<Boolean>() {
-            @Override
-            public void call(Boolean result) {
-                listener.onComplete(result);
-            }
-        });
+        }, listener);
     }
 
     /**
      * 批量插入
      */
-    public Subscription insertForBatch(final List<T> list, final DbCallBack<Boolean> listener) {
+    public Subscription insertForBatch(final List<T> list, final ExecutorCallBack<Boolean> listener) {
         return subscribe(new Callable<Boolean>() {
             @Override
             public Boolean call() {
                 return insertForBatch(list);
             }
-        }, new Action1<Boolean>() {
-            @Override
-            public void call(Boolean result) {
-                listener.onComplete(result);
-            }
-        });
+        }, listener);
 
     }
 
     /**
      * 清空数据
      */
-    public Subscription clearTableData(final DbCallBack<Boolean> listener) {
+    public Subscription clearTableData(final ExecutorCallBack<Boolean> listener) {
         return subscribe(new Callable<Boolean>() {
             @Override
             public Boolean call() {
                 return clearTableData();
             }
-        }, new Action1<Boolean>() {
-            @Override
-            public void call(Boolean result) {
-                listener.onComplete(result);
-            }
-        });
+        }, listener);
     }
 
     /**
      * 根据id删除记录
      */
-    public Subscription deleteById(final Integer id, final DbCallBack<Boolean> listener) {
+    public Subscription deleteById(final Integer id, final ExecutorCallBack<Boolean> listener) {
         return subscribe(new Callable<Boolean>() {
             @Override
             public Boolean call() {
                 return deleteById(id);
             }
-        }, new Action1<Boolean>() {
-            @Override
-            public void call(Boolean result) {
-                listener.onComplete(result);
-            }
-        });
+        }, listener);
     }
 
     /**
@@ -122,18 +96,13 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param columnName 指定条件列名
      * @param value      值
      */
-    public Subscription deleteByColumnName(final String columnName, final Object value, final DbCallBack<Boolean> listener) {
-       return subscribe(new Callable<Boolean>() {
+    public Subscription deleteByColumnName(final String columnName, final Object value, final ExecutorCallBack<Boolean> listener) {
+        return subscribe(new Callable<Boolean>() {
             @Override
             public Boolean call() {
                 return deleteByColumnName(columnName, value);
             }
-        }, new Action1<Boolean>() {
-            @Override
-            public void call(Boolean result) {
-                listener.onComplete(result);
-            }
-        });
+        }, listener);
     }
 
     /**
@@ -142,18 +111,13 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param map      列的键值组合
      * @param listener
      */
-    public Subscription deleteByColumnName(final Map<String, Object> map, final DbCallBack<Boolean> listener) {
-      return   subscribe(new Callable<Boolean>() {
+    public Subscription deleteByColumnName(final Map<String, Object> map, final ExecutorCallBack<Boolean> listener) {
+        return subscribe(new Callable<Boolean>() {
             @Override
             public Boolean call() {
                 return deleteByColumnName(map);
             }
-        }, new Action1<Boolean>() {
-            @Override
-            public void call(Boolean result) {
-                listener.onComplete(result);
-            }
-        });
+        }, listener);
     }
 
     /**
@@ -163,35 +127,25 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param value      列值，删除小于该值的所有数据将被删除
      * @param listener   回调接口
      */
-    public Subscription deleteLtValue(final String columnName, final Object value, final DbCallBack<Integer> listener) {
-       return subscribe(new Callable<Integer>() {
+    public Subscription deleteLtValue(final String columnName, final Object value, final ExecutorCallBack<Integer> listener) {
+        return subscribe(new Callable<Integer>() {
             @Override
             public Integer call() throws Exception {
                 return deleteLtValue(columnName, value);
             }
-        }, new Action1<Integer>() {
-            @Override
-            public void call(Integer integer) {
-                listener.onComplete(integer);
-            }
-        });
+        }, listener);
     }
 
     /**
      * 批量删除
      */
-    public Subscription deleteForBatch(final List<T> list, final DbCallBack<Boolean> listener) {
-       return subscribe(new Callable<Boolean>() {
+    public Subscription deleteForBatch(final List<T> list, final ExecutorCallBack<Boolean> listener) {
+        return subscribe(new Callable<Boolean>() {
             @Override
             public Boolean call() {
                 return deleteForBatch(list);
             }
-        }, new Action1<Boolean>() {
-            @Override
-            public void call(Boolean result) {
-                listener.onComplete(result);
-            }
-        });
+        }, listener);
     }
 
     /**
@@ -199,18 +153,13 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      *
      * @param t 新的数据实体,ID不能为空
      */
-    public Subscription update(final T t, final DbCallBack<Boolean> listener) {
+    public Subscription update(final T t, final ExecutorCallBack<Boolean> listener) {
         return subscribe(new Callable<Boolean>() {
             @Override
             public Boolean call() {
                 return update(t);
             }
-        }, new Action1<Boolean>() {
-            @Override
-            public void call(Boolean result) {
-                listener.onComplete(result);
-            }
-        });
+        }, listener);
     }
 
     /**
@@ -221,18 +170,13 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param value      查询条件值
      * @return
      */
-    public Subscription updateBy(final T t, final String columnName, final Object value, final DbCallBack<Boolean> listener) {
+    public Subscription updateBy(final T t, final String columnName, final Object value, final ExecutorCallBack<Boolean> listener) {
         return subscribe(new Callable<Boolean>() {
             @Override
             public Boolean call() {
                 return updateBy(t, columnName, value);
             }
-        }, new Action1<Boolean>() {
-            @Override
-            public void call(Boolean result) {
-                listener.onComplete(result);
-            }
-        });
+        }, listener);
     }
 
     /**
@@ -242,18 +186,13 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param value 更新条件
      * @return
      */
-    public Subscription updateBy(final T t, final Map<String, Object> value, final DbCallBack<Boolean> listener) {
+    public Subscription updateBy(final T t, final Map<String, Object> value, final ExecutorCallBack<Boolean> listener) {
         return subscribe(new Callable<Boolean>() {
             @Override
             public Boolean call() {
                 return updateBy(t, value);
             }
-        }, new Action1<Boolean>() {
-            @Override
-            public void call(Boolean result) {
-                listener.onComplete(result);
-            }
-        });
+        }, listener);
     }
 
     /**
@@ -262,18 +201,13 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param list 记录集合
      * @return
      */
-    public Subscription updateForBatch(final List<T> list, final DbCallBack<Boolean> listener) {
+    public Subscription updateForBatch(final List<T> list, final ExecutorCallBack<Boolean> listener) {
         return subscribe(new Callable<Boolean>() {
             @Override
             public Boolean call() {
                 return updateForBatch(list);
             }
-        }, new Action1<Boolean>() {
-            @Override
-            public void call(Boolean result) {
-                listener.onComplete(result);
-            }
-        });
+        }, listener);
     }
 
     /**
@@ -282,18 +216,13 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param map      查询条件的键值组合
      * @param listener
      */
-    public Subscription getCount(final Map<String, Object> map, final DbCallBack<Long> listener) {
+    public Subscription getCount(final Map<String, Object> map, final ExecutorCallBack<Long> listener) {
         return subscribe(new Callable<Long>() {
             @Override
             public Long call() {
                 return getCount(map);
             }
-        }, new Action1<Long>() {
-            @Override
-            public void call(Long result) {
-                listener.onComplete(result);
-            }
-        });
+        }, listener);
     }
 
     /**
@@ -301,35 +230,25 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      *
      * @param listener 回调
      */
-    public Subscription getCount(final DbCallBack<Long> listener) {
-       return subscribe(new Callable<Long>() {
+    public Subscription getCount(final ExecutorCallBack<Long> listener) {
+        return subscribe(new Callable<Long>() {
             @Override
             public Long call() {
                 return getCount();
             }
-        }, new Action1<Long>() {
-            @Override
-            public void call(Long result) {
-                listener.onComplete(result);
-            }
-        });
+        }, listener);
     }
 
     /**
      * 查询表中所有数据
      */
-    public Subscription queryForAll(final DbCallBack<List<T>> listener) {
+    public Subscription queryForAll(final ExecutorCallBack<List<T>> listener) {
         return subscribe(new Callable<List<T>>() {
             @Override
             public List<T> call() {
                 return queryForAll();
             }
-        }, new Action1<List<T>>() {
-            @Override
-            public void call(List<T> result) {
-                listener.onComplete(result);
-            }
-        });
+        }, listener);
     }
 
     /**
@@ -338,18 +257,13 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param map 查询条件的键值组合
      * @return
      */
-    public Subscription queryByColumnName(final Map<String, Object> map, final DbCallBack<List<T>> listener) {
+    public Subscription queryByColumnName(final Map<String, Object> map, final ExecutorCallBack<List<T>> listener) {
         return subscribe(new Callable<List<T>>() {
             @Override
             public List<T> call() {
                 return queryByColumnName(map);
             }
-        }, new Action1<List<T>>() {
-            @Override
-            public void call(List<T> result) {
-                listener.onComplete(result);
-            }
-        });
+        }, listener);
     }
 
     /**
@@ -358,18 +272,13 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param columnName 指定查询条件列名
      * @param value      查询条件值
      */
-    public Subscription queryByColumnName(final String columnName, final Object value, final DbCallBack<List<T>> listener) {
+    public Subscription queryByColumnName(final String columnName, final Object value, final ExecutorCallBack<List<T>> listener) {
         return subscribe(new Callable<List<T>>() {
             @Override
             public List<T> call() {
                 return queryByColumnName(columnName, value);
             }
-        }, new Action1<List<T>>() {
-            @Override
-            public void call(List<T> result) {
-                listener.onComplete(result);
-            }
-        });
+        }, listener);
     }
 
     /**
@@ -381,19 +290,13 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param ascending   true为升序,false为降序
      * @return
      */
-    public Subscription queryByOrder(final String orderColumn, final String columnName,
-                             final Object value, final boolean ascending, final DbCallBack<List<T>> listener) {
-       return subscribe(new Callable<List<T>>() {
+    public Subscription queryByOrder(final String orderColumn, final String columnName, final Object value, final boolean ascending, final ExecutorCallBack<List<T>> listener) {
+        return subscribe(new Callable<List<T>>() {
             @Override
             public List<T> call() {
                 return queryByOrder(orderColumn, columnName, value, ascending);
             }
-        }, new Action1<List<T>>() {
-            @Override
-            public void call(List<T> result) {
-                listener.onComplete(result);
-            }
-        });
+        }, listener);
     }
 
     /**
@@ -402,19 +305,14 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param selectColumns 指定列名
      * @param listener
      */
-    public Subscription queryAllBySelectColumns(final String[] selectColumns, final DbCallBack<List<T>> listener) {
+    public Subscription queryAllBySelectColumns(final String[] selectColumns, final ExecutorCallBack<List<T>> listener) {
 
         return subscribe(new Callable<List<T>>() {
             @Override
             public List<T> call() {
                 return queryAllBySelectColumns(selectColumns);
             }
-        }, new Action1<List<T>>() {
-            @Override
-            public void call(List<T> result) {
-                listener.onComplete(result);
-            }
-        });
+        }, listener);
     }
 
     /**
@@ -427,19 +325,13 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param ascending   true为升序,false为降序
      * @return
      */
-    public Subscription queryGeByOrder(final String orderColumn, final Object limitValue, final String columnName,
-                               final Object value, final boolean ascending, final DbCallBack<List<T>> listener) {
+    public Subscription queryGeByOrder(final String orderColumn, final Object limitValue, final String columnName, final Object value, final boolean ascending, final ExecutorCallBack<List<T>> listener) {
         return subscribe(new Callable<List<T>>() {
             @Override
             public List<T> call() {
                 return queryGeByOrder(orderColumn, limitValue, columnName, value, ascending);
             }
-        }, new Action1<List<T>>() {
-            @Override
-            public void call(List<T> result) {
-                listener.onComplete(result);
-            }
-        });
+        }, listener);
     }
 
     /**
@@ -450,19 +342,31 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param ascending   true为升序,false为降序
      * @return 查询结果
      */
-    public Subscription queryLeByOrder(final String orderColumn, final Object limitValue,
-                               final boolean ascending, final DbCallBack<List<T>> listener) {
+    public Subscription queryLeByOrder(final String orderColumn, final Object limitValue, final boolean ascending, final ExecutorCallBack<List<T>> listener) {
         return subscribe(new Callable<List<T>>() {
             @Override
             public List<T> call() {
                 return queryLeByOrder(orderColumn, limitValue, ascending);
             }
-        }, new Action1<List<T>>() {
+        }, listener);
+    }
+
+    /**
+     * 分页查询,并按列排序
+     *
+     * @param orderColumn 排序列名
+     * @param ascending   true为升序,false为降序
+     * @param offset      搜索下标
+     * @param count       搜索条数
+     * @return 分页查询后的数据集
+     */
+    public Subscription queryForPagesByOrder(final String orderColumn, final boolean ascending, final Long offset, final Long count, final ExecutorCallBack<List<T>> listener) {
+        return subscribe(new Callable<List<T>>() {
             @Override
-            public void call(List<T> result) {
-                listener.onComplete(result);
+            public List<T> call() {
+                return queryForPagesByOrder(orderColumn, ascending, offset, count);
             }
-        });
+        }, listener);
     }
 
     /**
@@ -475,21 +379,13 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param offset      搜索下标
      * @param count       搜索条数
      */
-    public Subscription queryForPagesByOrder(final String columnName, final Object value,
-                                     final String orderColumn, final boolean ascending,
-                                     final Long offset, final Long count,
-                                     final DbCallBack<List<T>> listener) {
+    public Subscription queryForPagesByOrder(final String columnName, final Object value, final String orderColumn, final boolean ascending, final Long offset, final Long count, final ExecutorCallBack<List<T>> listener) {
         return subscribe(new Callable<List<T>>() {
             @Override
             public List<T> call() {
                 return queryForPagesByOrder(columnName, value, orderColumn, ascending, offset, count);
             }
-        }, new Action1<List<T>>() {
-            @Override
-            public void call(List<T> result) {
-                listener.onComplete(result);
-            }
-        });
+        }, listener);
     }
 
     /**
@@ -502,20 +398,13 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param ascending   升序或降序,true为升序,false为降序
      * @return
      */
-    public Subscription queryForPagesByOrder(final Map<String, Object> map, final String orderColumn,
-                                     final boolean ascending, final Long offset,
-                                     final Long count, final DbCallBack<List<T>> listener) {
+    public Subscription queryForPagesByOrder(final Map<String, Object> map, final String orderColumn, final boolean ascending, final Long offset, final Long count, final ExecutorCallBack<List<T>> listener) {
         return subscribe(new Callable<List<T>>() {
             @Override
             public List<T> call() {
                 return queryForPagesByOrder(map, orderColumn, ascending, offset, count);
             }
-        }, new Action1<List<T>>() {
-            @Override
-            public void call(List<T> result) {
-                listener.onComplete(result);
-            }
-        });
+        }, listener);
     }
 
     /**
@@ -524,18 +413,13 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param columnName 查询条件列名
      * @param value      查询条件值
      */
-    public Subscription queryForFirst(final String columnName, final Object value, final DbCallBack<T> listener) {
+    public Subscription queryForFirst(final String columnName, final Object value, final ExecutorCallBack<T> listener) {
         return subscribe(new Callable<T>() {
             @Override
             public T call() {
                 return queryForFirst(columnName, value);
             }
-        }, new Action1<T>() {
-            @Override
-            public void call(T result) {
-                listener.onComplete(result);
-            }
-        });
+        }, listener);
     }
 
     /**
@@ -543,18 +427,13 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      *
      * @param map 查询条件键值组合
      */
-    public Subscription queryForFirst(final Map<String, Object> map, final DbCallBack<T> listener) {
-       return subscribe(new Callable<T>() {
+    public Subscription queryForFirst(final Map<String, Object> map, final ExecutorCallBack<T> listener) {
+        return subscribe(new Callable<T>() {
             @Override
             public T call() {
                 return queryForFirst(map);
             }
-        }, new Action1<T>() {
-            @Override
-            public void call(T result) {
-                listener.onComplete(result);
-            }
-        });
+        }, listener);
     }
 
     /**
@@ -565,19 +444,13 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param ascending   是否升序
      * @return
      */
-    public Subscription queryForFirstByOrder(final Map<String, Object> map, final String orderColumn,
-                                     final boolean ascending, final DbCallBack<T> listener) {
-       return subscribe(new Callable<T>() {
+    public Subscription queryForFirstByOrder(final Map<String, Object> map, final String orderColumn, final boolean ascending, final ExecutorCallBack<T> listener) {
+        return subscribe(new Callable<T>() {
             @Override
             public T call() {
                 return queryForFirstByOrder(map, orderColumn, ascending);
             }
-        }, new Action1<T>() {
-            @Override
-            public void call(T result) {
-                listener.onComplete(result);
-            }
-        });
+        }, listener);
     }
 
     /**
@@ -589,24 +462,42 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param ascending   是否升序
      * @return
      */
-    public Subscription queryForFirstByOrder(final String columnName, final Object value, final String orderColumn,
-                                     final boolean ascending, final DbCallBack<T> listener) {
-       return subscribe(new Callable<T>() {
+    public Subscription queryForFirstByOrder(final String columnName, final Object value, final String orderColumn, final boolean ascending, final ExecutorCallBack<T> listener) {
+        return subscribe(new Callable<T>() {
             @Override
             public T call() {
                 return queryForFirstByOrder(columnName, value, orderColumn, ascending);
             }
-        }, new Action1<T>() {
-            @Override
-            public void call(T result) {
-                listener.onComplete(result);
-            }
-        });
+        }, listener);
     }
 
-    private  <R> Subscription subscribe(Callable<R> callable, Action1<R> action) {
+    private <R> Subscription subscribe(final Callable<R> callable, final ExecutorCallBack<R> listener) {
+        if (listener != null) {
+            listener.onStart();
+        }
         Observable<R> observable = RxUtil.getDBObservable(callable);
-        return observable.compose(RxUtil.<R>applySchedulers()).subscribe(action);
+        return observable.compose(RxUtil.<R>applySchedulers()).subscribe(new Subscriber<R>() {
+            @Override
+            public void onCompleted() {
+                if (listener != null) {
+                    listener.onCompleted();
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                if (listener != null) {
+                    listener.onError(e);
+                }
+            }
+
+            @Override
+            public void onNext(R r) {
+                if (listener != null) {
+                    listener.onNext(r);
+                }
+            }
+        });
     }
 
 }

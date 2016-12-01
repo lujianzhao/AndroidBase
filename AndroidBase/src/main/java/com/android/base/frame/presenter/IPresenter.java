@@ -16,5 +16,7 @@ public interface IPresenter {
 
     boolean onBackPressed();
 
+    void onResume();
 
+    void onPause();
 }

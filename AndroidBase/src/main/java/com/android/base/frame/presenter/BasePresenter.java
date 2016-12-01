@@ -93,6 +93,12 @@ public class BasePresenter<M extends BaseModel, V extends IBaseView> implements 
     protected void onDropView() {
     }
 
+    public void onResume() {
+    }
+
+    public void onPause() {
+    }
+
     /**
      * A callback to be invoked when a presenter is about to be destroyed.
      */

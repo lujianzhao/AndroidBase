@@ -79,6 +79,18 @@ public abstract class BaseMvpActivity<P extends BasePresenter> extends SuperActi
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        mPresenterDelegate.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mPresenterDelegate.onPause();
+    }
+
+    @Override
     @CallSuper
     protected void onDestroy() {
         super.onDestroy();

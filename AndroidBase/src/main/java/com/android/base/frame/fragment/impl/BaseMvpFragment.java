@@ -84,6 +84,15 @@ public abstract class BaseMvpFragment<P extends BasePresenter> extends SuperFrag
         return mPresenterDelegate.onBackPressed();
     }
 
+    @Override
+    public void onSupportInvisible() {
+        mPresenterDelegate.onPause();
+    }
+
+    @Override
+    public void onSupportVisible() {
+        mPresenterDelegate.onResume();
+    }
 
     @Override
     public void onDestroy() {
