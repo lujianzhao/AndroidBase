@@ -11,10 +11,31 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+
+    //配置keystore签名
     buildTypes {
+        debug {
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+//            signingConfig signingConfigs.release
+        }
         release {
-            minifyEnabled false
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            minifyEnabled true
+            //zip优化
+            zipAlignEnabled true
+           //移除无用的resource文件
+            shrinkResources true
+
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            signingConfig signingConfigs.release
+        }
+    }
+
+    sourceSets {
+        main {
+            assets.srcDirs = ['assets']
+            jniLibs.srcDirs = ['libs']
         }
     }
 }

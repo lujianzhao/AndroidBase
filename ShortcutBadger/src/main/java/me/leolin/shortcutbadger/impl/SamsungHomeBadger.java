@@ -7,12 +7,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
-import java.util.Arrays;
-import java.util.List;
-
 import me.leolin.shortcutbadger.Badger;
 import me.leolin.shortcutbadger.ShortcutBadgeException;
+import me.leolin.shortcutbadger.ShortcutBadger;
 import me.leolin.shortcutbadger.util.CloseHelper;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Leo Lin

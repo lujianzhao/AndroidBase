@@ -163,7 +163,7 @@ public class UploadActivity extends BaseMvpActivity<UploadContract.Presenter>imp
         String totalLength = Formatter.formatFileSize(getApplicationContext(), totalSize);
         tvDownloadSize.setText(downloadLength + "/" + totalLength);
         tvProgress.setText(( currentSize *1.0F  / totalSize )*100.0F + "%");
-        LogUtils.d(( currentSize  / totalSize )*100.0F+"");
+        LogUtils.d(( currentSize *1.0F / totalSize )*100.0F+"");
         pbProgress.setMax(100);
         pbProgress.setProgress((int) (( currentSize  / totalSize )*100.0F));
     }

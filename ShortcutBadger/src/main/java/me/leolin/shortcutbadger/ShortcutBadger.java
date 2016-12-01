@@ -18,9 +18,11 @@ import me.leolin.shortcutbadger.impl.DefaultBadger;
 import me.leolin.shortcutbadger.impl.HuaweiHomeBadger;
 import me.leolin.shortcutbadger.impl.NewHtcHomeBadger;
 import me.leolin.shortcutbadger.impl.NovaHomeBadger;
+import me.leolin.shortcutbadger.impl.OPPOHomeBader;
 import me.leolin.shortcutbadger.impl.SamsungHomeBadger;
 import me.leolin.shortcutbadger.impl.SonyHomeBadger;
 import me.leolin.shortcutbadger.impl.XiaomiHomeBadger;
+import me.leolin.shortcutbadger.impl.ZukHomeBadger;
 
 
 /**
@@ -42,7 +44,9 @@ public final class ShortcutBadger {
         BADGERS.add(AsusHomeLauncher.class);
         BADGERS.add(HuaweiHomeBadger.class);
 //        BADGERS.add(LGHomeBadger.class);
+        BADGERS.add(OPPOHomeBader.class);
         BADGERS.add(SamsungHomeBadger.class);
+        BADGERS.add(ZukHomeBadger.class);
     }
 
     private static Badger sShortcutBadger;
@@ -60,7 +64,9 @@ public final class ShortcutBadger {
             applyCountOrThrow(context, badgeCount);
             return true;
         } catch (ShortcutBadgeException e) {
-            Log.e(LOG_TAG, "Unable to execute badge", e);
+            if (Log.isLoggable(LOG_TAG, Log.DEBUG)) {
+                Log.d(LOG_TAG, "Unable to execute badge", e);
+            }
             return false;
         }
     }
@@ -108,8 +114,13 @@ public final class ShortcutBadger {
     // Initialize Badger if a launcher is availalble (eg. set as default on the device)
     // Returns true if a launcher is available, in this case, the Badger will be set and sShortcutBadger will be non null.
     private static boolean initBadger(Context context) {
+        Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
+        if (launchIntent == null) {
+            Log.e(LOG_TAG, "Unable to find launch intent for package " + context.getPackageName());
+            return false;
+        }
 
-        sComponentName = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName()).getComponent();
+        sComponentName = launchIntent.getComponent();
 
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
@@ -124,7 +135,7 @@ public final class ShortcutBadger {
             Badger shortcutBadger = null;
             try {
                 shortcutBadger = badger.newInstance();
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
             if (shortcutBadger != null && shortcutBadger.getSupportLaunchers().contains(currentHomePackage)) {
                 sShortcutBadger = shortcutBadger;
@@ -135,6 +146,10 @@ public final class ShortcutBadger {
         if (sShortcutBadger == null) {
             if (Build.MANUFACTURER.equalsIgnoreCase("Xiaomi"))
                 sShortcutBadger = new XiaomiHomeBadger();
+            else if (Build.MANUFACTURER.equalsIgnoreCase("ZUK"))
+                sShortcutBadger = new ZukHomeBadger();
+            else if (Build.MANUFACTURER.equalsIgnoreCase("OPPO"))
+                sShortcutBadger = new OPPOHomeBader();
             else
                 sShortcutBadger = new DefaultBadger();
         }

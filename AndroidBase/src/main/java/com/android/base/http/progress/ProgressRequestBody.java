@@ -15,6 +15,7 @@
  */
 package com.android.base.http.progress;
 
+import com.android.base.common.rx.RxUtil;
 import com.android.base.http.progress.domain.ProgressRequest;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ import okio.BufferedSink;
 import okio.ForwardingSink;
 import okio.Okio;
 import okio.Sink;
+import rx.Subscriber;
 import rx.subjects.PublishSubject;
 
 /**
@@ -43,15 +45,22 @@ public class ProgressRequestBody extends RequestBody {
     private PublishSubject<ProgressRequest> mPublishSubject;
 
 
-    /**
-     * 构造函数，赋值
-     *
-     * @param requestBody 待包装的请求体
-     */
-    public ProgressRequestBody(String fileName, String filePath, RequestBody requestBody, PublishSubject<ProgressRequest> publishSubject) {
+//    /**
+//     * 构造函数，赋值
+//     *
+//     * @param requestBody 待包装的请求体
+//     */
+//    public ProgressRequestBody(String fileName, String filePath, RequestBody requestBody, PublishSubject<ProgressRequest> publishSubject) {
+//        this.mRequestBody = requestBody;
+//        this.mPublishSubject = publishSubject;
+//        this.mProgressRequest = new ProgressRequest(fileName, filePath);
+//    }
+
+    public ProgressRequestBody(String fileName, String filePath, RequestBody requestBody, Subscriber<ProgressRequest> subscriber) {
         this.mRequestBody = requestBody;
-        this.mPublishSubject = publishSubject;
         this.mProgressRequest = new ProgressRequest(fileName, filePath);
+        mPublishSubject = PublishSubject.create();
+        mPublishSubject.compose(RxUtil.<ProgressRequest>applySchedulersProgress()).subscribe(subscriber);
     }
 
 
@@ -124,6 +133,7 @@ public class ProgressRequestBody extends RequestBody {
                     mPublishSubject.onNext(mProgressRequest);
                     //判断是否上传完毕
                     if (bytesWritten == contentLength) {
+                        mPublishSubject.onCompleted();
                         //clean
                         mProgressRequest = null;
                         mPublishSubject = null;

@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.3"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.1"
 
     defaultConfig {
         minSdkVersion 16
@@ -28,10 +28,10 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:support-v4:24.2.1'
-    compile 'com.android.support:design:24.2.1'
-    compile 'com.android.support:recyclerview-v7:24.2.1'
+    compile 'com.android.support:appcompat-v7:25.0.1'
+    compile 'com.android.support:support-v4:25.0.1'
+    compile 'com.android.support:design:25.0.1'
+    compile 'com.android.support:recyclerview-v7:25.0.1'
     //自动布局
     compile 'com.zhy:autolayout:1.4.5'
     //注入工具
@@ -40,7 +40,7 @@ dependencies {
     compile 'com.jakewharton:disklrucache:2.0.2'
     //Rxjava
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'io.reactivex:rxjava:1.2.0'
+    compile 'io.reactivex:rxjava:1.2.3'
     //RxLifecycle
     compile 'com.trello:rxlifecycle:1.0'
     compile 'com.trello:rxlifecycle-android:1.0'
@@ -51,18 +51,18 @@ dependencies {
 //    compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:0.4.0'
 //    compile 'com.jakewharton.rxbinding:rxbinding-design:0.4.0'
     //Json解析库
-    compile 'com.alibaba:fastjson:1.1.54.android'
+    compile 'com.alibaba:fastjson:1.1.55.android'
     //图片加载、缓存库
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'jp.wasabeef:glide-transformations:2.0.1'
     //6.0权限处理库
-    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.8.2@aar'
+    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.0@aar'
     //Retrofit网络请求
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     compile 'org.ligboy.retrofit2:converter-fastjson-android:2.1.0'
     //Fragment解决库
-    compile 'me.yokeyword:fragmentation:0.7.13'
+    compile 'me.yokeyword:fragmentation:0.8.1'
     //db数据库
     compile 'com.j256.ormlite:ormlite-core:5.0'
     compile 'com.j256.ormlite:ormlite-android:5.0'
@@ -74,7 +74,7 @@ dependencies {
     //Log工具类,目前的版本1.4.2,在com.android.base.common.logutils
 //    compile 'com.apkfuns.logutils:library:1.4.2'
 
-    //BaseRecyclerViewAdapterHelper,目前的版本2.5.0,在com.android.base.adapter.recyclerview
+    //BaseRecyclerViewAdapterHelper,目前的版本2.6.2,在com.android.base.adapter.recyclerview
 
     //Luban,目前的版本1.0.9,在com.android.base.common.luban
 

@@ -125,7 +125,7 @@ public class UploadPresenter extends UploadContract.Presenter {
                 imgs = "--";
             }
             getView().selectImageResult(imgs);
-            getView().ro();
+//            getView().ro();
 
         }
     }
