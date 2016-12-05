@@ -20,7 +20,7 @@ import com.lujianzhao.base.widget.R;
  * View的一个selector注入装置，通过构造函数即可注入。之后调用{@link #injection(View)}即可.
  *
  * @author Kale
- * @date 2015/5/25
+ *  2015/5/25
  */
 public class SelectorInjection {
 

@@ -8,7 +8,7 @@ import com.lujianzhao.base.widget.selector.injection.SelectorInjection;
 
 /**
  * @author Kale
- * @date 2016/3/14
+ *  2016/3/14
  */
 public class SelectorButton extends CompoundButton implements SelectorView {
 

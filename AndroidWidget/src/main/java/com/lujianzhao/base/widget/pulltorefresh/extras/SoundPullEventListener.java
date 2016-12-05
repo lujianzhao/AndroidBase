@@ -15,8 +15,6 @@
  *******************************************************************************/
 package com.lujianzhao.base.widget.pulltorefresh.extras;
 
-import java.util.HashMap;
-
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.view.View;
@@ -24,6 +22,8 @@ import android.view.View;
 import com.lujianzhao.base.widget.pulltorefresh.PullToRefreshBase;
 import com.lujianzhao.base.widget.pulltorefresh.PullToRefreshBase.Mode;
 import com.lujianzhao.base.widget.pulltorefresh.PullToRefreshBase.State;
+
+import java.util.HashMap;
 
 public class SoundPullEventListener<V extends View> implements PullToRefreshBase.OnPullEventListener<V> {
 
@@ -54,7 +54,7 @@ public class SoundPullEventListener<V extends View> implements PullToRefreshBase
 	 * Set the Sounds to be played when a Pull Event happens. You specify which
 	 * sound plays for which events by calling this method multiple times for
 	 * each event.
-	 * <p/>
+	 *
 	 * If you've already set a sound for a certain event, and add another sound
 	 * for that event, only the new sound will be played.
 	 * 

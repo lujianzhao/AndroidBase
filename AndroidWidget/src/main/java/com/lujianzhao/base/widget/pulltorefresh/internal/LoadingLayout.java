@@ -334,7 +334,6 @@ public abstract class LoadingLayout extends FrameLayout implements ILoadingLayou
 	/**
 	 * Callbacks for derivative Layouts
 	 */
-
 	protected abstract int getDefaultDrawableResId();
 
 	protected abstract void onLoadingDrawableSet(Drawable imageDrawable);

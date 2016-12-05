@@ -9,7 +9,7 @@ import com.lujianzhao.base.widget.selector.injection.SelectorInjection;
 
 /**
  * <p>
- * <SelectorTextView
+ * \<SelectorTextView
  * android:id="@+id/stv"
  * android:text="Click Me"
  * app:normalColor="#03a9f4"                     //必填
@@ -17,7 +17,7 @@ import com.lujianzhao.base.widget.selector.injection.SelectorInjection;
  * app:normalStrokeColor="#ffffff"
  * app:normalStrokeWidth="4dp"
  * app:pressedColor="#03f4e8"
- * />
+ * /\>
  * </p>
  */
 public class SelectorTextView extends CheckedTextView implements SelectorView {

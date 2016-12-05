@@ -71,8 +71,8 @@ import java.util.Comparator;
  * which cover the most common use cases.  These are
  * {@link android.support.v4.app.FragmentPagerAdapter},
  * {@link android.support.v4.app.FragmentStatePagerAdapter},
- * {@link android.support.v13.app.FragmentPagerAdapter}, and
- * {@link android.support.v13.app.FragmentStatePagerAdapter}; each of these
+ * {@link android.support.7.app.FragmentPagerAdapter}, and
+ * {@link android.support.7.app.FragmentStatePagerAdapter}; each of these
  * classes have simple code showing how to build a full user interface
  * with them.
  *
@@ -80,8 +80,6 @@ import java.util.Comparator;
  * with {@link android.app.ActionBar} tabs.  You can find other examples of using
  * ViewPager in the API 4+ Support Demos and API 13+ Support Demos sample code.
  *
- * {@sample development/samples/Support13Demos/src/com/example/android/supportv13/app/ActionBarTabsPager.java
- *      complete}
  */
 public class LazyViewPager extends ViewGroup {
     private static final String TAG = "LazyViewPager";
@@ -231,9 +229,9 @@ public class LazyViewPager extends ViewGroup {
          * or when it is fully stopped/idle.
          *
          * @param state The new scroll state.
-         * @see ViewPager#SCROLL_STATE_IDLE
-         * @see ViewPager#SCROLL_STATE_DRAGGING
-         * @see ViewPager#SCROLL_STATE_SETTLING
+         * @see android.support.v4.view.ViewPager#SCROLL_STATE_IDLE
+         * @see android.support.v4.view.ViewPager#SCROLL_STATE_DRAGGING
+         * @see android.support.v4.view.ViewPager#SCROLL_STATE_SETTLING
          */
         public void onPageScrollStateChanged(int state);
     }

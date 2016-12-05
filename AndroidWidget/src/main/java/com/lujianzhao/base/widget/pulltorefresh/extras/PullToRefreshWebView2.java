@@ -15,8 +15,6 @@
  *******************************************************************************/
 package com.lujianzhao.base.widget.pulltorefresh.extras;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
@@ -24,11 +22,13 @@ import android.webkit.WebView;
 
 import com.lujianzhao.base.widget.pulltorefresh.PullToRefreshWebView;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * An advanced version of {@link PullToRefreshWebView} which delegates the
  * triggering of the PullToRefresh gesture to the Javascript running within the
  * WebView. This means that you should only use this class if:
- * <p/>
+ * <p>
  * <ul>
  * <li>{@link PullToRefreshWebView} doesn't work correctly because you're using
  * <code>overflow:scroll</code> or something else which means
@@ -37,7 +37,7 @@ import com.lujianzhao.base.widget.pulltorefresh.PullToRefreshWebView;
  * Javascript callbacks.</li>
  * </ul>
  * <p/>
- * <p/>
+ * <p>
  * The way this call works is that when a PullToRefresh gesture is in action,
  * the following Javascript methods will be called:
  * <code>isReadyForPullDown()</code> and <code>isReadyForPullUp()</code>, it is
