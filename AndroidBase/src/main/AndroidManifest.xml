@@ -1,4 +1,4 @@
-<manifest package="com.android.base"
+<manifest package="com.lujianzhao.base"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
@@ -17,13 +17,13 @@
         android:supportsRtl="true">
 
         <meta-data
-            android:name="com.android.base.glide.okhttp3.OkHttpGlideModule"
+            android:name="com.lujianzhao.base.glide.okhttp3.OkHttpGlideModule"
             android:value="GlideModule"/>
 
-        <activity android:name=".common.photo.GetSimplePhotoActivity"/>
+        <activity android:name="com.lujianzhao.base.common.photo.GetSimplePhotoActivity"/>
 
         <service
-            android:name=".common.service.NotificationService"
+            android:name="com.lujianzhao.base.common.service.NotificationService"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
@@ -32,7 +32,7 @@
         </service>
 
         <receiver
-            android:name="com.android.base.netstate.NetworkStateReceiver">
+            android:name="com.lujianzhao.base.netstate.NetworkStateReceiver">
             <intent-filter>
                 <action
                     android:name="android.net.conn.CONNECTIVITY_CHANGE"/>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.liangzhicn.androidbasedemo"
+<manifest package="com.lujianzhao.androidbasedemo"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
-        android:name=".DemoApplication"
+        android:name="com.lujianzhao.androidbasedemo.DemoApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -20,7 +20,7 @@
 
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.lujianzhao.androidbasedemo.MainActivity"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -30,23 +30,23 @@
         </activity>
 
         <activity
-            android:name=".db.view.DBActivity">
+            android:name="com.lujianzhao.androidbasedemo.db.view.DBActivity">
         </activity>
 
         <activity
-            android:name=".http.HttpActivity">
+            android:name="com.lujianzhao.androidbasedemo.http.HttpActivity">
         </activity>
 
         <activity
-            android:name=".http.view.GetAndPostActivity">
+            android:name="com.lujianzhao.androidbasedemo.http.view.GetAndPostActivity">
         </activity>
 
         <activity
-            android:name=".http.view.UploadActivity">
+            android:name="com.lujianzhao.androidbasedemo.http.view.UploadActivity">
         </activity>
 
         <activity
-            android:name=".http.view.DownloadActivity">
+            android:name="com.lujianzhao.androidbasedemo.http.view.DownloadActivity">
         </activity>
 
     </application>
