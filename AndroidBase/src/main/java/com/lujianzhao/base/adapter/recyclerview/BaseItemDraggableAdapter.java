@@ -161,7 +161,7 @@ public abstract class BaseItemDraggableAdapter<T, K extends BaseViewHolder> exte
 
     /**
      * <p>Enable swipe items.</p>
-     * You should attach {@link ItemTouchHelper} which construct with {@link ItemDragAndSwipeCallback} to the Recycler when you enable this.
+     * You should attach {@link ItemTouchHelper} which construct with  to the Recycler when you enable this.
      */
     public void enableSwipeItem() {
         itemSwipeEnabled = true;

@@ -22,9 +22,38 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':AndroidBase')
 }
+
+//ext {
+//    bintrayRepo = 'maven'////bintray上的仓库名，一般为maven
+//    bintrayName = 'AndroidWidget'//bintray上的项目名
+//
+//    publishedGroupId = 'com.lujianzhao'//JCenter的GroupId
+//    artifact = 'AndroidWidget'//JCenter的ArtifactId
+//
+//    siteUrl = 'https://github.com/lujianzhao/AndroidBase'
+//    gitUrl = 'https://github.com/lujianzhao/AndroidBase'
+//
+//    libraryVersion = '1.0'//版本号
+//    libraryName = 'AndroidWidget'//项目名字，没什么用
+//    libraryDescription = 'A Base for AndroidWidget'//项目描述，没什么用
+//
+//    //开发者信息
+//    developerId = 'lujianzhao'
+//    developerName = 'lujianzhao'
+//    developerEmail = 'q1062932288@gmail.com'
+//
+//    //以上所有信息自行修改，以下不变
+//
+//    licenseName = 'The Apache Software License, Version 2.0'
+//    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+//    allLicenses = ["Apache-2.0"]
+//}
+//apply from:'../install.gradle'
+//apply from:'../bintray.gradle'

@@ -288,7 +288,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
     }
 
     /**
-     * same as addData(List<T>) but for when data is manually added to the adapter
+     * same as addData(List) but for when data is manually added to the adapter
      */
     public void dataAdded() {
         hideLoadingMore();
@@ -652,12 +652,12 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
 
     /**
      * Add header view to mHeaderLayout and set header view position in mHeaderLayout.
-     * When index = -1 or index >= child count in mHeaderLayout,
+     * When index = -1 or index &gt;= child count in mHeaderLayout,
      * the effect of this method is the same as that of {@link #addHeaderView(View)}.
      *
      * @param header
      * @param index  the position in mHeaderLayout of this header.
-     *               When index = -1 or index >= child count in mHeaderLayout,
+     *               When index = -1 or index &gt;= child count in mHeaderLayout,
      *               the effect of this method is the same as that of {@link #addHeaderView(View)}.
      */
     public void addHeaderView(View header, int index) {
@@ -701,12 +701,12 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
 
     /**
      * Add footer view to mFooterLayout and set footer view position in mFooterLayout.
-     * When index = -1 or index >= child count in mFooterLayout,
+     * When index = -1 or index &gt;= child count in mFooterLayout,
      * the effect of this method is the same as that of {@link #addFooterView(View)}.
      *
      * @param footer
      * @param index  the position in mFooterLayout of this footer.
-     *               When index = -1 or index >= child count in mFooterLayout,
+     *               When index = -1 or index &gt;= child count in mFooterLayout,
      *               the effect of this method is the same as that of {@link #addFooterView(View)}.
      */
     public void addFooterView(View footer, int index) {

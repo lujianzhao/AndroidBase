@@ -9,7 +9,6 @@ import android.os.Build;
 
 /**
  * @author lujianzhao
- * @date 2015-08-22
  */
 public class AlarmUtil {
     /**

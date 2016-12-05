@@ -21,7 +21,7 @@ public class DateUtil {
     }
 
     /**
-     * string -> date
+     * string -&gt; date
      */
     public static Date str2Date(String str, String format) {
         if (str == null || str.length() == 0) {
@@ -118,7 +118,7 @@ public class DateUtil {
     /**
      * 格式到分
      *
-     * @return time -> MM月dd日 HH:mm
+     * @return time -&gt; MM月dd日 HH:mm
      */
     public static String getMinute(long time) {
 
@@ -130,7 +130,7 @@ public class DateUtil {
     /**
      * 格式到分
      *
-     * @return time -> MM月dd日 HH:mm
+     * @return time -&gt; MM月dd日 HH:mm
      */
     public static String getMinuteWithYear(long time) {
 
@@ -141,7 +141,7 @@ public class DateUtil {
     /**
      * 格式到天
      *
-     * @return time -> yyyy-MM-dd
+     * @return time -&gt; yyyy-MM-dd
      */
     public static String getDay(long time) {
 
@@ -154,7 +154,7 @@ public class DateUtil {
     /**
      * 格式到毫秒
      *
-     * @return time -> yyyy-MM-dd-HH-mm-ss-SSS
+     * @return time -&gt; yyyy-MM-dd-HH-mm-ss-SSS
      */
     public static String getSMillon(long time) {
 

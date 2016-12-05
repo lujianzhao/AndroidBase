@@ -12,15 +12,17 @@ import java.util.List;
 
 /**
  * 数据库表升级方案的基类
- * <p/>
  * 需要自定义升级方案的数据表可继承改类，重写对应方法
- * <p/>
  */
 public class DatabaseHandler<T> {
 
     private Class<T> clazz;
     private String tableName;
 
+    /**
+     *
+     * @param clazz
+     */
     public DatabaseHandler(Class<T> clazz) {
         this.clazz = clazz;
         tableName = DatabaseUtil.extractTableName(clazz);
@@ -30,6 +32,12 @@ public class DatabaseHandler<T> {
         return tableName;
     }
 
+    /**
+     *
+     * @param db
+     * @param cs
+     * @throws SQLException
+     */
     public void onUpgrade(SQLiteDatabase db, ConnectionSource cs) throws SQLException {
         List<ColumnStruct> oldStruct = DatabaseUtil.getOldTableStruct(db, tableName);
         List<ColumnStruct> newStruct = DatabaseUtil.getNewTableStruct(cs, clazz);
@@ -50,6 +58,11 @@ public class DatabaseHandler<T> {
 
     /**
      * 处理表有变化的情况
+     * @param db
+     * @param cs
+     * @param oldStruct
+     * @param newStruct
+     * @throws SQLException
      */
     private void dealColumnChange(SQLiteDatabase db, ConnectionSource cs, List<ColumnStruct> oldStruct,
                                   List<ColumnStruct> newStruct) throws SQLException {
@@ -73,10 +86,13 @@ public class DatabaseHandler<T> {
         }
     }
 
+
     /**
      * 拷贝数据的方式更新
-     *
+     * @param db
+     * @param cs
      * @param columns 原始列减去删除的列
+     * @throws SQLException
      */
     private void upgradeByCopy(SQLiteDatabase db, ConnectionSource cs, String columns) throws SQLException {
         db.beginTransaction();
@@ -112,8 +128,12 @@ public class DatabaseHandler<T> {
         }
     }
 
+
     /**
-     * 获得没有变化的列
+     *  获得没有变化的列
+     * @param oldColumns
+     * @param deleteList
+     * @return
      */
     private String getCopyColumns(List<String> oldColumns, List<String> deleteList) {
         StringBuilder columns = new StringBuilder("");
@@ -137,6 +157,11 @@ public class DatabaseHandler<T> {
 
     /**
      * 数据库升级
+     * @param db
+     * @param cs
+     * @param oldVersion
+     * @param newVersion
+     * @throws SQLException
      */
     public void onUpgrade(SQLiteDatabase db, ConnectionSource cs, int oldVersion, int newVersion) throws SQLException {
         try {

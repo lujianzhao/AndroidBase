@@ -38,7 +38,6 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
      * 注册数据表
      *
      * @param clazz 表的列结构bean
-     * @param <T>
      */
     public <T> void registerTable(Class<T> clazz) {
         if (tableHandlers == null) {
@@ -131,7 +130,7 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
      * 获取dao
      *
      * @param cls 表结构bean
-     * @return
+     * @return dao
      */
     public synchronized Dao getDao(Class cls) {
         Dao dao;
