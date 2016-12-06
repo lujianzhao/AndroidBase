@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 
 /**
  * @Title NetWorkUtil
- * @Package com.android.base.netstate
+ * @Package com.ljz.base.netstate
  * @Description 是检测网络的一个工具包
  */
 public class NetWorkUtil {

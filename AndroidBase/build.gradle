@@ -77,12 +77,12 @@ dependencies {
     //应用发生错误时,自动重启
     compile 'com.zxy.android:recovery:0.0.8'
 
-    //Log工具类,目前的版本1.4.2,在com.android.base.common.logutils
+    //Log工具类,目前的版本1.4.2,在com.ljz.base.common.logutils
 //    compile 'com.apkfuns.logutils:library:1.4.2'
 
-    //BaseRecyclerViewAdapterHelper,目前的版本2.6.2,在com.android.base.adapter.recyclerview
+    //BaseRecyclerViewAdapterHelper,目前的版本2.6.2,在com.ljz.base.adapter.recyclerview
 
-    //Luban,目前的版本1.0.9,在com.android.base.common.luban
+    //Luban,目前的版本1.0.9,在com.ljz.base.common.luban
 
 }
 

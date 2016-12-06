@@ -96,6 +96,19 @@ public class BottomBar extends LinearLayout {
         });
     }
 
+    public void setCurrentItemNoCallBack(final int position) {
+        mTabLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mCurrentPosition != position) {
+                    mTabLayout.getChildAt(position).setSelected(true);
+                    mTabLayout.getChildAt(mCurrentPosition).setSelected(false);
+                    mCurrentPosition = position;
+                }
+            }
+        });
+    }
+
     public interface OnTabSelectedListener {
         void onTabSelected(int position, int prePosition);
 

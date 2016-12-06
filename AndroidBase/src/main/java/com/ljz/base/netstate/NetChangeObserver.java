@@ -2,7 +2,7 @@ package com.ljz.base.netstate;
 
 /**
  * @Title NetChangeObserver
- * @Package com.android.base.netstate
+ * @Package com.ljz.base.netstate
  * @Description 是检测网络改变的观察者
  */
 public class NetChangeObserver
