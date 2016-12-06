@@ -2,7 +2,7 @@ package com.ljz.base.adapter.recyclerview.listener;
 
 import android.view.View;
 
-import com.ljz.base.adapter.recyclerview.BaseQuickAdapter;
+import com.android.base.adapter.recyclerview.BaseQuickAdapter;
 
 
 /**

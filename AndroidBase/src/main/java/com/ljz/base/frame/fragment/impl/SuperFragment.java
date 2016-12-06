@@ -71,7 +71,7 @@ public abstract class SuperFragment extends SupportFragment implements IBaseFrag
     }
 
     @Override
-    public void onAttach(android.app.Activity activity) {
+    public void onAttach(Activity activity) {
         super.onAttach(activity);
         mLifecycleSubject.onNext(FragmentEvent.ATTACH);
     }

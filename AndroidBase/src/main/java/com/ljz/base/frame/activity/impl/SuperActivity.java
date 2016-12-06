@@ -8,7 +8,6 @@ import android.support.annotation.CallSuper;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -17,6 +16,7 @@ import com.ljz.base.frame.AppManager;
 import com.ljz.base.frame.BaseApplication;
 import com.ljz.base.frame.activity.IBaseActivity;
 import com.ljz.base.netstate.NetworkStateReceiver;
+import com.bumptech.glide.Glide;
 import com.trello.rxlifecycle.LifecycleProvider;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
@@ -99,20 +99,9 @@ public abstract class SuperActivity extends SupportActivity implements IBaseActi
         super.onCreate(savedInstanceState);
         AppManager.getAppManager().addActivity(this);
         setContentView(getContentViewId());
-        initActionBar();
         ButterKnife.bind(this);
         NetworkStateReceiver.registerNetworkStateReceiver(this);
         mLifecycleSubject.onNext(ActivityEvent.CREATE);
-    }
-
-    /**
-     * 初始化ActionBar
-     */
-    private void initActionBar() {
-        ActionBar supportActionBar = getSupportActionBar();
-        if (supportActionBar != null) {
-            supportActionBar.hide();
-        }
     }
 
     @Override
@@ -153,6 +142,8 @@ public abstract class SuperActivity extends SupportActivity implements IBaseActi
         NetworkStateReceiver.unRegisterNetworkStateReceiver(this);
 
         ButterKnife.unbind(this);
+
+        Glide.get(this).clearMemory();
 
         AppManager.getAppManager().finishActivity(this);
         if (isFinishing()) {

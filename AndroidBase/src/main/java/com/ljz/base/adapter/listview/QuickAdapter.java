@@ -22,8 +22,6 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ljz.base.adapter.listview.BaseAdapterHelper.get;
-
 
 /**
  * Abstraction class of a BaseAdapter in which you only need to provide the

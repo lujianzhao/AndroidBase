@@ -44,18 +44,6 @@ public class ProgressRequestBody extends RequestBody {
     private BufferedSink mBufferedSink;
     private PublishSubject<ProgressRequest> mPublishSubject;
 
-
-//    /**
-//     * 构造函数，赋值
-//     *
-//     * @param requestBody 待包装的请求体
-//     */
-//    public ProgressRequestBody(String fileName, String filePath, RequestBody requestBody, PublishSubject<ProgressRequest> publishSubject) {
-//        this.mRequestBody = requestBody;
-//        this.mPublishSubject = publishSubject;
-//        this.mProgressRequest = new ProgressRequest(fileName, filePath);
-//    }
-
     public ProgressRequestBody(String fileName, String filePath, RequestBody requestBody, Subscriber<ProgressRequest> subscriber) {
         this.mRequestBody = requestBody;
         this.mProgressRequest = new ProgressRequest(fileName, filePath);
@@ -133,7 +121,6 @@ public class ProgressRequestBody extends RequestBody {
                     mPublishSubject.onNext(mProgressRequest);
                     //判断是否上传完毕
                     if (bytesWritten == contentLength) {
-                        mPublishSubject.onCompleted();
                         //clean
                         mProgressRequest = null;
                         mPublishSubject = null;

@@ -731,7 +731,7 @@ public class OrmLiteDao<T> {
 
     /**
      * @param t     更新的数据对象
-     * @param value 数据库中的Map columnName,value
+     * @param value 数据库中的Map<columnName,value>
      * @return 是否更新成功
      */
     public boolean updateBy(T t, Map<String, Object> value) {

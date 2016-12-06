@@ -151,7 +151,7 @@ public class BaseApplication extends Application {
     /**
      * 当前没有网络连接通知
      */
-    public void onNetWorkDisConnect() {
+    private void onNetWorkDisConnect() {
         Activity mCurrentActivity = AppManager.getAppManager().topActivity();
         if (mCurrentActivity != null) {
             if (mCurrentActivity instanceof IBaseActivity) {
@@ -163,7 +163,7 @@ public class BaseApplication extends Application {
     /**
      * 网络连接连接时通知
      */
-    protected void onNetWorkConnect(NetWorkUtil.NetWorkType type) {
+    private void onNetWorkConnect(NetWorkUtil.NetWorkType type) {
         Activity mCurrentActivity = AppManager.getAppManager().topActivity();
         if (mCurrentActivity != null) {
             if (mCurrentActivity instanceof IBaseActivity) {
@@ -178,9 +178,7 @@ public class BaseApplication extends Application {
     public void onDestory() {
         LogUtils.d("BaseApplication destory");
 
-        if (HandlerUtil.HANDLER != null) {
-            HandlerUtil.HANDLER.removeCallbacksAndMessages(null);
-        }
+        HandlerUtil.removeCallbacksAndMessages();
 
         AppManager.getAppManager().appExit();
 

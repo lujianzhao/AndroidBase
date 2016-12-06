@@ -4,11 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 
-import com.ljz.base.frame.view.ViewWithPresenter;
 import com.ljz.base.frame.presenter.BasePresenter;
-import com.ljz.base.frame.presenter.impl.PresenterLifecycleDelegate;
 import com.ljz.base.frame.presenter.factory.PresenterFactory;
 import com.ljz.base.frame.presenter.factory.ReflectionPresenterFactory;
+import com.ljz.base.frame.presenter.impl.PresenterLifecycleDelegate;
+import com.ljz.base.frame.view.ViewWithPresenter;
 import com.ljz.base.netstate.NetWorkUtil;
 
 /**

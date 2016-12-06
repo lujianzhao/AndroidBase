@@ -14,6 +14,11 @@ import com.ljz.base.adapter.recyclerview.BaseViewHolder;
 import java.util.Iterator;
 import java.util.Set;
 
+import static com.ljz.base.adapter.recyclerview.BaseQuickAdapter.EMPTY_VIEW;
+import static com.ljz.base.adapter.recyclerview.BaseQuickAdapter.FOOTER_VIEW;
+import static com.ljz.base.adapter.recyclerview.BaseQuickAdapter.HEADER_VIEW;
+import static com.ljz.base.adapter.recyclerview.BaseQuickAdapter.LOADING_VIEW;
+
 
 /**
  * Created by AllenCoder on 2016/8/03.
@@ -261,7 +266,7 @@ public abstract class SimpleClickListener implements RecyclerView.OnItemTouchLis
             }
         }
         int type = baseQuickAdapter.getItemViewType(position);
-        return (type == BaseQuickAdapter.EMPTY_VIEW || type == BaseQuickAdapter.HEADER_VIEW || type == BaseQuickAdapter.FOOTER_VIEW || type == BaseQuickAdapter.LOADING_VIEW);
+        return (type == EMPTY_VIEW || type == HEADER_VIEW || type == FOOTER_VIEW || type == LOADING_VIEW);
     }
 
 }

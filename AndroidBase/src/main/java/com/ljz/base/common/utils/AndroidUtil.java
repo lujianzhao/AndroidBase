@@ -12,16 +12,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * 手机信息 , MAC地址 , 开机时间
+ * 手机信息 & MAC地址 & 开机时间
  *
  * @author lujianzhao
+ * @date 2014-09-25
  */
 public class AndroidUtil {
 //    private static final String TAG = AndroidUtil.class.getSimpleName();
 
     /**
      * 获取 MAC 地址
-     * \<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/\>
+     * <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
      */
     public static String getMacAddress(Context context) {
         //wifi mac地址

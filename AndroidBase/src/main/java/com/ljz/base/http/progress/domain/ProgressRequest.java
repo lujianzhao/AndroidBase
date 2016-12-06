@@ -24,7 +24,7 @@ public class ProgressRequest implements Serializable, Parcelable {
         this.path = path;
     }
 
-    public ProgressRequest(String name, String path,long currentBytes,long contentLength) {
+    public ProgressRequest(String name, String path, long currentBytes, long contentLength) {
         this.name = name;
         this.path = path;
         this.currentBytes = currentBytes;
@@ -86,7 +86,7 @@ public class ProgressRequest implements Serializable, Parcelable {
         this.contentLength = in.readLong();
     }
 
-    public static final Parcelable.Creator<ProgressRequest> CREATOR = new Parcelable.Creator<ProgressRequest>() {
+    public static final Creator<ProgressRequest> CREATOR = new Creator<ProgressRequest>() {
         @Override
         public ProgressRequest createFromParcel(Parcel source) {
             return new ProgressRequest(source);

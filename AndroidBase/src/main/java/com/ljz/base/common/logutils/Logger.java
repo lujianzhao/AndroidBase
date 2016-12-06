@@ -19,6 +19,13 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import static com.ljz.base.common.logutils.LogLevel.LogLevelType;
+import static com.ljz.base.common.logutils.LogLevel.TYPE_DEBUG;
+import static com.ljz.base.common.logutils.LogLevel.TYPE_ERROR;
+import static com.ljz.base.common.logutils.LogLevel.TYPE_INFO;
+import static com.ljz.base.common.logutils.LogLevel.TYPE_VERBOSE;
+import static com.ljz.base.common.logutils.LogLevel.TYPE_WARM;
+import static com.ljz.base.common.logutils.LogLevel.TYPE_WTF;
 import static com.ljz.base.common.logutils.utils.ObjectUtil.objectToString;
 import static com.ljz.base.common.logutils.utils.Utils.DIVIDER_BOTTOM;
 import static com.ljz.base.common.logutils.utils.Utils.DIVIDER_CENTER;
@@ -61,11 +68,11 @@ class Logger implements Printer {
      * @param msg
      * @param args
      */
-    private synchronized void logString(@LogLevel.LogLevelType int type, String msg, Object... args) {
+    private synchronized void logString(@LogLevelType int type, String msg, Object... args) {
         logString(type, msg, false, args);
     }
 
-    private void logString(@LogLevel.LogLevelType int type, String msg, boolean isPart, Object... args) {
+    private void logString(@LogLevelType int type, String msg, boolean isPart, Object... args) {
         if (!mLogConfig.isEnable()) {
             return;
         }
@@ -120,7 +127,7 @@ class Logger implements Printer {
      * @param type
      * @param object
      */
-    private void logObject(@LogLevel.LogLevelType int type, Object object) {
+    private void logObject(@LogLevelType int type, Object object) {
         logString(type, objectToString(object));
     }
 
@@ -193,62 +200,62 @@ class Logger implements Printer {
 
     @Override
     public void d(String message, Object... args) {
-        logString(LogLevel.TYPE_DEBUG, message, args);
+        logString(TYPE_DEBUG, message, args);
     }
 
     @Override
     public void d(Object object) {
-        logObject(LogLevel.TYPE_DEBUG, object);
+        logObject(TYPE_DEBUG, object);
     }
 
     @Override
     public void e(String message, Object... args) {
-        logString(LogLevel.TYPE_ERROR, message, args);
+        logString(TYPE_ERROR, message, args);
     }
 
     @Override
     public void e(Object object) {
-        logObject(LogLevel.TYPE_ERROR, object);
+        logObject(TYPE_ERROR, object);
     }
 
     @Override
     public void w(String message, Object... args) {
-        logString(LogLevel.TYPE_WARM, message, args);
+        logString(TYPE_WARM, message, args);
     }
 
     @Override
     public void w(Object object) {
-        logObject(LogLevel.TYPE_WARM, object);
+        logObject(TYPE_WARM, object);
     }
 
     @Override
     public void i(String message, Object... args) {
-        logString(LogLevel.TYPE_INFO, message, args);
+        logString(TYPE_INFO, message, args);
     }
 
     @Override
     public void i(Object object) {
-        logObject(LogLevel.TYPE_INFO, object);
+        logObject(TYPE_INFO, object);
     }
 
     @Override
     public void v(String message, Object... args) {
-        logString(LogLevel.TYPE_VERBOSE, message, args);
+        logString(TYPE_VERBOSE, message, args);
     }
 
     @Override
     public void v(Object object) {
-        logObject(LogLevel.TYPE_VERBOSE, object);
+        logObject(TYPE_VERBOSE, object);
     }
 
     @Override
     public void wtf(String message, Object... args) {
-        logString(LogLevel.TYPE_WTF, message, args);
+        logString(TYPE_WTF, message, args);
     }
 
     @Override
     public void wtf(Object object) {
-        logObject(LogLevel.TYPE_WTF, object);
+        logObject(TYPE_WTF, object);
     }
 
     /**
@@ -312,27 +319,27 @@ class Logger implements Printer {
      * @param tag
      * @param msg
      */
-    private void printLog(@LogLevel.LogLevelType int type, String tag, String msg) {
+    private void printLog(@LogLevelType int type, String tag, String msg) {
         if (!mLogConfig.isShowBorder()) {
             msg = getTopStackInfo() + ": " + msg;
         }
         switch (type) {
-            case LogLevel.TYPE_VERBOSE:
+            case TYPE_VERBOSE:
                 Log.v(tag, msg);
                 break;
-            case LogLevel.TYPE_DEBUG:
+            case TYPE_DEBUG:
                 Log.d(tag, msg);
                 break;
-            case LogLevel.TYPE_INFO:
+            case TYPE_INFO:
                 Log.i(tag, msg);
                 break;
-            case LogLevel.TYPE_WARM:
+            case TYPE_WARM:
                 Log.w(tag, msg);
                 break;
-            case LogLevel.TYPE_ERROR:
+            case TYPE_ERROR:
                 Log.e(tag, msg);
                 break;
-            case LogLevel.TYPE_WTF:
+            case TYPE_WTF:
                 Log.wtf(tag, msg);
                 break;
             default:

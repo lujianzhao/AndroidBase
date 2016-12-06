@@ -3,6 +3,8 @@ package com.ljz.base.common.utils;
 import android.content.Context;
 import android.content.res.Resources;
 
+import com.ljz.base.R;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -34,19 +36,19 @@ public class FuzzyDateTimeFormatterUtil {
         Resources res = context.getResources();
 
         if (timeDifference < MINUTES) {
-            return res.getQuantityString(com.ljz.base.R.plurals.fuzzydatetime__seconds_ago, timeDifference, timeDifference);
+            return res.getQuantityString(R.plurals.fuzzydatetime__seconds_ago, timeDifference, timeDifference);
         } else if (timeDifference < HOURS) {
-            return res.getQuantityString(com.ljz.base.R.plurals.fuzzydatetime__minutes_ago, timeDifference / MINUTES, timeDifference / MINUTES);
+            return res.getQuantityString(R.plurals.fuzzydatetime__minutes_ago, timeDifference / MINUTES, timeDifference / MINUTES);
         } else if (timeDifference < DAYS) {
-            return res.getQuantityString(com.ljz.base.R.plurals.fuzzydatetime__hours_ago, timeDifference / HOURS, timeDifference / HOURS);
+            return res.getQuantityString(R.plurals.fuzzydatetime__hours_ago, timeDifference / HOURS, timeDifference / HOURS);
         } else if (timeDifference < WEEKS) {
-            return res.getQuantityString(com.ljz.base.R.plurals.fuzzydatetime__days_ago, timeDifference / DAYS, timeDifference / DAYS);
+            return res.getQuantityString(R.plurals.fuzzydatetime__days_ago, timeDifference / DAYS, timeDifference / DAYS);
         } else if (timeDifference < MONTHS) {
-            return res.getQuantityString(com.ljz.base.R.plurals.fuzzydatetime__weeks_ago, timeDifference / WEEKS, timeDifference / WEEKS);
+            return res.getQuantityString(R.plurals.fuzzydatetime__weeks_ago, timeDifference / WEEKS, timeDifference / WEEKS);
         } else if (timeDifference < YEARS) {
-            return res.getQuantityString(com.ljz.base.R.plurals.fuzzydatetime__months_ago, timeDifference / MONTHS, timeDifference / MONTHS);
+            return res.getQuantityString(R.plurals.fuzzydatetime__months_ago, timeDifference / MONTHS, timeDifference / MONTHS);
         } else {
-            return res.getQuantityString(com.ljz.base.R.plurals.fuzzydatetime__years_ago, timeDifference / YEARS, timeDifference / YEARS);
+            return res.getQuantityString(R.plurals.fuzzydatetime__years_ago, timeDifference / YEARS, timeDifference / YEARS);
         }
 
     }

@@ -19,7 +19,6 @@ package com.ljz.base.common.io;
 import android.os.Build;
 
 import com.ljz.base.common.io.stream.StringBuilderWriter;
-import com.ljz.base.common.io.stream.ByteArrayOutputStream;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -429,7 +428,7 @@ public class IOUtils {
      * @since 2.0
      */
     public static InputStream toBufferedInputStream(InputStream input) throws IOException {
-        return ByteArrayOutputStream.toBufferedInputStream(input);
+        return com.ljz.base.common.io.stream.ByteArrayOutputStream.toBufferedInputStream(input);
     }
 
     /**
@@ -459,7 +458,7 @@ public class IOUtils {
      * @throws IOException  if an I/O error occurs
      */
     public static byte[] toByteArray(InputStream input) throws IOException {
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        com.ljz.base.common.io.stream.ByteArrayOutputStream output = new com.ljz.base.common.io.stream.ByteArrayOutputStream();
         copy(input, output);
         return output.toByteArray();
     }
@@ -557,7 +556,7 @@ public class IOUtils {
      * @since 2.3
      */
     public static byte[] toByteArray(Reader input, Charset encoding) throws IOException {
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        com.ljz.base.common.io.stream.ByteArrayOutputStream output = new com.ljz.base.common.io.stream.ByteArrayOutputStream();
         copy(input, output, encoding);
         return output.toByteArray();
     }

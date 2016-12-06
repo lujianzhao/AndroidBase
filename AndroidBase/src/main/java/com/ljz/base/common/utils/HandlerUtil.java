@@ -25,6 +25,10 @@ public class HandlerUtil {
         HANDLER.removeCallbacks(runnable);
     }
 
+    public static void removeCallbacksAndMessages() {
+        HANDLER.removeCallbacksAndMessages(null);
+    }
+
     public static void sendMessage(Handler handler, int what) {
 
         Message msg = handler.obtainMessage();

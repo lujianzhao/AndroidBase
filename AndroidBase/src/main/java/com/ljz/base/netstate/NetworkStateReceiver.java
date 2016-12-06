@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * @Title NetworkStateReceiver
  * @Package com.android.base.netstate
  * @Description 是一个检测网络状态改变的，需要配置 <receiver
- *              android:name="NetworkStateReceiver" >
+ *              android:name="com.android.base.netstate.NetworkStateReceiver" >
  *              <intent-filter> <action
  *              android:name="android.net.conn.CONNECTIVITY_CHANGE" /> <action
  *              android:name="android.gzcpc.conn.CONNECTIVITY_CHANGE" />

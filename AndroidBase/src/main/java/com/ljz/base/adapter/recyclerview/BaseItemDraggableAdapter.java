@@ -8,8 +8,9 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.ljz.base.adapter.recyclerview.listener.OnItemDragListener;
-import com.ljz.base.adapter.recyclerview.listener.OnItemSwipeListener;
+import com.android.base.R;
+import com.android.base.adapter.recyclerview.listener.OnItemDragListener;
+import com.android.base.adapter.recyclerview.listener.OnItemSwipeListener;
 
 import java.util.Collections;
 import java.util.List;
@@ -60,7 +61,7 @@ public abstract class BaseItemDraggableAdapter<T, K extends BaseViewHolder> exte
             if (mToggleViewId != NO_TOGGLE_VIEW) {
                 View toggleView = ((BaseViewHolder) holder).getView(mToggleViewId);
                 if (toggleView != null) {
-                    toggleView.setTag(com.ljz.base.R.id.BaseQuickAdapter_viewholder_support, holder);
+                    toggleView.setTag(R.id.BaseQuickAdapter_viewholder_support, holder);
                     if (mDragOnLongPress) {
                         toggleView.setOnLongClickListener(mOnToggleViewLongClickListener);
                     } else {
@@ -68,7 +69,7 @@ public abstract class BaseItemDraggableAdapter<T, K extends BaseViewHolder> exte
                     }
                 }
             } else {
-                holder.itemView.setTag(com.ljz.base.R.id.BaseQuickAdapter_viewholder_support, holder);
+                holder.itemView.setTag(R.id.BaseQuickAdapter_viewholder_support, holder);
                 holder.itemView.setOnLongClickListener(mOnToggleViewLongClickListener);
             }
         }
@@ -99,7 +100,7 @@ public abstract class BaseItemDraggableAdapter<T, K extends BaseViewHolder> exte
                 @Override
                 public boolean onLongClick(View v) {
                     if (mItemTouchHelper != null && itemDragEnabled) {
-                        mItemTouchHelper.startDrag((RecyclerView.ViewHolder) v.getTag(com.ljz.base.R.id.BaseQuickAdapter_viewholder_support));
+                        mItemTouchHelper.startDrag((RecyclerView.ViewHolder) v.getTag(R.id.BaseQuickAdapter_viewholder_support));
                     }
                     return true;
                 }
@@ -111,7 +112,7 @@ public abstract class BaseItemDraggableAdapter<T, K extends BaseViewHolder> exte
                     if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN
                             && !mDragOnLongPress) {
                         if (mItemTouchHelper != null && itemDragEnabled) {
-                            mItemTouchHelper.startDrag((RecyclerView.ViewHolder) v.getTag(com.ljz.base.R.id.BaseQuickAdapter_viewholder_support));
+                            mItemTouchHelper.startDrag((RecyclerView.ViewHolder) v.getTag(R.id.BaseQuickAdapter_viewholder_support));
                         }
                         return true;
                     } else {
@@ -161,7 +162,7 @@ public abstract class BaseItemDraggableAdapter<T, K extends BaseViewHolder> exte
 
     /**
      * <p>Enable swipe items.</p>
-     * You should attach {@link ItemTouchHelper} which construct with  to the Recycler when you enable this.
+     * You should attach {@link ItemTouchHelper} which construct with {@link ItemDragAndSwipeCallback} to the Recycler when you enable this.
      */
     public void enableSwipeItem() {
         itemSwipeEnabled = true;

@@ -10,13 +10,11 @@ import android.support.annotation.Nullable;
 import com.ljz.base.common.rx.RxManager;
 import com.ljz.base.frame.model.BaseModel;
 import com.ljz.base.frame.model.factory.ModelFactory;
-import com.ljz.base.frame.fragment.impl.BaseMvpFragment;
 import com.ljz.base.frame.model.factory.ReflectionModelFactory;
 import com.ljz.base.frame.model.impl.ModelLifecycleDelegate;
 import com.ljz.base.frame.view.IBaseView;
 import com.ljz.base.frame.view.PresenterWithModel;
 import com.ljz.base.netstate.NetWorkUtil;
-import com.ljz.base.frame.activity.impl.BaseMvpActivity;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -49,8 +47,8 @@ public class BasePresenter<M extends BaseModel, V extends IBaseView> implements 
 
     /**
      * Presenter开始工作
-     * 在{@link BaseMvpFragment#initData()},
-     * {@link BaseMvpActivity#initData()} 调用
+     * 在{@link com.android.base.frame.fragment.impl.BaseMvpFragment#initData()},
+     * {@link com.android.base.frame.activity.impl.BaseMvpActivity#initData()} 调用
      */
     public void onStart() {
     }
@@ -75,7 +73,7 @@ public class BasePresenter<M extends BaseModel, V extends IBaseView> implements 
 
     /**
      * This method is being called when a mView gets attached to it.
-     * Normally this happens during {@link Activity#onResume()}, {@link android.app.Fragment#onResume()}
+     * Normally this happens during {@link Activity#onResume()}, {@link Fragment#onResume()}
      * and {@link android.view.View#onAttachedToWindow()}.
      * <p>
      * This method is intended for overriding.

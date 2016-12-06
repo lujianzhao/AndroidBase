@@ -40,7 +40,7 @@ public class RxUtil {
         return subscription;
     }
 
-    public static <T> Observable.Transformer<T, T> applySchedulers() {
+    public static <T> Transformer<T, T> applySchedulers() {
         return new Transformer<T, T>() {
             @Override
             public Observable<T> call(Observable<T> observable) {
@@ -51,7 +51,7 @@ public class RxUtil {
         };
     }
 
-    public static <T> Observable.Transformer<T, T> applySchedulersProgress() {
+    public static <T> Transformer<T, T> applySchedulersProgress() {
         return new Transformer<T, T>() {
             @Override
             public Observable<T> call(Observable<T> observable) {
@@ -65,7 +65,7 @@ public class RxUtil {
     }
 
 
-    public static <T> Observable.Transformer<T, T> applySchedulersForRetrofit() {
+    public static <T> Transformer<T, T> applySchedulersForRetrofit() {
         return new Transformer<T, T>() {
             @Override
             public Observable<T> call(Observable<T> observable) {

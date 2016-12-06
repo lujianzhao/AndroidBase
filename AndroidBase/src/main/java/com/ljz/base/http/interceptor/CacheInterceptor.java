@@ -36,7 +36,7 @@ public class CacheInterceptor implements Interceptor {
     }
 
     @Override
-    public Response intercept(Interceptor.Chain chain) throws IOException {
+    public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
         //如果没有网络，则启用 FORCE_CACHE
         if (!isNetworkConnected(mContext)) {

@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 
-import com.ljz.base.common.logutils.LogUtils;
-import com.ljz.base.common.utils.ShellUtil;
+import com.android.base.common.logutils.LogUtils;
+import com.android.base.common.utils.ShellUtil;
 
 import java.io.File;
 
