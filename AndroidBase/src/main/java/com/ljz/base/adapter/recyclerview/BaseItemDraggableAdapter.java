@@ -8,9 +8,9 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.android.base.R;
-import com.android.base.adapter.recyclerview.listener.OnItemDragListener;
-import com.android.base.adapter.recyclerview.listener.OnItemSwipeListener;
+import com.ljz.base.R;
+import com.ljz.base.adapter.recyclerview.listener.OnItemDragListener;
+import com.ljz.base.adapter.recyclerview.listener.OnItemSwipeListener;
 
 import java.util.Collections;
 import java.util.List;

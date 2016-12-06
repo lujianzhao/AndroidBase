@@ -41,7 +41,7 @@ dependencies {
 //    bintrayRepo = 'maven'////bintray上的仓库名，一般为maven
 //    bintrayName = 'AndroidWidget'//bintray上的项目名
 //
-//    publishedGroupId = 'com.lujianzhao.base.widget'//JCenter的GroupId
+//    publishedGroupId = 'com.ljz.base.widget'//JCenter的GroupId
 //    artifact = 'AndroidWidget'//JCenter的ArtifactId
 //
 //    siteUrl = 'https://github.com/lujianzhao/AndroidBase'

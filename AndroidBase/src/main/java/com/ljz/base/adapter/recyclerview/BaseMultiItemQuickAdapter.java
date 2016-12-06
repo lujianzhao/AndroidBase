@@ -4,7 +4,7 @@ import android.support.annotation.LayoutRes;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
-import com.android.base.adapter.recyclerview.entity.MultiItemEntity;
+import com.ljz.base.adapter.recyclerview.entity.MultiItemEntity;
 
 import java.util.List;
 

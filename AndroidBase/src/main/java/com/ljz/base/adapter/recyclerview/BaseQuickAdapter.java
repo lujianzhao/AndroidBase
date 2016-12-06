@@ -31,14 +31,14 @@ import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 
-import com.android.base.R;
-import com.android.base.adapter.recyclerview.animation.AlphaInAnimation;
-import com.android.base.adapter.recyclerview.animation.BaseAnimation;
-import com.android.base.adapter.recyclerview.animation.ScaleInAnimation;
-import com.android.base.adapter.recyclerview.animation.SlideInBottomAnimation;
-import com.android.base.adapter.recyclerview.animation.SlideInLeftAnimation;
-import com.android.base.adapter.recyclerview.animation.SlideInRightAnimation;
-import com.android.base.adapter.recyclerview.entity.IExpandable;
+import com.ljz.base.R;
+import com.ljz.base.adapter.recyclerview.animation.AlphaInAnimation;
+import com.ljz.base.adapter.recyclerview.animation.BaseAnimation;
+import com.ljz.base.adapter.recyclerview.animation.ScaleInAnimation;
+import com.ljz.base.adapter.recyclerview.animation.SlideInBottomAnimation;
+import com.ljz.base.adapter.recyclerview.animation.SlideInLeftAnimation;
+import com.ljz.base.adapter.recyclerview.animation.SlideInRightAnimation;
+import com.ljz.base.adapter.recyclerview.entity.IExpandable;
 import com.bumptech.glide.Glide;
 
 import java.lang.annotation.Retention;

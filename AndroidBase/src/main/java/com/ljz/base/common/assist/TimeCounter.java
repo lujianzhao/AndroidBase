@@ -1,7 +1,7 @@
 package com.ljz.base.common.assist;
 
 
-import com.android.base.common.logutils.LogUtils;
+import com.ljz.base.common.logutils.LogUtils;
 
 /**
  * Time Counter.

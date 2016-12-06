@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.PowerManager;
 
-import com.android.base.common.logutils.LogUtils;
+import com.ljz.base.common.logutils.LogUtils;
 
 
 /**
