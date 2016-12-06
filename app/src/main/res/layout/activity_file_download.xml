@@ -47,7 +47,7 @@
 
     </RelativeLayout>
 
-    <com.lujianzhao.androidbasedemo.view.NumberProgressBar
+    <com.ljz.androidbasedemo.view.NumberProgressBar
         android:id="@+id/pbProgress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

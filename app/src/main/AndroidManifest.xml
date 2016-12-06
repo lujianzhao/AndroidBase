@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.lujianzhao.androidbasedemo"
+<manifest package="com.ljz.androidbasedemo"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
-        android:name="com.lujianzhao.androidbasedemo.DemoApplication"
+        android:name="com.ljz.androidbasedemo.DemoApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -20,7 +20,7 @@
 
 
         <activity
-            android:name="com.lujianzhao.androidbasedemo.MainActivity"
+            android:name="com.ljz.androidbasedemo.MainActivity"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -30,23 +30,23 @@
         </activity>
 
         <activity
-            android:name="com.lujianzhao.androidbasedemo.db.view.DBActivity">
+            android:name="com.ljz.androidbasedemo.db.view.DBActivity">
         </activity>
 
         <activity
-            android:name="com.lujianzhao.androidbasedemo.http.HttpActivity">
+            android:name="com.ljz.androidbasedemo.http.HttpActivity">
         </activity>
 
         <activity
-            android:name="com.lujianzhao.androidbasedemo.http.view.GetAndPostActivity">
+            android:name="com.ljz.androidbasedemo.http.view.GetAndPostActivity">
         </activity>
 
         <activity
-            android:name="com.lujianzhao.androidbasedemo.http.view.UploadActivity">
+            android:name="com.ljz.androidbasedemo.http.view.UploadActivity">
         </activity>
 
         <activity
-            android:name="com.lujianzhao.androidbasedemo.http.view.DownloadActivity">
+            android:name="com.ljz.androidbasedemo.http.view.DownloadActivity">
         </activity>
 
     </application>

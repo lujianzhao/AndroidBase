@@ -150,11 +150,11 @@
 -keep public class * extends android.app.Fragment
 
 #防止某些错误的移除
--keep class com.lujianzhao.base.frame.** {*;}
--keepclasseswithmembers class * extends com.lujianzhao.base.frame.presenter.BasePresenter{
+-keep class com.lzj.base.frame.** {*;}
+-keepclasseswithmembers class * extends com.lzj.base.frame.presenter.BasePresenter{
    public <init>();
 }
--keepclasseswithmembers class * extends com.lujianzhao.base.frame.model.BaseModel{
+-keepclasseswithmembers class * extends com.lzj.base.frame.model.BaseModel{
    public <init>();
 }
 
