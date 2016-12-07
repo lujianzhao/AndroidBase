@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 
+import com.ljz.base.common.assist.Check;
 import com.ljz.base.frame.presenter.BasePresenter;
 import com.ljz.base.frame.presenter.factory.PresenterFactory;
 import com.ljz.base.frame.presenter.factory.ReflectionPresenterFactory;
@@ -61,7 +62,7 @@ public abstract class BaseMvpActivity<P extends BasePresenter> extends SuperActi
 
     private void initData() {
         onInitData();
-        getPresenter().onStart();
+        getPresenter().onStart(Check.isBundleEmpty(getIntent()) ? null : getIntent().getExtras());
     }
 
     @Override

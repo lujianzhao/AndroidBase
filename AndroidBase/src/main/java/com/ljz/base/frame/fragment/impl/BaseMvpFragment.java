@@ -70,7 +70,7 @@ public abstract class BaseMvpFragment<P extends BasePresenter> extends SuperFrag
 
     private void initData() {
         onInitData();
-        getPresenter().onStart();
+        getPresenter().onStart(getArguments());
     }
 
     @Override

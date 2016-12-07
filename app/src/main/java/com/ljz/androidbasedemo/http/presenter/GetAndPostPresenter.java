@@ -1,5 +1,7 @@
 package com.ljz.androidbasedemo.http.presenter;
 
+import android.os.Bundle;
+
 import com.ljz.base.callback.ExecutorCallBack;
 import com.ljz.base.common.logutils.LogUtils;
 import com.ljz.base.frame.model.factory.RequiresModel;
@@ -19,7 +21,7 @@ public class GetAndPostPresenter extends GetAndPostContract.Presenter {
     private String mData3 ="";
 
     @Override
-    public void onStart() {
+    public void onStart(Bundle bundle) {
         test1();
 //        test2();
     }

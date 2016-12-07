@@ -1,14 +1,16 @@
 apply plugin: 'com.android.library'
 
+version = "1.0.2"
+
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.3"
 
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 20
         versionCode 1
-        versionName "1.0"
+        versionName version
     }
 
     buildTypes {
@@ -34,10 +36,10 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:25.0.1'
-    compile 'com.android.support:support-v4:25.0.1'
-    compile 'com.android.support:design:25.0.1'
-    compile 'com.android.support:recyclerview-v7:25.0.1'
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:support-v4:24.2.1'
+    compile 'com.android.support:design:24.2.1'
+    compile 'com.android.support:recyclerview-v7:24.2.1'
     //自动布局
     compile 'com.zhy:autolayout:1.4.5'
     //注入工具
@@ -98,7 +100,7 @@ dependencies {
 //    siteUrl = 'https://github.com/lujianzhao/AndroidBase'
 //    gitUrl = 'https://github.com/lujianzhao/AndroidBase.git'
 //
-//    libraryVersion = '1.0'//版本号
+//    libraryVersion = version//版本号
 //    libraryName = 'AndroidBase'//项目名字，没什么用
 //    libraryDescription = 'A Base for Android'//项目描述，没什么用
 //
