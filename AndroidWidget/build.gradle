@@ -35,17 +35,16 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':androidbase')
-//    compile 'com.ljz.base:AndroidBase:1.0.2'
 }
 
 //编译命令：gradle clean build bintrayupload
 ext {
     bintrayUserOrg = 'jianzhaoandroid'//bintray.com用户名
     bintrayRepo = 'maven'////bintray上的仓库名，一般为maven
-    bintrayName = 'AndroidWidget'//bintray上的项目名
+    bintrayName = 'androidwidget'//bintray上的项目名
 
     publishedGroupId = 'com.ljz.base.widget'//JCenter的GroupId
-    artifact = 'AndroidWidget'//JCenter的ArtifactId
+    artifact = 'androidwidget'//JCenter的ArtifactId
 
     siteUrl = 'https://github.com/lujianzhao/AndroidBase'
     gitUrl = 'https://github.com/lujianzhao/AndroidBase.git'

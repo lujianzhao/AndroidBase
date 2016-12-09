@@ -92,16 +92,16 @@ dependencies {
 //ext {
 //    bintrayUserOrg = 'jianzhaoandroid'//bintray.com用户名
 //    bintrayRepo = 'maven'////bintray上的仓库名，一般为maven
-//    bintrayName = 'AndroidBase'//bintray上的项目名
+//    bintrayName = 'androidbase'//bintray上的项目名
 //
 //    publishedGroupId = 'com.ljz.base'//JCenter的GroupId
-//    artifact = 'AndroidBase'//JCenter的ArtifactId
+//    artifact = 'androidbase'//JCenter的ArtifactId
 //
 //    siteUrl = 'https://github.com/lujianzhao/AndroidBase'
 //    gitUrl = 'https://github.com/lujianzhao/AndroidBase.git'
 //
 //    libraryVersion = version//版本号
-//    libraryName = 'AndroidBase'//项目名字，没什么用
+//    libraryName = 'androidbase'//项目名字，没什么用
 //    libraryDescription = 'A Base for Android'//项目描述，没什么用
 //
 //    //开发者信息
