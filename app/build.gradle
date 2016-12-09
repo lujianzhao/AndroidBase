@@ -46,8 +46,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':AndroidBase')
-    compile project(':AndroidWidget')
+    compile project(':androidwidget')
     compile 'com.lzy.widget:imagepicker:0.2.1'
     compile 'com.lzy.widget:view-core:0.2.1'
 

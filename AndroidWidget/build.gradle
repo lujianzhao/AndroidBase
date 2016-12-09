@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 
-version = "1.0.2"
+version = "1.0.3"
 
 android {
     compileSdkVersion 24
@@ -34,7 +34,8 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':AndroidBase')
+    compile project(':androidbase')
+//    compile 'com.ljz.base:AndroidBase:1.0.2'
 }
 
 //编译命令：gradle clean build bintrayupload
