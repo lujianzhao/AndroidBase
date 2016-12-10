@@ -29,7 +29,8 @@ import java.util.Properties;
 public class FileUtil {
 
     //    public static final String ROOT_DIR = "Android/data/"+ UIUtil.getPackageName();
-    public static final String DOWNLOAD_DIR = "download";
+    public static final String DOWNLOAD_DIR = Environment.DIRECTORY_DOWNLOADS;
+    public static final String DOCUMENTS_DIR = "Documents";
     public static final String CACHE_DIR = "cache";
     public static final String ICON_DIR = "icon";
 
@@ -57,19 +58,24 @@ public class FileUtil {
         }
     }
 
+    /** 获取用户文件目录 */
+    public static String getDocumentDir() {
+        return getAppFileDir(DOCUMENTS_DIR);
+    }
+
     /** 获取下载目录 */
     public static String getDownloadDir() {
-        return getDir(DOWNLOAD_DIR);
+        return getAppFileDir(DOWNLOAD_DIR);
     }
 
     /** 获取缓存目录 */
     public static String getCacheDir() {
-        return getDir(CACHE_DIR);
+        return getAppCacheDir(CACHE_DIR);
     }
 
     /** 获取icon目录 */
     public static String getIconDir() {
-        return getDir(ICON_DIR);
+        return getAppCacheDir(ICON_DIR);
     }
 
     /**
@@ -126,10 +132,10 @@ public class FileUtil {
     }
 
     /** 获取应用目录，当SD卡存在时，获取SD卡上的目录，当SD卡不存在时，获取应用的cache目录 */
-    public static String getDir(String name) {
+    public static String getAppCacheDir(String name) {
         StringBuilder sb = new StringBuilder();
         if (isSDCardAvailable()) {
-            sb.append(getExternalStoragePath());
+            sb.append(getExternalCacheDir());
         } else {
             sb.append(getCachePath());
         }
@@ -143,19 +149,30 @@ public class FileUtil {
         }
     }
 
+    /** 获取应用目录，当SD卡存在时，获取SD卡上的目录，当SD卡不存在时，获取应用的file目录 */
+    public static String getAppFileDir(String type) {
+        StringBuilder sb = new StringBuilder();
+        if (isSDCardAvailable()) {
+            sb.append(getExternalFileDir(type));
+        } else {
+            sb.append(getFilePath(type));
+        }
+
+        String path = sb.toString();
+        if (createDirs(path)) {
+            return path;
+        } else {
+            return null;
+        }
+    }
+
     /** 获取SD下的应用目录 */
-    public static String getExternalStoragePath() {
-//        StringBuilder sb = new StringBuilder();
-//        sb.append(Environment.getExternalStorageDirectory().getAbsolutePath());
-//        sb.append(File.separator);
-//        sb.append(ROOT_DIR);
-//        sb.append(File.separator);
-//        return sb.toString();
+    public static String getExternalCacheDir() {
         File f = Base.getContext().getExternalCacheDir();
         if (null == f) {
             return null;
         } else {
-            return f.getAbsolutePath() + "/";
+            return f.getAbsolutePath() + File.separator;
         }
     }
 
@@ -165,7 +182,27 @@ public class FileUtil {
         if (null == f) {
             return null;
         } else {
-            return f.getAbsolutePath() + "/";
+            return f.getAbsolutePath() + File.separator;
+        }
+    }
+
+    /** 获取SD下的应用目录 */
+    public static String getExternalFileDir(String type) {
+        File f = Base.getContext().getExternalFilesDir(type);
+        if (null == f) {
+            return null;
+        } else {
+            return f.getAbsolutePath();
+        }
+    }
+
+    /** 获取应用的file目录 */
+    public static String getFilePath(String type) {
+        File f = Base.getContext().getFilesDir();
+        if (null == f) {
+            return null;
+        } else {
+            return f.getAbsolutePath() + File.separator + type;
         }
     }
 
@@ -553,9 +590,10 @@ public class FileUtil {
             StringBuilder sb = new StringBuilder();
             String line = null;
             while ((line = bufferedReader.readLine()) != null) {
-                sb.append("\n").append(line);
+                sb.append(line).append("\n");
             }
             bufferedReader.close();
+            sb.deleteCharAt(sb.lastIndexOf("\n"));
             return sb.toString();
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,18 +1,25 @@
 package com.ljz.base.common.utils;
 
 import android.content.Context;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
+import com.ljz.base.common.assist.Check;
 import com.ljz.base.common.logutils.LogUtils;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
+
+import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 
 /**
  * Get phone info, such as IMEI,IMSI,Number,Sim State, etc.
- *
+ * <p>
  * <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
  *
  * @author lujianzhao
@@ -21,6 +28,94 @@ import java.util.Date;
 public class TelephoneUtil {
 
 //    private static final String TAG = TelephoneUtil.class.getSimpleName();
+
+    /**
+     * 获取设备唯一ID
+     * 先以IMEI为准，如果IMEI为空，则androidId
+     * 下次使用deviceId的时候优先从外部存储读取，再从背部存储读取，最后在重新生成，尽可能的保证其不变性
+     *
+     * @param context
+     * @return
+     */
+    public static String getDeviceId(Context context) {
+        String deviceId = FileUtil.getFileOutputString(getPath());
+        if (Check.isEmpty(deviceId)) {
+
+            //是否是MTK机型
+            TeleInfo mtkTeleInfo = getMtkTeleInfo(context);
+            if (mtkTeleInfo != null) {
+                deviceId = mtkTeleInfo.imei_1 + mtkTeleInfo.imei_2;
+            }
+
+            //是否是MTK2机型
+            if (Check.isEmpty(deviceId)) {
+                TeleInfo mtkTeleInfo2 = getMtkTeleInfo2(context);
+                if (mtkTeleInfo2 != null) {
+                    deviceId = mtkTeleInfo2.imei_1 + mtkTeleInfo2.imei_2;
+                }
+            }
+
+            //是否是高通机型
+            if (Check.isEmpty(deviceId)) {
+                TeleInfo qualcommTeleInfo = getQualcommTeleInfo(context);
+                if (qualcommTeleInfo != null) {
+                    deviceId = qualcommTeleInfo.imei_1 + qualcommTeleInfo.imei_2;
+                }
+            }
+
+            //是否是展讯机型
+            if (Check.isEmpty(deviceId)) {
+                TeleInfo spreadtrumTeleInfo = getSpreadtrumTeleInfo(context);
+                if (spreadtrumTeleInfo != null) {
+                    deviceId = spreadtrumTeleInfo.imei_1 + spreadtrumTeleInfo.imei_2;
+                }
+            }
+
+            if (Check.isEmpty(deviceId)) {
+                deviceId = getIMEI(context);
+            }
+
+            if (Check.isEmpty(deviceId)) {
+                deviceId = getUniversalID(context);
+            }
+
+            if (!Check.isEmpty(deviceId)) {
+                saveDeviceId(deviceId);
+            }
+        }
+        return deviceId;
+    }
+
+    /**
+     * 首先通过读取Android_id,作为UUID的种子。若得到Android_Id等于9774d56d682e549c 或者 发生错误
+     * 则 random 一个 UUID 作为备用方案
+     */
+    public static String getUniversalID(Context context) {
+        String uuid;
+        String androidId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        if (!Check.isEmpty(androidId) && !"9774d56d682e549c".equals(androidId)) {
+            try {
+                uuid = UUID.nameUUIDFromBytes(androidId.getBytes("utf8")).toString().replaceAll("-", "");
+            } catch (Exception e) {
+                uuid = UUID.randomUUID().toString().replaceAll("-", "");
+            }
+        } else {
+            uuid = UUID.randomUUID().toString().replaceAll("-", "");
+        }
+        return uuid;
+    }
+
+    private static void saveDeviceId(String deviceId) {
+        FileUtil.writeFile(deviceId, getPath(), false);
+    }
+
+    private static String getPath() {
+        StringBuilder sb = new StringBuilder(FileUtil.getDocumentDir());
+        sb.append(File.separator);
+        sb.append("device_id");
+        return sb.toString();
+    }
+
 
     /**
      * IMSI是国际移动用户识别码的简称(International Mobile Subscriber Identity)
@@ -56,6 +151,17 @@ public class TelephoneUtil {
         String IMEI = telephonyManager.getDeviceId();
         LogUtils.i(" IMEI：" + IMEI);
         return IMEI;
+    }
+
+    /**
+     * 获取当前设置的电话号码
+     */
+    public static String getNativePhoneNumber(Context context) {
+        TelephonyManager telephonyManager = (TelephonyManager) context
+                .getSystemService(Context.TELEPHONY_SERVICE);
+        String NativePhoneNumber = null;
+        NativePhoneNumber = telephonyManager.getLine1Number();
+        return String.format("手机号: %s", NativePhoneNumber);
     }
 
     /**
@@ -97,7 +203,7 @@ public class TelephoneUtil {
         sb.append("\nSubscriberId         :").append(tm.getSubscriberId());
         sb.append("\nVoiceMailNumber      :").append(tm.getVoiceMailNumber());
 
-        LogUtils.i( sb.toString());
+        LogUtils.i(sb.toString());
         return sb.toString();
     }
 
@@ -118,24 +224,25 @@ public class TelephoneUtil {
         @Override
         public String toString() {
             return "TeleInfo{" +
-                   "imsi_1='" + imsi_1 + '\'' +
-                   ", imsi_2='" + imsi_2 + '\'' +
-                   ", imei_1='" + imei_1 + '\'' +
-                   ", imei_2='" + imei_2 + '\'' +
-                   ", phoneType_1=" + phoneType_1 +
-                   ", phoneType_2=" + phoneType_2 +
-                   '}';
+                    "imsi_1='" + imsi_1 + '\'' +
+                    ", imsi_2='" + imsi_2 + '\'' +
+                    ", imei_1='" + imei_1 + '\'' +
+                    ", imei_2='" + imei_2 + '\'' +
+                    ", phoneType_1=" + phoneType_1 +
+                    ", phoneType_2=" + phoneType_2 +
+                    '}';
         }
     }
 
     /**
      * MTK Phone.
-     *
+     * <p>
      * 获取 MTK 神机的双卡 IMSI、IMSI 信息
      */
     public static TeleInfo getMtkTeleInfo(Context context) {
-        TeleInfo teleInfo = new TeleInfo();
         try {
+            TeleInfo teleInfo = new TeleInfo();
+
             Class<?> phone = Class.forName("com.android.internal.telephony.Phone");
 
             Field fields1 = phone.getField("GEMINI_SIM_1");
@@ -165,21 +272,23 @@ public class TelephoneUtil {
             int phoneType_2 = (Integer) getPhoneTypeGemini.invoke(tm, simId_2);
             teleInfo.phoneType_1 = phoneType_1;
             teleInfo.phoneType_2 = phoneType_2;
+            LogUtils.i("MTK: " + teleInfo);
+            return teleInfo;
+
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        LogUtils.i("MTK: " + teleInfo);
-        return teleInfo;
     }
 
     /**
      * MTK Phone.
-     *
+     * <p>
      * 获取 MTK 神机的双卡 IMSI、IMSI 信息
      */
     public static TeleInfo getMtkTeleInfo2(Context context) {
-        TeleInfo teleInfo = new TeleInfo();
         try {
+            TeleInfo teleInfo = new TeleInfo();
             TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             Class<?> phone = Class.forName("com.android.internal.telephony.Phone");
             Field fields1 = phone.getField("GEMINI_SIM_1");
@@ -207,23 +316,26 @@ public class TelephoneUtil {
             int phoneType_2 = tm2.getPhoneType();
             teleInfo.phoneType_1 = phoneType_1;
             teleInfo.phoneType_2 = phoneType_2;
+
+            LogUtils.i("MTK2: " + teleInfo);
+            return teleInfo;
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        LogUtils.i( "MTK2: " + teleInfo);
-        return teleInfo;
     }
 
     /**
      * Qualcomm Phone.
      * 获取 高通 神机的双卡 IMSI、IMSI 信息
      */
-    /*public static TeleInfo getQualcommTeleInfo(Context context) {
-        TeleInfo teleInfo = new TeleInfo();
+    public static TeleInfo getQualcommTeleInfo(Context context) {
+
         try {
+            TeleInfo teleInfo = new TeleInfo();
             TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             Class<?> simTMclass = Class.forName("android.telephony.MSimTelephonyManager");
-            Object sim = context.getSystemService("phone_msim");
+            Object sim = context.getSystemService(Context.TELEPHONY_SERVICE);
             int simId_1 = 0;
             int simId_2 = 1;
 
@@ -244,21 +356,26 @@ public class TelephoneUtil {
             int phoneType_2 = (Integer) getDataState.invoke(sim);
             teleInfo.phoneType_1 = phoneType_1;
             teleInfo.phoneType_2 = phoneType_2;
+
+            Log.i(TAG, "Qualcomm: " + teleInfo);
+            return teleInfo;
+
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        Log.i(TAG, "Qualcomm: " + teleInfo);
-        return teleInfo;
-    }*/
+
+    }
 
     /**
      * Spreadtrum Phone.
-     *
+     * <p>
      * 获取 展讯 神机的双卡 IMSI、IMSI 信息
      */
-    /*public static TeleInfo getSpreadtrumTeleInfo(Context context) {
-        TeleInfo teleInfo = new TeleInfo();
+    public static TeleInfo getSpreadtrumTeleInfo(Context context) {
+
         try {
+            TeleInfo teleInfo = new TeleInfo();
 
             TelephonyManager tm1 = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             String imsi_1 = tm1.getSubscriberId();
@@ -271,20 +388,19 @@ public class TelephoneUtil {
             Class<?> phoneFactory = Class.forName("com.android.internal.telephony.PhoneFactory");
             Method getServiceName = phoneFactory.getMethod("getServiceName", String.class, int.class);
             getServiceName.setAccessible(true);
-            String spreadTmService = (String) getServiceName.invoke(phoneFactory, Context.TELEPHONY_SERVICE, 1);
-
-            TelephonyManager tm2 = (TelephonyManager) context.getSystemService(spreadTmService);
+            TelephonyManager tm2 = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             String imsi_2 = tm2.getSubscriberId();
             String imei_2 = tm2.getDeviceId();
             int phoneType_2 = tm2.getPhoneType();
             teleInfo.imsi_2 = imsi_2;
             teleInfo.imei_2 = imei_2;
             teleInfo.phoneType_2 = phoneType_2;
-
+            Log.i(TAG, "Spreadtrum: " + teleInfo);
+            return teleInfo;
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        Log.i(TAG, "Spreadtrum: " + teleInfo);
-        return teleInfo;
-    }*/
+
+    }
 }
