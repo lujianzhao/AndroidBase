@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 
-version = "1.0.3"
+version = "1.0.4"
 
 android {
     compileSdkVersion 24
@@ -9,7 +9,7 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 20
-        versionCode 1
+        versionCode 3
         versionName version
     }
     buildTypes {
@@ -34,35 +34,35 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':androidbase')
+    compile 'com.ljz.base:androidbase:1.0.4'
 }
 
 //编译命令：gradle clean build bintrayupload
-//ext {
-//    bintrayUserOrg = 'jianzhaoandroid'//bintray.com用户名
-//    bintrayRepo = 'maven'////bintray上的仓库名，一般为maven
-//    bintrayName = 'androidwidget'//bintray上的项目名
-//
-//    publishedGroupId = 'com.ljz.base.widget'//JCenter的GroupId
-//    artifact = 'androidwidget'//JCenter的ArtifactId
-//
-//    siteUrl = 'https://github.com/lujianzhao/AndroidBase'
-//    gitUrl = 'https://github.com/lujianzhao/AndroidBase.git'
-//
-//    libraryVersion = version//版本号
-//    libraryName = 'AndroidWidget'//项目名字，没什么用
-//    libraryDescription = 'A AndroidWidget for Android'//项目描述，没什么用
-//
-//    //开发者信息
-//    developerId = 'lujianzhao'
-//    developerName = 'lujianzhao'
-//    developerEmail = 'q1062932288@gmail.com'
-//
-//    //以上所有信息自行修改，以下不变
-//
-//    licenseName = 'The Apache Software License, Version 2.0'
-//    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-//    allLicenses = ["Apache-2.0"]
-//}
-//apply from:'../install.gradle'
-//apply from:'../bintray.gradle'
+ext {
+    bintrayUserOrg = 'jianzhaoandroid'//bintray.com用户名
+    bintrayRepo = 'maven'////bintray上的仓库名，一般为maven
+    bintrayName = 'androidwidget'//bintray上的项目名
+
+    publishedGroupId = 'com.ljz.base.widget'//JCenter的GroupId
+    artifact = 'androidwidget'//JCenter的ArtifactId
+
+    siteUrl = 'https://github.com/lujianzhao/AndroidWidget'
+    gitUrl = 'https://github.com/lujianzhao/AndroidWidget.git'
+
+    libraryVersion = version//版本号
+    libraryName = 'AndroidWidget'//项目名字，没什么用
+    libraryDescription = 'A AndroidWidget for Android'//项目描述，没什么用
+
+    //开发者信息
+    developerId = 'lujianzhao'
+    developerName = 'lujianzhao'
+    developerEmail = 'q1062932288@gmail.com'
+
+    //以上所有信息自行修改，以下不变
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+apply from:'../install.gradle'
+apply from:'../bintray.gradle'

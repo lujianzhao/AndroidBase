@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 
@@ -27,8 +28,6 @@ import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
  */
 public class TelephoneUtil {
 
-//    private static final String TAG = TelephoneUtil.class.getSimpleName();
-
     /**
      * 获取设备唯一ID
      * 先以IMEI为准，如果IMEI为空，则androidId
@@ -39,7 +38,7 @@ public class TelephoneUtil {
      */
     public static String getDeviceId(Context context) {
         String deviceId = FileUtil.getFileOutputString(getPath());
-        if (Check.isEmpty(deviceId)) {
+        if (isEmpty(deviceId)) {
 
             //是否是MTK机型
             TeleInfo mtkTeleInfo = getMtkTeleInfo(context);
@@ -48,7 +47,7 @@ public class TelephoneUtil {
             }
 
             //是否是MTK2机型
-            if (Check.isEmpty(deviceId)) {
+            if (isEmpty(deviceId)) {
                 TeleInfo mtkTeleInfo2 = getMtkTeleInfo2(context);
                 if (mtkTeleInfo2 != null) {
                     deviceId = mtkTeleInfo2.imei_1 + mtkTeleInfo2.imei_2;
@@ -56,7 +55,7 @@ public class TelephoneUtil {
             }
 
             //是否是高通机型
-            if (Check.isEmpty(deviceId)) {
+            if (isEmpty(deviceId)) {
                 TeleInfo qualcommTeleInfo = getQualcommTeleInfo(context);
                 if (qualcommTeleInfo != null) {
                     deviceId = qualcommTeleInfo.imei_1 + qualcommTeleInfo.imei_2;
@@ -64,26 +63,30 @@ public class TelephoneUtil {
             }
 
             //是否是展讯机型
-            if (Check.isEmpty(deviceId)) {
+            if (isEmpty(deviceId)) {
                 TeleInfo spreadtrumTeleInfo = getSpreadtrumTeleInfo(context);
                 if (spreadtrumTeleInfo != null) {
                     deviceId = spreadtrumTeleInfo.imei_1 + spreadtrumTeleInfo.imei_2;
                 }
             }
 
-            if (Check.isEmpty(deviceId)) {
+            if (isEmpty(deviceId)) {
                 deviceId = getIMEI(context);
             }
 
-            if (Check.isEmpty(deviceId)) {
+            if (isEmpty(deviceId)) {
                 deviceId = getUniversalID(context);
             }
 
-            if (!Check.isEmpty(deviceId)) {
+            if (!isEmpty(deviceId)) {
                 saveDeviceId(deviceId);
             }
         }
         return deviceId;
+    }
+
+    private static boolean isEmpty(String deviceId) {
+        return Check.isEmpty(deviceId) || Pattern.matches("^0+$", deviceId);
     }
 
     /**
@@ -157,8 +160,7 @@ public class TelephoneUtil {
      * 获取当前设置的电话号码
      */
     public static String getNativePhoneNumber(Context context) {
-        TelephonyManager telephonyManager = (TelephonyManager) context
-                .getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         String NativePhoneNumber = null;
         NativePhoneNumber = telephonyManager.getLine1Number();
         return String.format("手机号: %s", NativePhoneNumber);
