@@ -4,7 +4,7 @@
     <string-array name="test_list">
         <item>操作数据库Test</item>
         <item>HTTP Test</item>
-        <item>............</item>
+        <item>快速滚动RecyclerView</item>
         <item>............</item>
         <item>............</item>
         <item>............</item>

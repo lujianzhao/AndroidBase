@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ljz.androidbasedemo.recycler.RecyclerActivity;
 import com.ljz.base.frame.activity.impl.BaseActivity;
 import com.jakewharton.rxbinding.view.RxView;
 import com.ljz.androidbasedemo.db.view.DBActivity;
@@ -149,6 +150,12 @@ public class MainActivity extends BaseActivity {//implements View.OnClickListene
                 gotoActivity(HttpActivity.class, false);
                 //gotoActivity(FragmentTabHostActivity.class, false);
                 break;
+
+            case 2:
+                gotoActivity(RecyclerActivity.class, false);
+                //gotoActivity(FragmentTabHostActivity.class, false);
+                break;
+
             default:
                 //showShortToast("还在开发中...");
                 break;

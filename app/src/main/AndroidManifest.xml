@@ -49,6 +49,10 @@
             android:name="com.ljz.androidbasedemo.http.view.DownloadActivity">
         </activity>
 
+        <activity
+            android:name="com.ljz.androidbasedemo.recycler.RecyclerActivity">
+        </activity>
+
     </application>
 
 </manifest>

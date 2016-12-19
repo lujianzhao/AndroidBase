@@ -53,5 +53,5 @@ dependencies {
     // 桌面图标显示消息数量,目前版本1.1.8.https://github.com/MacNovice/ShortcutBadger
     //ShortcutBadger.applyCount(context, 33); //添加
     //ShortcutBadger.removeCount(context); //删除
-    compile project(':ShortcutBadger')
+//    compile project(':ShortcutBadger')
 }
