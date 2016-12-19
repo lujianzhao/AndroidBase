@@ -1,15 +1,15 @@
 apply plugin: 'com.android.library'
 
-version = "1.0.4"
+version = "1.0.5"
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.3"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 20
-        versionCode 3
+        versionCode 5
         versionName version
     }
 
@@ -36,10 +36,10 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:support-v4:24.2.1'
-    compile 'com.android.support:design:24.2.1'
-    compile 'com.android.support:recyclerview-v7:24.2.1'
+    compile 'com.android.support:appcompat-v7:25.0.1'
+    compile 'com.android.support:support-v4:25.0.1'
+    compile 'com.android.support:design:25.0.1'
+    compile 'com.android.support:recyclerview-v7:25.0.1'
     //自动布局
     compile 'com.zhy:autolayout:1.4.5'
     //注入工具
@@ -89,31 +89,31 @@ dependencies {
 }
 
 //编译命令：gradle clean build bintrayupload
-ext {
-    bintrayUserOrg = 'jianzhaoandroid'//bintray.com用户名
-    bintrayRepo = 'maven'////bintray上的仓库名，一般为maven
-    bintrayName = 'androidbase'//bintray上的项目名
-
-    publishedGroupId = 'com.ljz.base'//JCenter的GroupId
-    artifact = 'androidbase'//JCenter的ArtifactId
-
-    siteUrl = 'https://github.com/lujianzhao/AndroidBase'
-    gitUrl = 'https://github.com/lujianzhao/AndroidBase.git'
-
-    libraryVersion = version//版本号
-    libraryName = 'androidbase'//项目名字，没什么用
-    libraryDescription = 'A Base for Android'//项目描述，没什么用
-
-    //开发者信息
-    developerId = 'lujianzhao'
-    developerName = 'lujianzhao'
-    developerEmail = 'q1062932288@gmail.com'
-
-    //以上所有信息自行修改，以下不变
-
-    licenseName = 'The Apache Software License, Version 2.0'
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    allLicenses = ["Apache-2.0"]
-}
-apply from:'../install.gradle'
-apply from:'../bintray.gradle'
+//ext {
+//    bintrayUserOrg = 'jianzhaoandroid'//bintray.com用户名
+//    bintrayRepo = 'maven'////bintray上的仓库名，一般为maven
+//    bintrayName = 'androidbase'//bintray上的项目名
+//
+//    publishedGroupId = 'com.ljz.base'//JCenter的GroupId
+//    artifact = 'androidbase'//JCenter的ArtifactId
+//
+//    siteUrl = 'https://github.com/lujianzhao/AndroidBase'
+//    gitUrl = 'https://github.com/lujianzhao/AndroidBase.git'
+//
+//    libraryVersion = version//版本号
+//    libraryName = 'androidbase'//项目名字，没什么用
+//    libraryDescription = 'A Base for Android'//项目描述，没什么用
+//
+//    //开发者信息
+//    developerId = 'lujianzhao'
+//    developerName = 'lujianzhao'
+//    developerEmail = 'q1062932288@gmail.com'
+//
+//    //以上所有信息自行修改，以下不变
+//
+//    licenseName = 'The Apache Software License, Version 2.0'
+//    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+//    allLicenses = ["Apache-2.0"]
+//}
+//apply from:'../install.gradle'
+//apply from:'../bintray.gradle'

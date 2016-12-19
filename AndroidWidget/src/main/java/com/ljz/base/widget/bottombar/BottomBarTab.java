@@ -16,6 +16,8 @@ public class BottomBarTab extends FrameLayout {
 
     private int mTabPosition = -1;
 
+    private TextView mMesTextView;
+
     public BottomBarTab(Context context, @DrawableRes int icon, String title, int textColor) {
         this(context, null, icon, title, textColor);
     }
@@ -33,6 +35,7 @@ public class BottomBarTab extends FrameLayout {
         LayoutInflater.from(context).inflate(com.ljz.base.widget.R.layout.tab_indicator, this);
         TextView  textView = (TextView) findViewById(com.ljz.base.widget.R.id.tab_title);
         ImageView imageView = (ImageView) findViewById(com.ljz.base.widget.R.id.tab_icon);
+        mMesTextView = (TextView) findViewById(com.ljz.base.widget.R.id.tab_mes);
 
         textView.setText(title);
         textView.setTextColor(context.getResources().getColorStateList(textColor));
@@ -50,5 +53,15 @@ public class BottomBarTab extends FrameLayout {
 
     public int getTabPosition() {
         return mTabPosition;
+    }
+
+
+    public void showTabMes(int num) {
+        mMesTextView.setVisibility(VISIBLE);
+        mMesTextView.setText(String.valueOf(num));
+    }
+
+    public void hintTabMes() {
+        mMesTextView.setVisibility(INVISIBLE);
     }
 }

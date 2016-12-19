@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.ljz.base.common.utils.DensityUtil;
+import com.zhy.autolayout.AutoFrameLayout;
 import com.zhy.autolayout.utils.AutoUtils;
 
 /**
@@ -19,7 +20,7 @@ import com.zhy.autolayout.utils.AutoUtils;
  * 创建时间: 2016/05/10 11:36
  * 描述:
  */
-public class TopBar extends FrameLayout {
+public class TopBar extends AutoFrameLayout {
 
     private TextView tv_right;
     private TextView tv_title;
