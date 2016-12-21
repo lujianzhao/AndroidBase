@@ -107,8 +107,16 @@ public class BaseApplication extends Application {
         return true;
     }
 
+    /**
+     * Log的TAG
+     * @return
+     */
+    protected String getTag() {
+        return "AndroidBase";
+    }
+
     private void initLogUtils() {
-        LogUtils.getLogConfig().configAllowLog(isDebug()).configTagPrefix("Yike-").configShowBorders(true).configFormatTag("%d{HH:mm:ss:SSS} %t %c{-5}").configLevel(LogLevel.TYPE_VERBOSE);
+        LogUtils.getLogConfig().configAllowLog(isDebug()).configTagPrefix(getTag()).configShowBorders(true).configFormatTag("%d{HH:mm:ss:SSS} %t %c{-5}").configLevel(LogLevel.TYPE_VERBOSE);
     }
 
     /**
