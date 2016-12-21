@@ -58,7 +58,11 @@ public class BottomBarTab extends FrameLayout {
 
     public void showTabMes(int num) {
         mMesTextView.setVisibility(VISIBLE);
-        mMesTextView.setText(String.valueOf(num));
+        if (num > 99) {
+            mMesTextView.setText("99+");
+        } else {
+            mMesTextView.setText(String.valueOf(num));
+        }
     }
 
     public void hintTabMes() {
