@@ -1,14 +1,13 @@
 package com.ljz.androidbasedemo.http.model;
 
-import com.ljz.base.callback.ExecutorCallBack;
-import com.ljz.base.common.rx.RxUtil;
 import com.ljz.androidbasedemo.constant.ApiConfig;
 import com.ljz.androidbasedemo.http.contract.GetAndPostContract;
 import com.ljz.androidbasedemo.http.model.repositorys.http.GetAndPostClient;
 import com.ljz.androidbasedemo.http.model.repositorys.http.GetAndPostService;
+import com.ljz.base.callback.ExecutorCallBack;
+import com.ljz.base.common.rx.RxUtil;
 
 import rx.Observable;
-import rx.Subscriber;
 
 /**
  * 作者: lujianzhao
@@ -25,27 +24,7 @@ public class GetAndPostModel extends GetAndPostContract.Model {
             mGetAndPostService = GetAndPostClient.getInstance(ApiConfig.URL_BASE).createService(GetAndPostService.class);
         }
 
-        getRxManager().add(mGetAndPostService.getGet().compose(RxUtil.<String>applySchedulersForRetrofit()).subscribe(new Subscriber<String>() {
-            @Override
-            public void onCompleted() {
-                requestCallBack.onCompleted();
-            }
-
-            @Override
-            public void onStart() {
-                requestCallBack.onStart();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                requestCallBack.onError(e);
-            }
-
-            @Override
-            public void onNext(String s) {
-                requestCallBack.onNext(s);
-            }
-        }));
+        getRxManager().add(mGetAndPostService.getGet().compose(RxUtil.<String>applySchedulersForRetrofit()).subscribe(requestCallBack));
     }
 
     @Override
@@ -54,28 +33,7 @@ public class GetAndPostModel extends GetAndPostContract.Model {
             mGetAndPostService = GetAndPostClient.getInstance(ApiConfig.URL_BASE).createService(GetAndPostService.class);
         }
 
-        getRxManager().add(mGetAndPostService.getPost().compose(RxUtil.<String>applySchedulersForRetrofit()).subscribe(new Subscriber<String>() {
-            @Override
-            public void onCompleted() {
-                requestCallBack.onCompleted();
-            }
-
-            @Override
-            public void onStart() {
-                requestCallBack.onStart();
-            }
-
-
-            @Override
-            public void onError(Throwable e) {
-                requestCallBack.onError(e);
-            }
-
-            @Override
-            public void onNext(String s) {
-                requestCallBack.onNext(s);
-            }
-        }));
+        getRxManager().add(mGetAndPostService.getPost().compose(RxUtil.<String>applySchedulersForRetrofit()).subscribe(requestCallBack));
 
     }
 
@@ -94,28 +52,7 @@ public class GetAndPostModel extends GetAndPostContract.Model {
 
 
         getRxManager().add(Observable.mergeDelayError(compose1, compose2)
-                .subscribe(new Subscriber<Object>() {
-                    @Override
-                    public void onCompleted() {
-                        requestCallBack.onCompleted();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        requestCallBack.onError(e);
-                    }
-
-                    @Override
-                    public void onStart() {
-                        requestCallBack.onStart();
-                    }
-
-
-                    @Override
-                    public void onNext(Object o) {
-                        requestCallBack.onNext(o);
-                    }
-                }));
+                .subscribe(requestCallBack));
     }
 
 }

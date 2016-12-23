@@ -1,14 +1,11 @@
 package com.ljz.androidbasedemo.http.model;
 
-import com.ljz.base.callback.ExecutorCallBack;
-import com.ljz.base.common.logutils.LogUtils;
-import com.ljz.base.common.rx.RxUtil;
-import com.ljz.base.http.progress.domain.ProgressRequest;
 import com.ljz.androidbasedemo.http.contract.DownloadContract;
 import com.ljz.androidbasedemo.http.model.repositorys.http.GetAndPostClient;
 import com.ljz.androidbasedemo.http.model.repositorys.http.GetAndPostService;
-
-import rx.Subscriber;
+import com.ljz.base.callback.ExecutorCallBack;
+import com.ljz.base.common.rx.RxUtil;
+import com.ljz.base.http.progress.domain.ProgressRequest;
 
 /**
  * 作者: lujianzhao
@@ -20,29 +17,6 @@ public class DownloadModel extends DownloadContract.Model {
     @Override
     public void fileDownload(String path, final ExecutorCallBack<ProgressRequest> requestDataCallBack) {
         GetAndPostService mGetAndPostService = GetAndPostClient.getInstance("http://server.jeasonlzy.com/OkHttpUtils/").createService(GetAndPostService.class);
-        getRxManager().add(RxUtil.getDownloadObservable(mGetAndPostService.downloadFile(), path).compose(RxUtil.<ProgressRequest>applySchedulersProgress()).subscribe(new Subscriber<ProgressRequest>() {
-            @Override
-            public void onStart() {
-                requestDataCallBack.onStart();
-            }
-
-            @Override
-            public void onCompleted() {
-                LogUtils.d("下载完成 onCompleted");
-                requestDataCallBack.onCompleted();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                LogUtils.d("下载失败 : " + e.getMessage());
-                requestDataCallBack.onError(e);
-            }
-
-            @Override
-            public void onNext(ProgressRequest file) {
-                LogUtils.d("下载进度: " + file.getCurrentBytes() + " / " + file.getContentLength());
-                requestDataCallBack.onNext(file);
-            }
-        }));
+        getRxManager().add(RxUtil.getDownloadObservable(mGetAndPostService.downloadFile(), path).compose(RxUtil.<ProgressRequest>applySchedulersProgress()).subscribe(requestDataCallBack));
     }
 }

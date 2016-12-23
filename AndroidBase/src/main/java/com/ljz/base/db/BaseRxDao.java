@@ -1,9 +1,9 @@
 package com.ljz.base.db;
 
-import com.ljz.base.callback.ExecutorCallBack;
+import com.j256.ormlite.dao.Dao;
+import com.ljz.base.callback.DBCallBack;
 import com.ljz.base.common.rx.RxUtil;
 import com.ljz.base.db.ormlite.OrmLiteDao;
-import com.j256.ormlite.dao.Dao;
 
 import java.util.List;
 import java.util.Map;
@@ -32,7 +32,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
     /**
      * 增加或更新一条记录
      */
-    public Subscription createOrUpdateSync(final T t, final ExecutorCallBack<Dao.CreateOrUpdateStatus> listener) {
+    public Subscription createOrUpdateSync(final T t, final DBCallBack<Dao.CreateOrUpdateStatus> listener) {
         return subscribe(new Callable<Dao.CreateOrUpdateStatus>() {
             @Override
             public Dao.CreateOrUpdateStatus call() {
@@ -44,7 +44,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
     /**
      * 增加一条记录
      */
-    public Subscription insert(final T t, final ExecutorCallBack<Boolean> listener) {
+    public Subscription insert(final T t, final DBCallBack<Boolean> listener) {
         return subscribe(new Callable<Boolean>() {
             @Override
             public Boolean call() {
@@ -56,7 +56,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
     /**
      * 批量插入
      */
-    public Subscription insertForBatch(final List<T> list, final ExecutorCallBack<Boolean> listener) {
+    public Subscription insertForBatch(final List<T> list, final DBCallBack<Boolean> listener) {
         return subscribe(new Callable<Boolean>() {
             @Override
             public Boolean call() {
@@ -69,7 +69,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
     /**
      * 清空数据
      */
-    public Subscription clearTableData(final ExecutorCallBack<Boolean> listener) {
+    public Subscription clearTableData(final DBCallBack<Boolean> listener) {
         return subscribe(new Callable<Boolean>() {
             @Override
             public Boolean call() {
@@ -81,7 +81,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
     /**
      * 根据id删除记录
      */
-    public Subscription deleteById(final Integer id, final ExecutorCallBack<Boolean> listener) {
+    public Subscription deleteById(final Integer id, final DBCallBack<Boolean> listener) {
         return subscribe(new Callable<Boolean>() {
             @Override
             public Boolean call() {
@@ -96,7 +96,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param columnName 指定条件列名
      * @param value      值
      */
-    public Subscription deleteByColumnName(final String columnName, final Object value, final ExecutorCallBack<Boolean> listener) {
+    public Subscription deleteByColumnName(final String columnName, final Object value, final DBCallBack<Boolean> listener) {
         return subscribe(new Callable<Boolean>() {
             @Override
             public Boolean call() {
@@ -111,7 +111,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param map      列的键值组合
      * @param listener
      */
-    public Subscription deleteByColumnName(final Map<String, Object> map, final ExecutorCallBack<Boolean> listener) {
+    public Subscription deleteByColumnName(final Map<String, Object> map, final DBCallBack<Boolean> listener) {
         return subscribe(new Callable<Boolean>() {
             @Override
             public Boolean call() {
@@ -127,7 +127,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param value      列值，删除小于该值的所有数据将被删除
      * @param listener   回调接口
      */
-    public Subscription deleteLtValue(final String columnName, final Object value, final ExecutorCallBack<Integer> listener) {
+    public Subscription deleteLtValue(final String columnName, final Object value, final DBCallBack<Integer> listener) {
         return subscribe(new Callable<Integer>() {
             @Override
             public Integer call() throws Exception {
@@ -139,7 +139,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
     /**
      * 批量删除
      */
-    public Subscription deleteForBatch(final List<T> list, final ExecutorCallBack<Boolean> listener) {
+    public Subscription deleteForBatch(final List<T> list, final DBCallBack<Boolean> listener) {
         return subscribe(new Callable<Boolean>() {
             @Override
             public Boolean call() {
@@ -153,7 +153,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      *
      * @param t 新的数据实体,ID不能为空
      */
-    public Subscription update(final T t, final ExecutorCallBack<Boolean> listener) {
+    public Subscription update(final T t, final DBCallBack<Boolean> listener) {
         return subscribe(new Callable<Boolean>() {
             @Override
             public Boolean call() {
@@ -170,7 +170,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param value      查询条件值
      * @return
      */
-    public Subscription updateBy(final T t, final String columnName, final Object value, final ExecutorCallBack<Boolean> listener) {
+    public Subscription updateBy(final T t, final String columnName, final Object value, final DBCallBack<Boolean> listener) {
         return subscribe(new Callable<Boolean>() {
             @Override
             public Boolean call() {
@@ -186,7 +186,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param value 更新条件
      * @return
      */
-    public Subscription updateBy(final T t, final Map<String, Object> value, final ExecutorCallBack<Boolean> listener) {
+    public Subscription updateBy(final T t, final Map<String, Object> value, final DBCallBack<Boolean> listener) {
         return subscribe(new Callable<Boolean>() {
             @Override
             public Boolean call() {
@@ -201,7 +201,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param list 记录集合
      * @return
      */
-    public Subscription updateForBatch(final List<T> list, final ExecutorCallBack<Boolean> listener) {
+    public Subscription updateForBatch(final List<T> list, final DBCallBack<Boolean> listener) {
         return subscribe(new Callable<Boolean>() {
             @Override
             public Boolean call() {
@@ -216,7 +216,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param map      查询条件的键值组合
      * @param listener
      */
-    public Subscription getCount(final Map<String, Object> map, final ExecutorCallBack<Long> listener) {
+    public Subscription getCount(final Map<String, Object> map, final DBCallBack<Long> listener) {
         return subscribe(new Callable<Long>() {
             @Override
             public Long call() {
@@ -230,7 +230,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      *
      * @param listener 回调
      */
-    public Subscription getCount(final ExecutorCallBack<Long> listener) {
+    public Subscription getCount(final DBCallBack<Long> listener) {
         return subscribe(new Callable<Long>() {
             @Override
             public Long call() {
@@ -242,7 +242,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
     /**
      * 查询表中所有数据
      */
-    public Subscription queryForAll(final ExecutorCallBack<List<T>> listener) {
+    public Subscription queryForAll(final DBCallBack<List<T>> listener) {
         return subscribe(new Callable<List<T>>() {
             @Override
             public List<T> call() {
@@ -257,7 +257,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param map 查询条件的键值组合
      * @return
      */
-    public Subscription queryByColumnName(final Map<String, Object> map, final ExecutorCallBack<List<T>> listener) {
+    public Subscription queryByColumnName(final Map<String, Object> map, final DBCallBack<List<T>> listener) {
         return subscribe(new Callable<List<T>>() {
             @Override
             public List<T> call() {
@@ -272,7 +272,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param columnName 指定查询条件列名
      * @param value      查询条件值
      */
-    public Subscription queryByColumnName(final String columnName, final Object value, final ExecutorCallBack<List<T>> listener) {
+    public Subscription queryByColumnName(final String columnName, final Object value, final DBCallBack<List<T>> listener) {
         return subscribe(new Callable<List<T>>() {
             @Override
             public List<T> call() {
@@ -290,7 +290,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param ascending   true为升序,false为降序
      * @return
      */
-    public Subscription queryByOrder(final String orderColumn, final String columnName, final Object value, final boolean ascending, final ExecutorCallBack<List<T>> listener) {
+    public Subscription queryByOrder(final String orderColumn, final String columnName, final Object value, final boolean ascending, final DBCallBack<List<T>> listener) {
         return subscribe(new Callable<List<T>>() {
             @Override
             public List<T> call() {
@@ -305,7 +305,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param selectColumns 指定列名
      * @param listener
      */
-    public Subscription queryAllBySelectColumns(final String[] selectColumns, final ExecutorCallBack<List<T>> listener) {
+    public Subscription queryAllBySelectColumns(final String[] selectColumns, final DBCallBack<List<T>> listener) {
 
         return subscribe(new Callable<List<T>>() {
             @Override
@@ -325,7 +325,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param ascending   true为升序,false为降序
      * @return
      */
-    public Subscription queryGeByOrder(final String orderColumn, final Object limitValue, final String columnName, final Object value, final boolean ascending, final ExecutorCallBack<List<T>> listener) {
+    public Subscription queryGeByOrder(final String orderColumn, final Object limitValue, final String columnName, final Object value, final boolean ascending, final DBCallBack<List<T>> listener) {
         return subscribe(new Callable<List<T>>() {
             @Override
             public List<T> call() {
@@ -342,7 +342,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param ascending   true为升序,false为降序
      * @return 查询结果
      */
-    public Subscription queryLeByOrder(final String orderColumn, final Object limitValue, final boolean ascending, final ExecutorCallBack<List<T>> listener) {
+    public Subscription queryLeByOrder(final String orderColumn, final Object limitValue, final boolean ascending, final DBCallBack<List<T>> listener) {
         return subscribe(new Callable<List<T>>() {
             @Override
             public List<T> call() {
@@ -360,7 +360,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param count       搜索条数
      * @return 分页查询后的数据集
      */
-    public Subscription queryForPagesByOrder(final String orderColumn, final boolean ascending, final Long offset, final Long count, final ExecutorCallBack<List<T>> listener) {
+    public Subscription queryForPagesByOrder(final String orderColumn, final boolean ascending, final Long offset, final Long count, final DBCallBack<List<T>> listener) {
         return subscribe(new Callable<List<T>>() {
             @Override
             public List<T> call() {
@@ -379,7 +379,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param offset      搜索下标
      * @param count       搜索条数
      */
-    public Subscription queryForPagesByOrder(final String columnName, final Object value, final String orderColumn, final boolean ascending, final Long offset, final Long count, final ExecutorCallBack<List<T>> listener) {
+    public Subscription queryForPagesByOrder(final String columnName, final Object value, final String orderColumn, final boolean ascending, final Long offset, final Long count, final DBCallBack<List<T>> listener) {
         return subscribe(new Callable<List<T>>() {
             @Override
             public List<T> call() {
@@ -398,7 +398,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param ascending   升序或降序,true为升序,false为降序
      * @return
      */
-    public Subscription queryForPagesByOrder(final Map<String, Object> map, final String orderColumn, final boolean ascending, final Long offset, final Long count, final ExecutorCallBack<List<T>> listener) {
+    public Subscription queryForPagesByOrder(final Map<String, Object> map, final String orderColumn, final boolean ascending, final Long offset, final Long count, final DBCallBack<List<T>> listener) {
         return subscribe(new Callable<List<T>>() {
             @Override
             public List<T> call() {
@@ -413,7 +413,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param columnName 查询条件列名
      * @param value      查询条件值
      */
-    public Subscription queryForFirst(final String columnName, final Object value, final ExecutorCallBack<T> listener) {
+    public Subscription queryForFirst(final String columnName, final Object value, final DBCallBack<T> listener) {
         return subscribe(new Callable<T>() {
             @Override
             public T call() {
@@ -427,7 +427,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      *
      * @param map 查询条件键值组合
      */
-    public Subscription queryForFirst(final Map<String, Object> map, final ExecutorCallBack<T> listener) {
+    public Subscription queryForFirst(final Map<String, Object> map, final DBCallBack<T> listener) {
         return subscribe(new Callable<T>() {
             @Override
             public T call() {
@@ -444,7 +444,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param ascending   是否升序
      * @return
      */
-    public Subscription queryForFirstByOrder(final Map<String, Object> map, final String orderColumn, final boolean ascending, final ExecutorCallBack<T> listener) {
+    public Subscription queryForFirstByOrder(final Map<String, Object> map, final String orderColumn, final boolean ascending, final DBCallBack<T> listener) {
         return subscribe(new Callable<T>() {
             @Override
             public T call() {
@@ -462,7 +462,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param ascending   是否升序
      * @return
      */
-    public Subscription queryForFirstByOrder(final String columnName, final Object value, final String orderColumn, final boolean ascending, final ExecutorCallBack<T> listener) {
+    public Subscription queryForFirstByOrder(final String columnName, final Object value, final String orderColumn, final boolean ascending, final DBCallBack<T> listener) {
         return subscribe(new Callable<T>() {
             @Override
             public T call() {
@@ -471,7 +471,7 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
         }, listener);
     }
 
-    private <R> Subscription subscribe(final Callable<R> callable, final ExecutorCallBack<R> listener) {
+    private <R> Subscription subscribe(final Callable<R> callable, final DBCallBack<R> listener) {
         if (listener != null) {
             listener.onStart();
         }

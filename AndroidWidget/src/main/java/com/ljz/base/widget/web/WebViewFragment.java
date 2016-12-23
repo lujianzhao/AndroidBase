@@ -33,8 +33,9 @@ import java.io.File;
 public class WebViewFragment extends BaseFragment {
 
 
-    public interface OnPageFinishedListener{
+    public interface OnWebViewListener{
         void onPageFinished(WebView view, String url);
+        boolean shouldOverrideUrlLoading(WebView view, String url);
     }
 
 
@@ -61,9 +62,9 @@ public class WebViewFragment extends BaseFragment {
 
     private boolean hasInited = false;
 
-    private OnPageFinishedListener mListener;
+    private OnWebViewListener mListener;
 
-    public void setOnPageFinishedListener(OnPageFinishedListener listener) {
+    public void setOnWebViewListener(OnWebViewListener listener) {
         mListener = listener;
     }
 
@@ -230,6 +231,11 @@ public class WebViewFragment extends BaseFragment {
         });
 
         mWebView.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return mListener != null && mListener.shouldOverrideUrlLoading(view, url);
+            }
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {

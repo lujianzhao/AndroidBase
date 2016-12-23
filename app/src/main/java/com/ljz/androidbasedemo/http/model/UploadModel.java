@@ -1,13 +1,13 @@
 package com.ljz.androidbasedemo.http.model;
 
-import com.ljz.base.callback.ExecutorUploadCallBack;
+import com.ljz.androidbasedemo.http.contract.UploadContract;
+import com.ljz.androidbasedemo.http.model.repositorys.http.GetAndPostClient;
+import com.ljz.androidbasedemo.http.model.repositorys.http.GetAndPostService;
+import com.ljz.base.callback.UploadCallBack;
 import com.ljz.base.common.logutils.LogUtils;
 import com.ljz.base.common.rx.RxUtil;
 import com.ljz.base.http.progress.ProgressRequestBody;
 import com.ljz.base.http.progress.domain.ProgressRequest;
-import com.ljz.androidbasedemo.http.contract.UploadContract;
-import com.ljz.androidbasedemo.http.model.repositorys.http.GetAndPostClient;
-import com.ljz.androidbasedemo.http.model.repositorys.http.GetAndPostService;
 import com.lzy.imagepicker.bean.ImageItem;
 
 import java.io.File;
@@ -29,7 +29,7 @@ public class UploadModel extends UploadContract.Model {
 
 
     @Override
-    public void formUpload(ArrayList<ImageItem> imageItems, final ExecutorUploadCallBack<ProgressRequest, ResponseBody> requestDataCallBack) {
+    public void formUpload(ArrayList<ImageItem> imageItems, final UploadCallBack<ProgressRequest, ResponseBody> requestDataCallBack) {
         Subscriber<ProgressRequest> subscriber = new Subscriber<ProgressRequest>() {
             @Override
             public void onCompleted() {
@@ -78,7 +78,7 @@ public class UploadModel extends UploadContract.Model {
 
             @Override
             public void onNext(ResponseBody s) {
-                requestDataCallBack.onCompleted(s);
+                requestDataCallBack.onResponse(s);
             }
         }));
     }

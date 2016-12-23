@@ -4,13 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.ljz.base.callback.ExecutorUploadCallBack;
+import com.ljz.androidbasedemo.http.contract.UploadContract;
+import com.ljz.androidbasedemo.http.model.UploadModel;
+import com.ljz.base.callback.UploadCallBack;
 import com.ljz.base.common.assist.Toastor;
 import com.ljz.base.common.logutils.LogUtils;
 import com.ljz.base.frame.model.factory.RequiresModel;
 import com.ljz.base.http.progress.domain.ProgressRequest;
-import com.ljz.androidbasedemo.http.contract.UploadContract;
-import com.ljz.androidbasedemo.http.model.UploadModel;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.loader.GlideImageLoader;
@@ -72,7 +72,7 @@ public class UploadPresenter extends UploadContract.Presenter {
             Toastor.showToast(getContext(), "请选择需上传的图片");
             return;
         }
-        getModel().formUpload(imageItems, new ExecutorUploadCallBack<ProgressRequest, ResponseBody>() {
+        getModel().formUpload(imageItems, new UploadCallBack<ProgressRequest, ResponseBody>() {
             @Override
             public void onStart() {
                 LogUtils.d("开始上传");
@@ -84,7 +84,7 @@ public class UploadPresenter extends UploadContract.Presenter {
             }
 
             @Override
-            public void onCompleted(ResponseBody responseData) {
+            public void onResponse(ResponseBody responseData) {
                 String string = "";
                 try {
                      string = responseData.string();

@@ -1,6 +1,6 @@
 package com.ljz.androidbasedemo.http.contract;
 
-import com.ljz.base.callback.ExecutorUploadCallBack;
+import com.ljz.base.callback.UploadCallBack;
 import com.ljz.base.frame.model.BaseModel;
 import com.ljz.base.frame.presenter.BasePresenter;
 import com.ljz.base.frame.view.IBaseView;
@@ -23,7 +23,7 @@ public interface UploadContract {
          * @param imageItems
          * @param requestDataCallBack
          */
-        public abstract void formUpload(ArrayList<ImageItem> imageItems, ExecutorUploadCallBack<ProgressRequest, ResponseBody> requestDataCallBack);
+        public abstract void formUpload(ArrayList<ImageItem> imageItems, UploadCallBack<ProgressRequest, ResponseBody> requestDataCallBack);
 
     }
 
