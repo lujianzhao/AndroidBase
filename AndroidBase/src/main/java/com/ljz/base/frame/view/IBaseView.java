@@ -39,4 +39,10 @@ public interface IBaseView {
     void showErrorView();
 
     void showContentView();
+
+    /**
+     * 是否在栈顶
+     * @return
+     */
+    boolean isOnTaskTop();
 }

@@ -45,6 +45,42 @@ public class Check {
 	}
 
 	/**
+	 * 校验身份证
+	 * @param idCard
+	 * @return
+     */
+	public static boolean isIdCard(String  idCard) {
+		return Pattern.matches("^\\d{15}$|^\\d{18}$|^\\d{17}(\\d|X|x)$", idCard);
+	}
+
+	/**
+	 * 校验护照
+	 * @param passport
+	 * @return
+     */
+	public static boolean isPassport(String  passport) {
+		return Pattern.matches("^[a-zA-Z]{5,17}$|^[a-zA-Z0-9]{5,17}$", passport);
+	}
+
+	/**
+	 * 校验港澳通行证验证
+	 * @param passVerification
+	 * @return
+     */
+	public static boolean isHKMacaopPassVerification(String  passVerification) {
+		return Pattern.matches("^[HMhm]{1}([0-9]{10}|[0-9]{8})$", passVerification);
+	}
+
+	/**
+	 * 校验台湾通行证验证
+	 * @param passVerification
+	 * @return
+     */
+	public static boolean isTaiwanPassVerification(String  passVerification) {
+		return Pattern.matches("^[0-9]{8}$|^[0-9]{10}$", passVerification);
+	}
+
+	/**
 	 * 判断intent和它的bundle是否为空
 	 *
 	 * @param intent

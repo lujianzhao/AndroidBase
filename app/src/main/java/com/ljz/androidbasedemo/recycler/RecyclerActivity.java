@@ -49,6 +49,13 @@ public class RecyclerActivity extends AppCompatActivity implements RecyclerAdapt
     private void initEvent() {
         mAdapter.addOnItemClickListener(this);
         mRecyclerView.addOnScrollListener(new RecyclerViewListener());
+
+//        mRecyclerView.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                move(99);
+//            }
+//        });
     }
 
 
@@ -72,16 +79,24 @@ public class RecyclerActivity extends AppCompatActivity implements RecyclerAdapt
             Toast.makeText(this,"超出范围了", Toast.LENGTH_SHORT).show();
             return;
         }
-        mIndex = n;
-        mRecyclerView.stopScroll();
-        switch (mRadioGroup.getCheckedRadioButtonId()){
-            case R.id.scroll:
-                moveToPosition(n);
-                break;
-            case R.id.smoothScroll:
-                smoothMoveToPosition(n);
-                break;
-        }
+//        mIndex = n;
+//        mRecyclerView.stopScroll();
+//        switch (mRadioGroup.getCheckedRadioButtonId()){
+//            case R.id.scroll:
+//                moveToPosition(n);
+//                break;
+//            case R.id.smoothScroll:
+//                smoothMoveToPosition(n);
+//                break;
+//        }
+
+
+//        mLinearLayoutManager.scrollToPositionWithOffset(n,0);
+//        mLinearLayoutManager.setStackFromEnd(true);
+
+//        mLinearLayoutManager.smoothScrollToPosition(mRecyclerView, null,n);
+//        mLinearLayoutManager.scrollToPosition(n);
+
     }
 
 
@@ -135,7 +150,7 @@ public class RecyclerActivity extends AppCompatActivity implements RecyclerAdapt
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
-            if (move && newState == RecyclerView.SCROLL_STATE_IDLE){// && mRadioGroup.getCheckedRadioButtonId() == R.id.smoothScroll){
+            if (move && newState == RecyclerView.SCROLL_STATE_IDLE){
                 move = false;
                 int n = mIndex - mLinearLayoutManager.findFirstVisibleItemPosition();
                 if ( 0 <= n && n < mRecyclerView.getChildCount()){
@@ -149,7 +164,7 @@ public class RecyclerActivity extends AppCompatActivity implements RecyclerAdapt
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
-            if (move ){//&& mRadioGroup.getCheckedRadioButtonId() == R.id.scroll){
+            if (move ){
                 move = false;
                 int n = mIndex - mLinearLayoutManager.findFirstVisibleItemPosition();
                 if ( 0 <= n && n < mRecyclerView.getChildCount()){

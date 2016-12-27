@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ljz.base.frame.AppManager;
 import com.ljz.base.frame.fragment.IBaseFragment;
 import com.trello.rxlifecycle.LifecycleProvider;
 import com.trello.rxlifecycle.LifecycleTransformer;
@@ -214,6 +215,10 @@ public abstract class SuperFragment extends SupportFragment implements IBaseFrag
         }
         intent.addFlags(flags);
         startActivityForResult(intent, requestCode);
+    }
+
+    public boolean isOnTaskTop() {
+        return AppManager.getAppManager().getTopActivity() == getActivity();
     }
 
 }

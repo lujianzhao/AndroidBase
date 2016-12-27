@@ -51,7 +51,7 @@ public class AppManager {
     /**
      * 获取当前Activity（栈顶Activity）
      */
-    public Activity topActivity() {
+    public Activity getTopActivity() {
         if (mActivityStack == null) {
             throw new NullPointerException("Activity stack is Null,your Activity must extend KJActivity");
         }

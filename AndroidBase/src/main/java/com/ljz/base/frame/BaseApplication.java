@@ -160,7 +160,7 @@ public class BaseApplication extends Application {
      * 当前没有网络连接通知
      */
     private void onNetWorkDisConnect() {
-        Activity mCurrentActivity = AppManager.getAppManager().topActivity();
+        Activity mCurrentActivity = AppManager.getAppManager().getTopActivity();
         if (mCurrentActivity != null) {
             if (mCurrentActivity instanceof IBaseActivity) {
                 ((IBaseActivity) mCurrentActivity).onNetWorkDisConnect();
@@ -172,7 +172,7 @@ public class BaseApplication extends Application {
      * 网络连接连接时通知
      */
     private void onNetWorkConnect(NetWorkUtil.NetWorkType type) {
-        Activity mCurrentActivity = AppManager.getAppManager().topActivity();
+        Activity mCurrentActivity = AppManager.getAppManager().getTopActivity();
         if (mCurrentActivity != null) {
             if (mCurrentActivity instanceof IBaseActivity) {
                 ((IBaseActivity) mCurrentActivity).onNetWorkConnect(type);

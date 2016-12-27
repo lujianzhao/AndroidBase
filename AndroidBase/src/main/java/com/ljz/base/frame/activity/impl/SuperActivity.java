@@ -221,6 +221,8 @@ public abstract class SuperActivity extends SupportActivity implements IBaseActi
         startActivityForResult(intent, requestCode);
     }
 
-
+    public boolean isOnTaskTop() {
+        return AppManager.getAppManager().getTopActivity() == this;
+    }
 
 }
