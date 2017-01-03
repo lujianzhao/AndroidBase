@@ -479,6 +479,10 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
         return observable.compose(RxUtil.<R>applySchedulers()).subscribe(new Subscriber<R>() {
             @Override
             public void onCompleted() {
+                if (!isUnsubscribed()) {
+                    unsubscribe();
+                }
+
                 if (listener != null) {
                     listener.onCompleted();
                 }
@@ -486,6 +490,10 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
 
             @Override
             public void onError(Throwable e) {
+                if (!isUnsubscribed()) {
+                    unsubscribe();
+                }
+
                 if (listener != null) {
                     listener.onError(e);
                 }

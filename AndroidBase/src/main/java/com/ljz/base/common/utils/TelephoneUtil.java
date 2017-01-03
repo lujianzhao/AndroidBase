@@ -42,14 +42,14 @@ public class TelephoneUtil {
 
             //是否是MTK机型
             TeleInfo mtkTeleInfo = getMtkTeleInfo(context);
-            if (mtkTeleInfo != null) {
+            if (mtkTeleInfo != null && !isEmpty(mtkTeleInfo.imei_1) && !isEmpty(mtkTeleInfo.imei_2)) {
                 deviceId = mtkTeleInfo.imei_1 + mtkTeleInfo.imei_2;
             }
 
             //是否是MTK2机型
             if (isEmpty(deviceId)) {
                 TeleInfo mtkTeleInfo2 = getMtkTeleInfo2(context);
-                if (mtkTeleInfo2 != null) {
+                if (mtkTeleInfo2 != null && !isEmpty(mtkTeleInfo2.imei_1) && !isEmpty(mtkTeleInfo2.imei_2)) {
                     deviceId = mtkTeleInfo2.imei_1 + mtkTeleInfo2.imei_2;
                 }
             }
@@ -57,7 +57,7 @@ public class TelephoneUtil {
             //是否是高通机型
             if (isEmpty(deviceId)) {
                 TeleInfo qualcommTeleInfo = getQualcommTeleInfo(context);
-                if (qualcommTeleInfo != null) {
+                if (qualcommTeleInfo != null && !isEmpty(qualcommTeleInfo.imei_1) && !isEmpty(qualcommTeleInfo.imei_2)) {
                     deviceId = qualcommTeleInfo.imei_1 + qualcommTeleInfo.imei_2;
                 }
             }
@@ -65,7 +65,7 @@ public class TelephoneUtil {
             //是否是展讯机型
             if (isEmpty(deviceId)) {
                 TeleInfo spreadtrumTeleInfo = getSpreadtrumTeleInfo(context);
-                if (spreadtrumTeleInfo != null) {
+                if (spreadtrumTeleInfo != null  && !isEmpty(spreadtrumTeleInfo.imei_1) && !isEmpty(spreadtrumTeleInfo.imei_2)) {
                     deviceId = spreadtrumTeleInfo.imei_1 + spreadtrumTeleInfo.imei_2;
                 }
             }
