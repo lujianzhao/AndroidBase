@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 
-version = "1.1.0"
+version = "1.1.2"
 
 android {
     compileSdkVersion 25
@@ -9,7 +9,7 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 20
-        versionCode 10
+        versionCode 12
         versionName version
     }
     buildTypes {
@@ -39,7 +39,7 @@ dependencies {
 
 //编译命令：gradle clean build bintrayupload
 //ext {
-//    bintrayUserOrg = 'jianzhaoandroid'//bintray.com用户名
+//   // bintrayUserOrg = 'jianzhaoandroid'//bintray.com用户名
 //    bintrayRepo = 'maven'////bintray上的仓库名，一般为maven
 //    bintrayName = 'androidwidget'//bintray上的项目名
 //

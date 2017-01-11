@@ -1,20 +1,24 @@
 package com.ljz.androidbasedemo;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ljz.androidbasedemo.recycler.RecyclerActivity;
-import com.ljz.base.frame.activity.impl.BaseActivity;
 import com.jakewharton.rxbinding.view.RxView;
 import com.ljz.androidbasedemo.db.view.DBActivity;
 import com.ljz.androidbasedemo.http.HttpActivity;
+import com.ljz.androidbasedemo.recycler.RecyclerActivity;
+import com.ljz.base.common.logutils.LogUtils;
+import com.ljz.base.common.utils.TelephoneUtil;
+import com.ljz.base.frame.activity.impl.BaseActivity;
 
 import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
+import rx.Subscriber;
 import rx.functions.Action1;
 
 public class MainActivity extends BaseActivity {//implements View.OnClickListener {
@@ -30,6 +34,27 @@ public class MainActivity extends BaseActivity {//implements View.OnClickListene
         return R.layout.activity_main;
     }
 
+    @Override
+    protected void onInitView(Bundle savedInstanceState) {
+
+       TelephoneUtil.getDeviceId(this, new Subscriber<String>() {
+           @Override
+           public void onCompleted() {
+               unsubscribe();
+           }
+
+           @Override
+           public void onError(Throwable e) {
+               LogUtils.d("设备唯一ID出错:"+e.toString());
+           }
+
+           @Override
+           public void onNext(String deviceId) {
+               LogUtils.d("设备唯一ID："+deviceId);
+           }
+       });
+
+    }
 
     /**
      * 权限请求的Demo,

@@ -58,6 +58,25 @@ public class FileUtil {
         }
     }
 
+    /**
+     * 获取SD卡目录
+     * @param dirName 目录名
+     * @return
+     */
+    public static String getExternalStorageDirectory(String dirName) {
+        StringBuilder sb = new StringBuilder();
+        if (isSDCardAvailable()) {
+            sb.append(Environment.getExternalStorageDirectory());
+        }
+        sb.append(File.separator).append(dirName);
+        String path = sb.toString();
+        if (createDirs(path)) {
+            return path;
+        } else {
+            return null;
+        }
+    }
+
     /** 获取用户文件目录 */
     public static String getDocumentDir() {
         return getAppFileDir(DOCUMENTS_DIR);

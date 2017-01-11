@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.GridView;
 
+import rx.functions.Func1;
+
 /**
  * GridView嵌套在SrcollView中会出现显示不全的情况
  * <p>

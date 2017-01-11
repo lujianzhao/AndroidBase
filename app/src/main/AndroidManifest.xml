@@ -2,6 +2,8 @@
 <manifest package="com.ljz.androidbasedemo"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+
     <application
         android:name="com.ljz.androidbasedemo.DemoApplication"
         android:allowBackup="true"

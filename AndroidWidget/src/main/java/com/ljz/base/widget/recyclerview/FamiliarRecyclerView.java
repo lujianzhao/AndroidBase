@@ -23,7 +23,7 @@ import com.bumptech.glide.util.ViewPreloadSizeProvider;
  * Created by iWgang on 15/10/31.
  * https://github.com/iwgang/FamiliarRecyclerView
  */
-public class FamiliarRecyclerView extends RecyclerView {
+public class FamiliarRecyclerView extends RecyclerView implements FamiliarDefaultItemDecoration.RecyclerViewListener {
     public static final int LAYOUT_MANAGER_TYPE_LINEAR = 0;
     public static final int LAYOUT_MANAGER_TYPE_GRID = 1;
     public static final int LAYOUT_MANAGER_TYPE_STAGGERED_GRID = 2;
@@ -563,8 +563,14 @@ public class FamiliarRecyclerView extends RecyclerView {
         }
     }
 
+    @Override
     public int getCurLayoutManagerType() {
         return mLayoutManagerType;
+    }
+
+    @Override
+    public LayoutManager getCurLayoutManager() {
+        return getLayoutManager();
     }
 
 }

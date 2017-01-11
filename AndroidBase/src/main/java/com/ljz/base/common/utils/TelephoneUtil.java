@@ -1,5 +1,7 @@
 package com.ljz.base.common.utils;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -7,6 +9,7 @@ import android.util.Log;
 
 import com.ljz.base.common.assist.Check;
 import com.ljz.base.common.logutils.LogUtils;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -15,6 +18,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 import java.util.regex.Pattern;
+
+import rx.Observable;
+import rx.Observer;
+import rx.Subscriber;
 
 import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 
@@ -33,13 +40,49 @@ public class TelephoneUtil {
      * 先以IMEI为准，如果IMEI为空，则androidId
      * 下次使用deviceId的时候优先从外部存储读取，再从背部存储读取，最后在重新生成，尽可能的保证其不变性
      *
-     * @param context
+     * @param activity
      * @return
      */
-    public static String getDeviceId(Context context) {
-        String deviceId = FileUtil.getFileOutputString(getPath());
-        if (isEmpty(deviceId)) {
+    public static void getDeviceId(final Activity activity, Observer<String> observer) {
+        Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(final Subscriber<? super String> subscriber) {
+                //请求读写SD卡权限
+                new RxPermissions(activity)
+                        .request(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE)
+                        .subscribe(new Subscriber<Boolean>() {
+                            @Override
+                            public void onCompleted() {
+                                unsubscribe();
+                                subscriber.onCompleted();
+                            }
 
+                            @Override
+                            public void onError(Throwable e) {
+                                subscriber.onError(e);
+                            }
+
+                            @Override
+                            public void onNext(Boolean granted) {
+                                String path = null;
+                                if (granted) {
+                                    path = getExternalStoragePath();
+                                }
+
+                                if (Check.isEmpty(path)) {
+                                    path = getPath();
+                                }
+                                String deviceId = readAndWriteDeviceId(activity, path);
+                                subscriber.onNext(deviceId);
+                            }
+                        });
+            }
+        }).subscribe(observer);
+    }
+
+    private static String readAndWriteDeviceId(Context context,String path) {
+        String deviceId = FileUtil.getFileOutputString(path);
+        if (isEmpty(deviceId)) {
             //是否是MTK机型
             TeleInfo mtkTeleInfo = getMtkTeleInfo(context);
             if (mtkTeleInfo != null && !isEmpty(mtkTeleInfo.imei_1) && !isEmpty(mtkTeleInfo.imei_2)) {
@@ -79,7 +122,7 @@ public class TelephoneUtil {
             }
 
             if (!isEmpty(deviceId)) {
-                saveDeviceId(deviceId);
+                saveDeviceId(deviceId,path);
             }
         }
         return deviceId;
@@ -108,9 +151,21 @@ public class TelephoneUtil {
         return uuid;
     }
 
-    private static void saveDeviceId(String deviceId) {
-        FileUtil.writeFile(deviceId, getPath(), false);
+    private static void saveDeviceId(String deviceId,String path) {
+        FileUtil.writeFile(deviceId, path, false);
     }
+
+    private static String getExternalStoragePath() {
+        String dir = FileUtil.getExternalStorageDirectory("UTips");
+        if (Check.isEmpty(dir)) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder(dir);
+        sb.append(File.separator);
+        sb.append("device_id");
+        return sb.toString();
+    }
+
 
     private static String getPath() {
         StringBuilder sb = new StringBuilder(FileUtil.getDocumentDir());

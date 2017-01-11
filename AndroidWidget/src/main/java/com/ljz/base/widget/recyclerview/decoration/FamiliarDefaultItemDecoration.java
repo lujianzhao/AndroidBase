@@ -19,15 +19,14 @@ import com.ljz.base.widget.recyclerview.FamiliarRecyclerView;
  * https://github.com/iwgang/FamiliarRecyclerView
  */
 public class FamiliarDefaultItemDecoration extends RecyclerView.ItemDecoration {
-    private FamiliarRecyclerView mFamiliarRecyclerView;
     private Drawable mVerticalDividerDrawable;
     private Drawable mHorizontalDividerDrawable;
     private int mVerticalDividerDrawableHeight;
     private int mHorizontalDividerDrawableHeight;
     private int mItemViewBothSidesMargin;
 
-    private int mLayoutManagerType = FamiliarRecyclerView.LAYOUT_MANAGER_TYPE_LINEAR; // FamiliarRecyclerView.LAYOUT_MANAGER_TYPE_*
-    private int mOrientation = OrientationHelper.VERTICAL; // OrientationHelper.VERTICAL or OrientationHelper.HORIZONTAL
+    private int mLayoutManagerType = FamiliarRecyclerView.LAYOUT_MANAGER_TYPE_LINEAR;
+    private int mOrientation = OrientationHelper.VERTICAL;
     private int mGridSpanCount = 0;
     private boolean isHeaderDividersEnabled;
     private boolean isFooterDividersEnabled;
@@ -37,8 +36,16 @@ public class FamiliarDefaultItemDecoration extends RecyclerView.ItemDecoration {
 
     private boolean mIsMarginDividersEnabled = false;
 
-    public FamiliarDefaultItemDecoration(FamiliarRecyclerView familiarRecyclerView, Drawable dividerVertical, Drawable dividerHorizontal, int dividerDrawableSizeVertical, int dividerDrawableSizeHorizontal) {
-        this.mFamiliarRecyclerView = familiarRecyclerView;
+    private RecyclerViewListener mRecyclerViewListener;
+
+
+    public interface RecyclerViewListener{
+        int getCurLayoutManagerType();
+        RecyclerView.LayoutManager getCurLayoutManager();
+    }
+
+    public FamiliarDefaultItemDecoration(RecyclerViewListener listener, Drawable dividerVertical, Drawable dividerHorizontal, int dividerDrawableSizeVertical, int dividerDrawableSizeHorizontal) {
+        this.mRecyclerViewListener = listener;
         this.mVerticalDividerDrawable = dividerVertical;
         this.mHorizontalDividerDrawable = dividerHorizontal;
         this.mVerticalDividerDrawableHeight = dividerDrawableSizeVertical;
@@ -47,8 +54,8 @@ public class FamiliarDefaultItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     private void initLayoutManagerType() {
-        this.mLayoutManagerType = mFamiliarRecyclerView.getCurLayoutManagerType();
-        RecyclerView.LayoutManager layoutManager = mFamiliarRecyclerView.getLayoutManager();
+        this.mLayoutManagerType = mRecyclerViewListener.getCurLayoutManagerType();
+        RecyclerView.LayoutManager layoutManager = mRecyclerViewListener.getCurLayoutManager();
         switch (mLayoutManagerType) {
             case FamiliarRecyclerView.LAYOUT_MANAGER_TYPE_LINEAR:
                 LinearLayoutManager curLinearLayoutManager = (LinearLayoutManager)layoutManager;
