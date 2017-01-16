@@ -9,8 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.zhy.autolayout.AutoRelativeLayout;
 
 /**
  * Created by Administrator on 2016/5/4.
@@ -22,6 +21,7 @@ public class LoadProgressLayout extends RelativeLayout {
     private static final String LOADING_TAG = "ProgressLayout.loading_tag";
     private static final String NONE_TAG = "ProgressLayout.none_tag";
     private static final String ERROR_TAG = "ProgressLayout.error_tag";
+    private static final String CONTENT_TAG = "ProgressLayout.content_tag";
 
     @LayoutRes
     private int mEmptyViewLayoutResId;
@@ -38,7 +38,7 @@ public class LoadProgressLayout extends RelativeLayout {
 
     private View loadingView;
 
-    private List<View> contentViews = new ArrayList<>();
+    private ViewGroup contentView;
 
     public LoadProgressLayout(Context context) {
         this(context, null);
@@ -50,8 +50,7 @@ public class LoadProgressLayout extends RelativeLayout {
 
     public LoadProgressLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.layoutInflater =
-                (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.LoadProgressLayout, defStyleAttr, 0);
         try {
             mEmptyViewLayoutResId = a.getResourceId(R.styleable.LoadProgressLayout_emptyView, NOT_SET);
@@ -60,21 +59,18 @@ public class LoadProgressLayout extends RelativeLayout {
         } finally {
             a.recycle();
         }
+
+        contentView = new AutoRelativeLayout(context, attrs, defStyleAttr);
+        contentView.setTag(CONTENT_TAG);
+        LoadProgressLayout.this.addView(contentView);
     }
 
     @Override
     public void addView(View child, int index, ViewGroup.LayoutParams params) {
-        super.addView(child, index, params);
-
-        if (child.getTag() == null ||
-                (!child.getTag().equals(LOADING_TAG) && !child.getTag().equals(NONE_TAG) &&
-                        !child.getTag().equals(ERROR_TAG))) {
-
-            this.contentViews.add(child);
-
-            if (!this.isInEditMode()) {
-                this.setContentVisibility(false);
-            }
+        if (child.getTag() == null || (!child.getTag().equals(CONTENT_TAG) && !child.getTag().equals(LOADING_TAG) && !child.getTag().equals(NONE_TAG) && !child.getTag().equals(ERROR_TAG))) {
+            contentView.addView(child, index, params);
+        } else {
+            super.addView(child, index, params);
         }
     }
 
@@ -99,8 +95,7 @@ public class LoadProgressLayout extends RelativeLayout {
         if (this.emptyView == null) {
 
             if (mEmptyViewLayoutResId == NOT_SET) {
-                throw new IllegalStateException(
-                        "cannot call showNoneView() when noneId was NO_SET which value is -1");
+                throw new IllegalStateException("cannot call showNoneView() when noneId was NO_SET which value is -1");
             }
 
             this.emptyView = this.layoutInflater.inflate(mEmptyViewLayoutResId, LoadProgressLayout.this, false);
@@ -120,12 +115,10 @@ public class LoadProgressLayout extends RelativeLayout {
         if (this.errorView == null) {
 
             if (mErrorViewLayoutResId == NOT_SET) {
-                throw new IllegalStateException(
-                        "cannot call showNetErrorView() when networkErrorId was NO_SET which value is -1");
+                throw new IllegalStateException("cannot call showNetErrorView() when networkErrorId was NO_SET which value is -1");
             }
 
-            this.errorView =
-                    this.layoutInflater.inflate(mErrorViewLayoutResId, LoadProgressLayout.this, false);
+            this.errorView = this.layoutInflater.inflate(mErrorViewLayoutResId, LoadProgressLayout.this, false);
             this.errorView.setTag(ERROR_TAG);
 
             LayoutParams layoutParams = (LayoutParams) errorView.getLayoutParams();
@@ -142,12 +135,10 @@ public class LoadProgressLayout extends RelativeLayout {
         if (this.loadingView == null) {
 
             if (mLoadingViewLayoutResId == NOT_SET) {
-                throw new IllegalStateException(
-                        "cannot call showLoadingView() when loadingId was NO_SET which value is -1");
+                throw new IllegalStateException("cannot call showLoadingView() when loadingId was NO_SET which value is -1");
             }
 
-            this.loadingView =
-                    this.layoutInflater.inflate(mLoadingViewLayoutResId, LoadProgressLayout.this, false);
+            this.loadingView = this.layoutInflater.inflate(mLoadingViewLayoutResId, LoadProgressLayout.this, false);
             this.loadingView.setTag(LOADING_TAG);
 
             LayoutParams layoutParams = (LayoutParams) loadingView.getLayoutParams();
@@ -221,8 +212,6 @@ public class LoadProgressLayout extends RelativeLayout {
     }
 
     private void setContentVisibility(boolean visible) {
-        for (View contentView : contentViews) {
-            contentView.setVisibility(visible ? View.VISIBLE : View.GONE);
-        }
+        contentView.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 }
