@@ -16,11 +16,13 @@ import me.leolin.shortcutbadger.impl.ApexHomeBadger;
 import me.leolin.shortcutbadger.impl.AsusHomeLauncher;
 import me.leolin.shortcutbadger.impl.DefaultBadger;
 import me.leolin.shortcutbadger.impl.HuaweiHomeBadger;
+import me.leolin.shortcutbadger.impl.LenovoHomeBager;
 import me.leolin.shortcutbadger.impl.NewHtcHomeBadger;
 import me.leolin.shortcutbadger.impl.NovaHomeBadger;
 import me.leolin.shortcutbadger.impl.OPPOHomeBader;
 import me.leolin.shortcutbadger.impl.SamsungHomeBadger;
 import me.leolin.shortcutbadger.impl.SonyHomeBadger;
+import me.leolin.shortcutbadger.impl.VIVOHomeBader;
 import me.leolin.shortcutbadger.impl.XiaomiHomeBadger;
 import me.leolin.shortcutbadger.impl.ZukHomeBadger;
 
@@ -47,6 +49,8 @@ public final class ShortcutBadger {
         BADGERS.add(OPPOHomeBader.class);
         BADGERS.add(SamsungHomeBadger.class);
         BADGERS.add(ZukHomeBadger.class);
+        BADGERS.add(VIVOHomeBader.class);
+        BADGERS.add(LenovoHomeBager.class);
     }
 
     private static Badger sShortcutBadger;
@@ -148,8 +152,12 @@ public final class ShortcutBadger {
                 sShortcutBadger = new XiaomiHomeBadger();
             else if (Build.MANUFACTURER.equalsIgnoreCase("ZUK"))
                 sShortcutBadger = new ZukHomeBadger();
+            else if (Build.MANUFACTURER.equalsIgnoreCase("lenovo") && LenovoHomeBager.islenovoLanucher(context))
+                sShortcutBadger = new LenovoHomeBager();
             else if (Build.MANUFACTURER.equalsIgnoreCase("OPPO"))
                 sShortcutBadger = new OPPOHomeBader();
+            else if (Build.MANUFACTURER.equalsIgnoreCase("vivo"))
+                sShortcutBadger = new VIVOHomeBader();
             else
                 sShortcutBadger = new DefaultBadger();
         }

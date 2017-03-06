@@ -21,7 +21,7 @@ public abstract class UIViewHolder<T> {
 
     protected Context mContext;
 
-    private final RxManager mRxManager = new RxManager();
+    private final RxManager mRxManager = new RxManager(this);
 
     public abstract void refreshUI(T data);
 
@@ -46,7 +46,7 @@ public abstract class UIViewHolder<T> {
         mConvertView = null;
         mContext = null;
 
-        mRxManager.clear();
+        mRxManager.clear(this);
     }
 
 }

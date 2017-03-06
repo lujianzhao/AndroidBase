@@ -29,7 +29,7 @@ public class BasePresenter<M extends BaseModel, V extends IBaseView> implements 
 
     private final ModelLifecycleDelegate<M> modelDelegate = new ModelLifecycleDelegate<>(ReflectionModelFactory.<M>fromViewClass(getClass()));
 
-    private final RxManager mRxManager = new RxManager();
+    private final RxManager mRxManager = new RxManager(this);
 
     private Context mContext;
 
@@ -149,15 +149,18 @@ public class BasePresenter<M extends BaseModel, V extends IBaseView> implements 
     public void destroy() {
         onDestroy();
 
-        for (OnDestroyListener listener : onDestroyListeners) {
-            listener.onDestroy();
+        if (onDestroyListeners != null) {
+            for (OnDestroyListener listener : onDestroyListeners) {
+                listener.onDestroy();
+            }
+            onDestroyListeners.clear();
+            onDestroyListeners = null;
         }
-        onDestroyListeners.clear();
-        onDestroyListeners = null;
+
 
         modelDelegate.onDestroy();
 
-        mRxManager.clear();
+        mRxManager.clear(this);
     }
 
     /**

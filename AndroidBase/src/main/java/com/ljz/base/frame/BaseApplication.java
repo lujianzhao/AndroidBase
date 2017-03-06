@@ -34,7 +34,7 @@ public class BaseApplication extends Application {
 
         LogUtils.d("BaseApplication onCreate");
 
-        AutoLayoutConifg.getInstance().useDeviceSize();
+        AutoLayoutConifg.getInstance().useDeviceSize().init(this);
 
         registerNetWorkStateListener();// 注册网络状态监测器
 

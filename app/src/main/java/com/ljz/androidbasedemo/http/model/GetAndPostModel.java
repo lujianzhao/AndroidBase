@@ -5,9 +5,14 @@ import com.ljz.androidbasedemo.http.contract.GetAndPostContract;
 import com.ljz.androidbasedemo.http.model.repositorys.http.GetAndPostClient;
 import com.ljz.androidbasedemo.http.model.repositorys.http.GetAndPostService;
 import com.ljz.base.callback.ExecutorCallBack;
+import com.ljz.base.common.logutils.LogUtils;
 import com.ljz.base.common.rx.RxUtil;
 
-import rx.Observable;
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
+
 
 /**
  * 作者: lujianzhao
@@ -23,8 +28,20 @@ public class GetAndPostModel extends GetAndPostContract.Model {
         if (mGetAndPostService == null) {
             mGetAndPostService = GetAndPostClient.getInstance(ApiConfig.URL_BASE).createService(GetAndPostService.class);
         }
-
-        getRxManager().add(mGetAndPostService.getGet().compose(RxUtil.<String>applySchedulersForRetrofit()).subscribe(requestCallBack));
+        mGetAndPostService.getGet().compose(RxUtil.<String>applySchedulersForRetrofit())
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        LogUtils.d(Thread.currentThread().getName());
+                    }
+                })
+                .doOnDispose(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        LogUtils.d("解除绑定"+Thread.currentThread().getName());
+                    }
+                })
+                .subscribe(requestCallBack);
     }
 
     @Override
@@ -33,7 +50,20 @@ public class GetAndPostModel extends GetAndPostContract.Model {
             mGetAndPostService = GetAndPostClient.getInstance(ApiConfig.URL_BASE).createService(GetAndPostService.class);
         }
 
-        getRxManager().add(mGetAndPostService.getPost().compose(RxUtil.<String>applySchedulersForRetrofit()).subscribe(requestCallBack));
+        mGetAndPostService.getPost().compose(RxUtil.<String>applySchedulersForRetrofit())
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        LogUtils.d(Thread.currentThread().getName());
+                    }
+                })
+                .doOnDispose(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        LogUtils.d("解除绑定"+Thread.currentThread().getName());
+                    }
+                })
+                .subscribe(requestCallBack);
 
     }
 
@@ -51,8 +81,8 @@ public class GetAndPostModel extends GetAndPostContract.Model {
         Observable<String> compose2 = mGetAndPostService.getPost().compose(RxUtil.<String>applySchedulersForRetrofit());
 
 
-        getRxManager().add(Observable.mergeDelayError(compose1, compose2)
-                .subscribe(requestCallBack));
+        Observable.mergeDelayError(compose1, compose2).subscribe(requestCallBack);
+
     }
 
 }

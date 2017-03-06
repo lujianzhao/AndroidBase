@@ -7,7 +7,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.jakewharton.rxbinding.view.RxView;
 import com.ljz.androidbasedemo.db.view.DBActivity;
 import com.ljz.androidbasedemo.http.HttpActivity;
 import com.ljz.androidbasedemo.recycler.RecyclerActivity;
@@ -15,13 +14,11 @@ import com.ljz.base.common.logutils.LogUtils;
 import com.ljz.base.common.utils.TelephoneUtil;
 import com.ljz.base.frame.activity.impl.BaseActivity;
 
-import java.util.concurrent.TimeUnit;
-
 import butterknife.Bind;
-import rx.Subscriber;
-import rx.functions.Action1;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
-public class MainActivity extends BaseActivity {//implements View.OnClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Bind(R.id.title)
     TextView mTitle;
@@ -37,22 +34,27 @@ public class MainActivity extends BaseActivity {//implements View.OnClickListene
     @Override
     protected void onInitView(Bundle savedInstanceState) {
 
-       TelephoneUtil.getDeviceId(this, new Subscriber<String>() {
-           @Override
-           public void onCompleted() {
-               unsubscribe();
-           }
+        TelephoneUtil.getDeviceId(this, new Observer<String>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-           @Override
-           public void onError(Throwable e) {
-               LogUtils.d("设备唯一ID出错:"+e.toString());
-           }
+                    }
 
-           @Override
-           public void onNext(String deviceId) {
-               LogUtils.d("设备唯一ID："+deviceId);
-           }
-       });
+                    @Override
+                    public void onNext(String deviceId) {
+                        LogUtils.d("设备唯一ID：" + deviceId);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtils.d("设备唯一ID出错:" + e.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
 
     }
 
@@ -136,21 +138,23 @@ public class MainActivity extends BaseActivity {//implements View.OnClickListene
         String[] bttxt = getResources().getStringArray(R.array.test_list);
         if (bttxt != null) {
             for (int i = 0; i < bttxt.length; i++) {
-                final Button bt = new Button(this);
+                 Button bt = new Button(this);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 int margin = getResources().getDimensionPixelSize(R.dimen.activity_vertical_margin);
                 lp.setMargins(margin, margin, margin, margin);
                 bt.setId(i);
                 bt.setText(bttxt[i]);
+                bt.setOnClickListener(this);
+
 
                 //RxBinding示例Demo
-                RxView.clicks(bt).throttleFirst(500, TimeUnit.MILLISECONDS)
-                        .subscribe(new Action1<Void>() {
-                            @Override
-                            public void call(Void aVoid) {
-                                onClick(bt);
-                            }
-                        });
+//                RxView.clicks(bt).throttleFirst(500, TimeUnit.MILLISECONDS)
+//                        .subscribe(new Action1<Void>() {
+//                            @Override
+//                            public void call(Void aVoid) {
+//
+//                            }
+//                        });
 
 
 
@@ -161,7 +165,7 @@ public class MainActivity extends BaseActivity {//implements View.OnClickListene
     }
 
 
-//    @Override
+    @Override
     public void onClick(View v) {
         Intent intent = new Intent();
         switch (v.getId()) {

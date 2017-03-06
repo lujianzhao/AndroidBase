@@ -11,7 +11,7 @@ import com.ljz.base.netstate.NetWorkUtil;
  */
 public abstract class BaseActivity extends SuperActivity {
 
-    private final RxManager mRxManager = new RxManager();
+    private final RxManager mRxManager = new RxManager(this);
 
     @Override
     @CallSuper
@@ -31,7 +31,7 @@ public abstract class BaseActivity extends SuperActivity {
 
     @Override
     protected void onDestroy() {
-        mRxManager.clear();
+        mRxManager.clear(this);
         super.onDestroy();
     }
 

@@ -12,16 +12,16 @@ import android.view.ViewGroup;
 
 import com.ljz.base.frame.AppManager;
 import com.ljz.base.frame.fragment.IBaseFragment;
-import com.trello.rxlifecycle.LifecycleProvider;
-import com.trello.rxlifecycle.LifecycleTransformer;
-import com.trello.rxlifecycle.RxLifecycle;
-import com.trello.rxlifecycle.android.FragmentEvent;
-import com.trello.rxlifecycle.android.RxLifecycleAndroid;
+import com.trello.rxlifecycle2.LifecycleProvider;
+import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.trello.rxlifecycle2.RxLifecycle;
+import com.trello.rxlifecycle2.android.FragmentEvent;
+import com.trello.rxlifecycle2.android.RxLifecycleAndroid;
 
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
 import me.yokeyword.fragmentation.SupportFragment;
-import rx.Observable;
-import rx.subjects.BehaviorSubject;
 
 /**
  * 作者: lujianzhao
@@ -54,7 +54,7 @@ public abstract class SuperFragment extends SupportFragment implements IBaseFrag
     @NonNull
     @CheckResult
     public final Observable<FragmentEvent> lifecycle() {
-        return mLifecycleSubject.asObservable();
+        return mLifecycleSubject.hide();
     }
 
     @Override

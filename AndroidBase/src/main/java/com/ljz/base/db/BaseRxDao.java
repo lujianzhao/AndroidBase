@@ -1,17 +1,17 @@
 package com.ljz.base.db;
 
 import com.j256.ormlite.dao.Dao;
-import com.ljz.base.callback.DBCallBack;
+import com.ljz.base.callback.ExecutorCallBack;
 import com.ljz.base.common.rx.RxUtil;
 import com.ljz.base.db.ormlite.OrmLiteDao;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
-import rx.Observable;
-import rx.Subscriber;
-import rx.Subscription;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+
 
 /**
  * Created by lujianzhao on 2016/2/29.
@@ -32,62 +32,66 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
     /**
      * 增加或更新一条记录
      */
-    public Subscription createOrUpdateSync(final T t, final DBCallBack<Dao.CreateOrUpdateStatus> listener) {
-        return subscribe(new Callable<Dao.CreateOrUpdateStatus>() {
+    public void createOrUpdateSync(final T t, ExecutorCallBack<Dao.CreateOrUpdateStatus> observer) {
+        Observable.create(new ObservableOnSubscribe<Dao.CreateOrUpdateStatus>() {
             @Override
-            public Dao.CreateOrUpdateStatus call() {
-                return createOrUpdate(t);
+            public void subscribe(ObservableEmitter<Dao.CreateOrUpdateStatus> e) throws Exception {
+                e.onNext(createOrUpdate(t));
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<Dao.CreateOrUpdateStatus>applySchedulers()).subscribe(observer);
     }
 
     /**
      * 增加一条记录
      */
-    public Subscription insert(final T t, final DBCallBack<Boolean> listener) {
-        return subscribe(new Callable<Boolean>() {
+    public void insert(final T t, ExecutorCallBack<Boolean> observer) {
+        Observable.create(new ObservableOnSubscribe<Boolean>() {
             @Override
-            public Boolean call() {
-                return insert(t);
+            public void subscribe(ObservableEmitter<Boolean> e) throws Exception {
+                e.onNext(insert(t));
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<Boolean>applySchedulers()).subscribe(observer);
     }
 
     /**
      * 批量插入
      */
-    public Subscription insertForBatch(final List<T> list, final DBCallBack<Boolean> listener) {
-        return subscribe(new Callable<Boolean>() {
+    public void insertForBatch(final List<T> list, ExecutorCallBack<Boolean> observer) {
+        Observable.create(new ObservableOnSubscribe<Boolean>() {
             @Override
-            public Boolean call() {
-                return insertForBatch(list);
+            public void subscribe(ObservableEmitter<Boolean> e) throws Exception {
+                e.onNext(insertForBatch(list));
+                e.onComplete();
             }
-        }, listener);
-
+        }).compose(RxUtil.<Boolean>applySchedulers()).subscribe(observer);
     }
 
     /**
      * 清空数据
      */
-    public Subscription clearTableData(final DBCallBack<Boolean> listener) {
-        return subscribe(new Callable<Boolean>() {
+    public void clearTableData(ExecutorCallBack<Boolean> observer) {
+        Observable.create(new ObservableOnSubscribe<Boolean>() {
             @Override
-            public Boolean call() {
-                return clearTableData();
+            public void subscribe(ObservableEmitter<Boolean> e) throws Exception {
+                e.onNext(clearTableData());
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<Boolean>applySchedulers()).subscribe(observer);
     }
 
     /**
      * 根据id删除记录
      */
-    public Subscription deleteById(final Integer id, final DBCallBack<Boolean> listener) {
-        return subscribe(new Callable<Boolean>() {
+    public void deleteById(final Integer id, ExecutorCallBack<Boolean> observer) {
+        Observable.create(new ObservableOnSubscribe<Boolean>() {
             @Override
-            public Boolean call() {
-                return deleteById(id);
+            public void subscribe(ObservableEmitter<Boolean> e) throws Exception {
+                e.onNext(deleteById(id));
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<Boolean>applySchedulers()).subscribe(observer);
     }
 
     /**
@@ -96,28 +100,30 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param columnName 指定条件列名
      * @param value      值
      */
-    public Subscription deleteByColumnName(final String columnName, final Object value, final DBCallBack<Boolean> listener) {
-        return subscribe(new Callable<Boolean>() {
+    public void deleteByColumnName(final String columnName, final Object value, ExecutorCallBack<Boolean> observer) {
+        Observable.create(new ObservableOnSubscribe<Boolean>() {
             @Override
-            public Boolean call() {
-                return deleteByColumnName(columnName, value);
+            public void subscribe(ObservableEmitter<Boolean> e) throws Exception {
+                e.onNext(deleteByColumnName(columnName, value));
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<Boolean>applySchedulers()).subscribe(observer);
     }
 
     /**
      * 通过列的键值组合删除
      *
      * @param map      列的键值组合
-     * @param listener
+     * @param observer
      */
-    public Subscription deleteByColumnName(final Map<String, Object> map, final DBCallBack<Boolean> listener) {
-        return subscribe(new Callable<Boolean>() {
+    public void deleteByColumnName(final Map<String, Object> map, ExecutorCallBack<Boolean> observer) {
+        Observable.create(new ObservableOnSubscribe<Boolean>() {
             @Override
-            public Boolean call() {
-                return deleteByColumnName(map);
+            public void subscribe(ObservableEmitter<Boolean> e) throws Exception {
+                e.onNext(deleteByColumnName(map));
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<Boolean>applySchedulers()).subscribe(observer);
     }
 
     /**
@@ -125,27 +131,29 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      *
      * @param columnName 列名
      * @param value      列值，删除小于该值的所有数据将被删除
-     * @param listener   回调接口
+     * @param observer   回调接口
      */
-    public Subscription deleteLtValue(final String columnName, final Object value, final DBCallBack<Integer> listener) {
-        return subscribe(new Callable<Integer>() {
+    public void deleteLtValue(final String columnName, final Object value, ExecutorCallBack<Integer> observer) {
+        Observable.create(new ObservableOnSubscribe<Integer>() {
             @Override
-            public Integer call() throws Exception {
-                return deleteLtValue(columnName, value);
+            public void subscribe(ObservableEmitter<Integer> e) throws Exception {
+                e.onNext(deleteLtValue(columnName, value));
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<Integer>applySchedulers()).subscribe(observer);
     }
 
     /**
      * 批量删除
      */
-    public Subscription deleteForBatch(final List<T> list, final DBCallBack<Boolean> listener) {
-        return subscribe(new Callable<Boolean>() {
+    public void deleteForBatch(final List<T> list, ExecutorCallBack<Boolean> observer) {
+        Observable.create(new ObservableOnSubscribe<Boolean>() {
             @Override
-            public Boolean call() {
-                return deleteForBatch(list);
+            public void subscribe(ObservableEmitter<Boolean> e) throws Exception {
+                e.onNext(deleteForBatch(list));
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<Boolean>applySchedulers()).subscribe(observer);
     }
 
     /**
@@ -153,13 +161,14 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      *
      * @param t 新的数据实体,ID不能为空
      */
-    public Subscription update(final T t, final DBCallBack<Boolean> listener) {
-        return subscribe(new Callable<Boolean>() {
+    public void update(final T t, ExecutorCallBack<Boolean> observer) {
+        Observable.create(new ObservableOnSubscribe<Boolean>() {
             @Override
-            public Boolean call() {
-                return update(t);
+            public void subscribe(ObservableEmitter<Boolean> e) throws Exception {
+                e.onNext(update(t));
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<Boolean>applySchedulers()).subscribe(observer);
     }
 
     /**
@@ -168,102 +177,108 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param t          新的数据实体
      * @param columnName 指定查询条件列名
      * @param value      查询条件值
-     * @return
+     * @param observer
      */
-    public Subscription updateBy(final T t, final String columnName, final Object value, final DBCallBack<Boolean> listener) {
-        return subscribe(new Callable<Boolean>() {
+    public void updateBy(final T t, final String columnName, final Object value, ExecutorCallBack<Boolean> observer) {
+        Observable.create(new ObservableOnSubscribe<Boolean>() {
             @Override
-            public Boolean call() {
-                return updateBy(t, columnName, value);
+            public void subscribe(ObservableEmitter<Boolean> e) throws Exception {
+                e.onNext(updateBy(t, columnName, value));
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<Boolean>applySchedulers()).subscribe(observer);
     }
 
     /**
      * 按条件更新
      *
-     * @param t     新的数据实体
-     * @param value 更新条件
-     * @return
+     * @param t        新的数据实体
+     * @param value    更新条件
+     * @param observer
      */
-    public Subscription updateBy(final T t, final Map<String, Object> value, final DBCallBack<Boolean> listener) {
-        return subscribe(new Callable<Boolean>() {
+    public void updateBy(final T t, final Map<String, Object> value, ExecutorCallBack<Boolean> observer) {
+        Observable.create(new ObservableOnSubscribe<Boolean>() {
             @Override
-            public Boolean call() {
-                return updateBy(t, value);
+            public void subscribe(ObservableEmitter<Boolean> e) throws Exception {
+                e.onNext(updateBy(t, value));
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<Boolean>applySchedulers()).subscribe(observer);
     }
 
     /**
      * 批量修改
      *
-     * @param list 记录集合
-     * @return
+     * @param list     记录集合
+     * @param observer
      */
-    public Subscription updateForBatch(final List<T> list, final DBCallBack<Boolean> listener) {
-        return subscribe(new Callable<Boolean>() {
+    public void updateForBatch(final List<T> list, ExecutorCallBack<Boolean> observer) {
+        Observable.create(new ObservableOnSubscribe<Boolean>() {
             @Override
-            public Boolean call() {
-                return updateForBatch(list);
+            public void subscribe(ObservableEmitter<Boolean> e) throws Exception {
+                e.onNext(updateForBatch(list));
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<Boolean>applySchedulers()).subscribe(observer);
     }
 
     /**
      * 查询符号指定条件的记录数
      *
      * @param map      查询条件的键值组合
-     * @param listener
+     * @param observer
      */
-    public Subscription getCount(final Map<String, Object> map, final DBCallBack<Long> listener) {
-        return subscribe(new Callable<Long>() {
+    public void getCount(final Map<String, Object> map, ExecutorCallBack<Long> observer) {
+        Observable.create(new ObservableOnSubscribe<Long>() {
             @Override
-            public Long call() {
-                return getCount(map);
+            public void subscribe(ObservableEmitter<Long> e) throws Exception {
+                e.onNext(getCount(map));
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<Long>applySchedulers()).subscribe(observer);
     }
 
     /**
      * 查询数据库所有的记录数
      *
-     * @param listener 回调
+     * @param observer 回调
      */
-    public Subscription getCount(final DBCallBack<Long> listener) {
-        return subscribe(new Callable<Long>() {
+    public void getCount(ExecutorCallBack<Long> observer) {
+        Observable.create(new ObservableOnSubscribe<Long>() {
             @Override
-            public Long call() {
-                return getCount();
+            public void subscribe(ObservableEmitter<Long> e) throws Exception {
+                e.onNext(getCount());
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<Long>applySchedulers()).subscribe(observer);
     }
 
     /**
      * 查询表中所有数据
      */
-    public Subscription queryForAll(final DBCallBack<List<T>> listener) {
-        return subscribe(new Callable<List<T>>() {
+    public void queryForAll(ExecutorCallBack<List<T>> observer) {
+        Observable.create(new ObservableOnSubscribe<List<T>>() {
             @Override
-            public List<T> call() {
-                return queryForAll();
+            public void subscribe(ObservableEmitter<List<T>> e) throws Exception {
+                e.onNext(queryForAll());
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<List<T>>applySchedulers()).subscribe(observer);
     }
 
     /**
      * 根据表中键值组合行查询
      *
      * @param map 查询条件的键值组合
-     * @return
      */
-    public Subscription queryByColumnName(final Map<String, Object> map, final DBCallBack<List<T>> listener) {
-        return subscribe(new Callable<List<T>>() {
+    public void queryByColumnName(final Map<String, Object> map, ExecutorCallBack<List<T>> observer) {
+        Observable.create(new ObservableOnSubscribe<List<T>>() {
             @Override
-            public List<T> call() {
-                return queryByColumnName(map);
+            public void subscribe(ObservableEmitter<List<T>> e) throws Exception {
+                e.onNext(queryByColumnName(map));
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<List<T>>applySchedulers()).subscribe(observer);
     }
 
     /**
@@ -272,13 +287,14 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param columnName 指定查询条件列名
      * @param value      查询条件值
      */
-    public Subscription queryByColumnName(final String columnName, final Object value, final DBCallBack<List<T>> listener) {
-        return subscribe(new Callable<List<T>>() {
+    public void queryByColumnName(final String columnName, final Object value, ExecutorCallBack<List<T>> observer) {
+        Observable.create(new ObservableOnSubscribe<List<T>>() {
             @Override
-            public List<T> call() {
-                return queryByColumnName(columnName, value);
+            public void subscribe(ObservableEmitter<List<T>> e) throws Exception {
+                e.onNext(queryByColumnName(columnName, value));
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<List<T>>applySchedulers()).subscribe(observer);
     }
 
     /**
@@ -288,31 +304,31 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param columnName  指定查询条件列名
      * @param value       查询条件值
      * @param ascending   true为升序,false为降序
-     * @return
      */
-    public Subscription queryByOrder(final String orderColumn, final String columnName, final Object value, final boolean ascending, final DBCallBack<List<T>> listener) {
-        return subscribe(new Callable<List<T>>() {
+    public void queryByOrder(final String orderColumn, final String columnName, final Object value, final boolean ascending, ExecutorCallBack<List<T>> observer) {
+        Observable.create(new ObservableOnSubscribe<List<T>>() {
             @Override
-            public List<T> call() {
-                return queryByOrder(orderColumn, columnName, value, ascending);
+            public void subscribe(ObservableEmitter<List<T>> e) throws Exception {
+                e.onNext(queryByOrder(orderColumn, columnName, value, ascending));
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<List<T>>applySchedulers()).subscribe(observer);
     }
 
     /**
      * 返回数据库中所有记录的指定列的值
      *
      * @param selectColumns 指定列名
-     * @param listener
+     * @param observer
      */
-    public Subscription queryAllBySelectColumns(final String[] selectColumns, final DBCallBack<List<T>> listener) {
-
-        return subscribe(new Callable<List<T>>() {
+    public void queryAllBySelectColumns(final String[] selectColumns, ExecutorCallBack<List<T>> observer) {
+        Observable.create(new ObservableOnSubscribe<List<T>>() {
             @Override
-            public List<T> call() {
-                return queryAllBySelectColumns(selectColumns);
+            public void subscribe(ObservableEmitter<List<T>> e) throws Exception {
+                e.onNext(queryAllBySelectColumns(selectColumns));
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<List<T>>applySchedulers()).subscribe(observer);
     }
 
     /**
@@ -323,15 +339,15 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param columnName  查询条件列名
      * @param value       查询条件值
      * @param ascending   true为升序,false为降序
-     * @return
      */
-    public Subscription queryGeByOrder(final String orderColumn, final Object limitValue, final String columnName, final Object value, final boolean ascending, final DBCallBack<List<T>> listener) {
-        return subscribe(new Callable<List<T>>() {
+    public void queryGeByOrder(final String orderColumn, final Object limitValue, final String columnName, final Object value, final boolean ascending, ExecutorCallBack<List<T>> observer) {
+        Observable.create(new ObservableOnSubscribe<List<T>>() {
             @Override
-            public List<T> call() {
-                return queryGeByOrder(orderColumn, limitValue, columnName, value, ascending);
+            public void subscribe(ObservableEmitter<List<T>> e) throws Exception {
+                e.onNext(queryGeByOrder(orderColumn, limitValue, columnName, value, ascending));
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<List<T>>applySchedulers()).subscribe(observer);
     }
 
     /**
@@ -340,15 +356,15 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param orderColumn 小于的列
      * @param limitValue  小于的值
      * @param ascending   true为升序,false为降序
-     * @return 查询结果
      */
-    public Subscription queryLeByOrder(final String orderColumn, final Object limitValue, final boolean ascending, final DBCallBack<List<T>> listener) {
-        return subscribe(new Callable<List<T>>() {
+    public void queryLeByOrder(final String orderColumn, final Object limitValue, final boolean ascending, ExecutorCallBack<List<T>> observer) {
+        Observable.create(new ObservableOnSubscribe<List<T>>() {
             @Override
-            public List<T> call() {
-                return queryLeByOrder(orderColumn, limitValue, ascending);
+            public void subscribe(ObservableEmitter<List<T>> e) throws Exception {
+                e.onNext(queryLeByOrder(orderColumn, limitValue, ascending));
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<List<T>>applySchedulers()).subscribe(observer);
     }
 
     /**
@@ -358,15 +374,15 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param ascending   true为升序,false为降序
      * @param offset      搜索下标
      * @param count       搜索条数
-     * @return 分页查询后的数据集
      */
-    public Subscription queryForPagesByOrder(final String orderColumn, final boolean ascending, final Long offset, final Long count, final DBCallBack<List<T>> listener) {
-        return subscribe(new Callable<List<T>>() {
+    public void queryForPagesByOrder(final String orderColumn, final boolean ascending, final Long offset, final Long count, ExecutorCallBack<List<T>> observer) {
+        Observable.create(new ObservableOnSubscribe<List<T>>() {
             @Override
-            public List<T> call() {
-                return queryForPagesByOrder(orderColumn, ascending, offset, count);
+            public void subscribe(ObservableEmitter<List<T>> e) throws Exception {
+                e.onNext(queryForPagesByOrder(orderColumn, ascending, offset, count));
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<List<T>>applySchedulers()).subscribe(observer);
     }
 
     /**
@@ -379,13 +395,14 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param offset      搜索下标
      * @param count       搜索条数
      */
-    public Subscription queryForPagesByOrder(final String columnName, final Object value, final String orderColumn, final boolean ascending, final Long offset, final Long count, final DBCallBack<List<T>> listener) {
-        return subscribe(new Callable<List<T>>() {
+    public void queryForPagesByOrder(final String columnName, final Object value, final String orderColumn, final boolean ascending, final Long offset, final Long count, ExecutorCallBack<List<T>> observer) {
+        Observable.create(new ObservableOnSubscribe<List<T>>() {
             @Override
-            public List<T> call() {
-                return queryForPagesByOrder(columnName, value, orderColumn, ascending, offset, count);
+            public void subscribe(ObservableEmitter<List<T>> e) throws Exception {
+                e.onNext(queryForPagesByOrder(columnName, value, orderColumn, ascending, offset, count));
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<List<T>>applySchedulers()).subscribe(observer);
     }
 
     /**
@@ -396,15 +413,15 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param count       查询的条数
      * @param orderColumn 排序的列
      * @param ascending   升序或降序,true为升序,false为降序
-     * @return
      */
-    public Subscription queryForPagesByOrder(final Map<String, Object> map, final String orderColumn, final boolean ascending, final Long offset, final Long count, final DBCallBack<List<T>> listener) {
-        return subscribe(new Callable<List<T>>() {
+    public void queryForPagesByOrder(final Map<String, Object> map, final String orderColumn, final boolean ascending, final Long offset, final Long count, ExecutorCallBack<List<T>> observer) {
+        Observable.create(new ObservableOnSubscribe<List<T>>() {
             @Override
-            public List<T> call() {
-                return queryForPagesByOrder(map, orderColumn, ascending, offset, count);
+            public void subscribe(ObservableEmitter<List<T>> e) throws Exception {
+                e.onNext(queryForPagesByOrder(map, orderColumn, ascending, offset, count));
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<List<T>>applySchedulers()).subscribe(observer);
     }
 
     /**
@@ -413,13 +430,14 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param columnName 查询条件列名
      * @param value      查询条件值
      */
-    public Subscription queryForFirst(final String columnName, final Object value, final DBCallBack<T> listener) {
-        return subscribe(new Callable<T>() {
+    public void queryForFirst(final String columnName, final Object value, ExecutorCallBack<T> observer) {
+        Observable.create(new ObservableOnSubscribe<T>() {
             @Override
-            public T call() {
-                return queryForFirst(columnName, value);
+            public void subscribe(ObservableEmitter<T> e) throws Exception {
+                e.onNext(queryForFirst(columnName, value));
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<T>applySchedulers()).subscribe(observer);
     }
 
     /**
@@ -427,13 +445,14 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      *
      * @param map 查询条件键值组合
      */
-    public Subscription queryForFirst(final Map<String, Object> map, final DBCallBack<T> listener) {
-        return subscribe(new Callable<T>() {
+    public void queryForFirst(final Map<String, Object> map, ExecutorCallBack<T> observer) {
+        Observable.create(new ObservableOnSubscribe<T>() {
             @Override
-            public T call() {
-                return queryForFirst(map);
+            public void subscribe(ObservableEmitter<T> e) throws Exception {
+                e.onNext(queryForFirst(map));
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<T>applySchedulers()).subscribe(observer);
     }
 
     /**
@@ -442,15 +461,15 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param map         查询条件键值组合
      * @param orderColumn 排序的列
      * @param ascending   是否升序
-     * @return
      */
-    public Subscription queryForFirstByOrder(final Map<String, Object> map, final String orderColumn, final boolean ascending, final DBCallBack<T> listener) {
-        return subscribe(new Callable<T>() {
+    public void queryForFirstByOrder(final Map<String, Object> map, final String orderColumn, final boolean ascending, ExecutorCallBack<T> observer) {
+        Observable.create(new ObservableOnSubscribe<T>() {
             @Override
-            public T call() {
-                return queryForFirstByOrder(map, orderColumn, ascending);
+            public void subscribe(ObservableEmitter<T> e) throws Exception {
+                e.onNext(queryForFirstByOrder(map, orderColumn, ascending));
+                e.onComplete();
             }
-        }, listener);
+        }).compose(RxUtil.<T>applySchedulers()).subscribe(observer);
     }
 
     /**
@@ -460,52 +479,15 @@ public class BaseRxDao<T> extends OrmLiteDao<T> {
      * @param value       查询条件值
      * @param orderColumn 排序的列
      * @param ascending   是否升序
-     * @return
      */
-    public Subscription queryForFirstByOrder(final String columnName, final Object value, final String orderColumn, final boolean ascending, final DBCallBack<T> listener) {
-        return subscribe(new Callable<T>() {
+    public void queryForFirstByOrder(final String columnName, final Object value, final String orderColumn, final boolean ascending, ExecutorCallBack<T> observer) {
+        Observable.create(new ObservableOnSubscribe<T>() {
             @Override
-            public T call() {
-                return queryForFirstByOrder(columnName, value, orderColumn, ascending);
+            public void subscribe(ObservableEmitter<T> e) throws Exception {
+                e.onNext(queryForFirstByOrder(columnName, value, orderColumn, ascending));
+                e.onComplete();
             }
-        }, listener);
-    }
-
-    private <R> Subscription subscribe(final Callable<R> callable, final DBCallBack<R> listener) {
-        if (listener != null) {
-            listener.onStart();
-        }
-        Observable<R> observable = RxUtil.getDBObservable(callable);
-        return observable.compose(RxUtil.<R>applySchedulers()).subscribe(new Subscriber<R>() {
-            @Override
-            public void onCompleted() {
-                if (!isUnsubscribed()) {
-                    unsubscribe();
-                }
-
-                if (listener != null) {
-                    listener.onCompleted();
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                if (!isUnsubscribed()) {
-                    unsubscribe();
-                }
-
-                if (listener != null) {
-                    listener.onError(e);
-                }
-            }
-
-            @Override
-            public void onNext(R r) {
-                if (listener != null) {
-                    listener.onNext(r);
-                }
-            }
-        });
+        }).compose(RxUtil.<T>applySchedulers()).subscribe(observer);
     }
 
 }

@@ -5,17 +5,17 @@ package com.ljz.base.callback;
  * <p>
  * Presenter获取数据的统一回调
  */
-public abstract class DBCallBack<T> {
-
-    public void onStart() {
-    }
-
-    public void onCompleted() {
-    }
-
-    public void onError(Throwable e) {
-    }
-
-    public abstract void onNext(T data);
-
-}
+//public abstract class DBCallBack<T> {
+//
+//    public void onStart() {
+//    }
+//
+//    public void onCompleted() {
+//    }
+//
+//    public void onError(Throwable e) {
+//    }
+//
+//    public abstract void onNext(T data);
+//
+//}

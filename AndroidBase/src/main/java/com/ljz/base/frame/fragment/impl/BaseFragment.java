@@ -10,7 +10,7 @@ import com.ljz.base.common.rx.RxManager;
  */
 public abstract class BaseFragment extends SuperFragment {
 
-    private final RxManager mRxManager = new RxManager();
+    private final RxManager mRxManager = new RxManager(this);
 
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
@@ -32,7 +32,7 @@ public abstract class BaseFragment extends SuperFragment {
 
     @Override
     public void onDestroy() {
-        mRxManager.clear();
+        mRxManager.clear(this);
         super.onDestroy();
     }
 }

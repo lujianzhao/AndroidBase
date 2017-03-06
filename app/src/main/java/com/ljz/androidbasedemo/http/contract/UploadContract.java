@@ -1,15 +1,8 @@
 package com.ljz.androidbasedemo.http.contract;
 
-import com.ljz.base.callback.UploadCallBack;
 import com.ljz.base.frame.model.BaseModel;
 import com.ljz.base.frame.presenter.BasePresenter;
 import com.ljz.base.frame.view.IBaseView;
-import com.ljz.base.http.progress.domain.ProgressRequest;
-import com.lzy.imagepicker.bean.ImageItem;
-
-import java.util.ArrayList;
-
-import okhttp3.ResponseBody;
 
 /**
  * Created by Administrator on 2016/4/27.
@@ -23,7 +16,7 @@ public interface UploadContract {
          * @param imageItems
          * @param requestDataCallBack
          */
-        public abstract void formUpload(ArrayList<ImageItem> imageItems, UploadCallBack<ProgressRequest, ResponseBody> requestDataCallBack);
+//        public abstract void formUpload(ArrayList<ImageItem> imageItems, UploadCallBack<ProgressRequest, ResponseBody> requestDataCallBack);
 
     }
 

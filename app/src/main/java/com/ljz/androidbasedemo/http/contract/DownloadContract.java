@@ -1,10 +1,8 @@
 package com.ljz.androidbasedemo.http.contract;
 
-import com.ljz.base.callback.ExecutorCallBack;
 import com.ljz.base.frame.model.BaseModel;
 import com.ljz.base.frame.presenter.BasePresenter;
 import com.ljz.base.frame.view.IBaseView;
-import com.ljz.base.http.progress.domain.ProgressRequest;
 
 /**
  * Created by Administrator on 2016/4/27.
@@ -18,7 +16,7 @@ public interface DownloadContract {
          * @param path 保存路径
          * @param requestDataCallBack
          */
-        public abstract void fileDownload(String path, ExecutorCallBack<ProgressRequest> requestDataCallBack);
+//        public abstract void fileDownload(String path, ExecutorCallBack<ProgressRequest> requestDataCallBack);
 
     }
 

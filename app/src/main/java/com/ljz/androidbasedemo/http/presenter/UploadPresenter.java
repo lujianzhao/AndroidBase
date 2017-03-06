@@ -6,20 +6,15 @@ import android.support.annotation.Nullable;
 
 import com.ljz.androidbasedemo.http.contract.UploadContract;
 import com.ljz.androidbasedemo.http.model.UploadModel;
-import com.ljz.base.callback.UploadCallBack;
 import com.ljz.base.common.assist.Toastor;
 import com.ljz.base.common.logutils.LogUtils;
 import com.ljz.base.frame.model.factory.RequiresModel;
-import com.ljz.base.http.progress.domain.ProgressRequest;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.loader.GlideImageLoader;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 
-import java.io.IOException;
 import java.util.ArrayList;
-
-import okhttp3.ResponseBody;
 
 /**
  * 作者: lujianzhao
@@ -72,33 +67,33 @@ public class UploadPresenter extends UploadContract.Presenter {
             Toastor.showToast(getContext(), "请选择需上传的图片");
             return;
         }
-        getModel().formUpload(imageItems, new UploadCallBack<ProgressRequest, ResponseBody>() {
-            @Override
-            public void onStart() {
-                LogUtils.d("开始上传");
-            }
-
-            @Override
-            public void onNext(ProgressRequest s) {
-                getView().upProgress(s.getCurrentBytes(), s.getContentLength());
-            }
-
-            @Override
-            public void onResponse(ResponseBody responseData) {
-                String string = "";
-                try {
-                     string = responseData.string();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                LogUtils.d("所有文件上传完成,服务器返回值:"+string);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                LogUtils.d("上传错误 : " + e.getMessage());
-            }
-        });
+//        getModel().formUpload(imageItems, new UploadCallBack<ProgressRequest, ResponseBody>() {
+//            @Override
+//            public void onStart() {
+//                LogUtils.d("开始上传");
+//            }
+//
+//            @Override
+//            public void onNext(ProgressRequest s) {
+//                getView().upProgress(s.getCurrentBytes(), s.getContentLength());
+//            }
+//
+//            @Override
+//            public void onResponse(ResponseBody responseData) {
+//                String string = "";
+//                try {
+//                     string = responseData.string();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                LogUtils.d("所有文件上传完成,服务器返回值:"+string);
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                LogUtils.d("上传错误 : " + e.getMessage());
+//            }
+//        });
 
     }
 

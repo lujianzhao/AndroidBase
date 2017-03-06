@@ -9,7 +9,7 @@ import android.util.Log;
 
 import com.ljz.base.common.assist.Check;
 import com.ljz.base.common.logutils.LogUtils;
-import com.tbruyelle.rxpermissions.RxPermissions;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -19,9 +19,10 @@ import java.util.Date;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-import rx.Observable;
-import rx.Observer;
-import rx.Subscriber;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
+import io.reactivex.functions.Function;
 
 import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 
@@ -44,40 +45,23 @@ public class TelephoneUtil {
      * @return
      */
     public static void getDeviceId(final Activity activity, Observer<String> observer) {
-        Observable.create(new Observable.OnSubscribe<String>() {
-            @Override
-            public void call(final Subscriber<? super String> subscriber) {
-                //请求读写SD卡权限
-                new RxPermissions(activity)
-                        .request(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE)
-                        .subscribe(new Subscriber<Boolean>() {
-                            @Override
-                            public void onCompleted() {
-                                unsubscribe();
-                                subscriber.onCompleted();
-                            }
+        new RxPermissions(activity)
+                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE)
+                .flatMap(new Function<Boolean, ObservableSource<String>>() {
+                    @Override
+                    public ObservableSource<String> apply(Boolean granted) throws Exception {
+                        String path = null;
+                        if (granted) {
+                            path = getExternalStoragePath();
+                        }
 
-                            @Override
-                            public void onError(Throwable e) {
-                                subscriber.onError(e);
-                            }
-
-                            @Override
-                            public void onNext(Boolean granted) {
-                                String path = null;
-                                if (granted) {
-                                    path = getExternalStoragePath();
-                                }
-
-                                if (Check.isEmpty(path)) {
-                                    path = getPath();
-                                }
-                                String deviceId = readAndWriteDeviceId(activity, path);
-                                subscriber.onNext(deviceId);
-                            }
-                        });
-            }
-        }).subscribe(observer);
+                        if (Check.isEmpty(path)) {
+                            path = getPath();
+                        }
+                        String deviceId = readAndWriteDeviceId(activity, path);
+                        return Observable.just(deviceId);
+                    }
+                }).subscribe(observer);
     }
 
     private static String readAndWriteDeviceId(Context context,String path) {

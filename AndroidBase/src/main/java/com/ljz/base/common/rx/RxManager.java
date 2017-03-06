@@ -1,65 +1,42 @@
 package com.ljz.base.common.rx;
 
-import com.ljz.base.common.logutils.LogUtils;
+import com.ljz.base.rxbus.Bus;
+import com.ljz.base.rxbus.thread.ThreadEnforcer;
 
-import java.util.HashMap;
-import java.util.Map;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.subscriptions.CompositeSubscription;
+import static com.ljz.base.common.rx.RxUtil.getNewCompositeSubIfUnsubscribed;
 
 /**
  * 用于管理RxBus的事件和Rxjava相关代码的生命周期处理
  */
 public class RxManager  {
 
-    private RxEventBus mRxBus = RxEventBus.getInstance();
-    private Map<String, Observable<?>> mObservables;// 管理观察源
-    private CompositeSubscription mCompositeSubscription;// 管理订阅者者
+    private Bus mRxBus = new Bus(ThreadEnforcer.ANY);
+    private CompositeDisposable mCompositeSubscription;// 管理订阅者者
 
-    public RxManager(){
-        mObservables = new HashMap<>();
-        mCompositeSubscription = RxUtil.getNewCompositeSubIfUnsubscribed(mCompositeSubscription);
+    public RxManager(Object object){
+        mCompositeSubscription = getNewCompositeSubIfUnsubscribed(mCompositeSubscription);
+        mRxBus.register(object);
     }
 
-    public void on(String eventName, Action1<Object> action1) {
-        Observable<?> mObservable = mRxBus.register(eventName);
-        mObservables.put(eventName, mObservable);
-        RxUtil.getNewCompositeSubIfUnsubscribed(mCompositeSubscription)
-                .add(mObservable.observeOn(AndroidSchedulers.mainThread())
-                .subscribe(action1,new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-                throwable.printStackTrace();
-                LogUtils.e(throwable);
-            }
-        }));
+    public void add(Disposable disposable) {
+        mCompositeSubscription.add(disposable);
     }
 
-
-    public void add(Subscription subscription) {
-        RxUtil.getNewCompositeSubIfUnsubscribed(mCompositeSubscription).add(subscription);
-    }
-
-    public void clear() {
+    public void clear(Object object) {
         RxUtil.unsubscribeIfNotNull(mCompositeSubscription);// 取消订阅
-
-        if (mObservables != null) {
-            for (Map.Entry<String, Observable<?>> entry : mObservables.entrySet()) {
-                mRxBus.unregister(entry.getKey(), entry.getValue());// 移除观察
-            }
-            mObservables.clear();
-            mObservables = null;
-        }
-
         mCompositeSubscription = null;
+        mRxBus.unregister(object);
         mRxBus = null;
     }
 
-    public void post(Object tag, Object content) {
-        mRxBus.post(tag, content);
+    public void post(Object event) {
+        mRxBus.post(event);
     }
+    public void post(String tag, Object event){
+        mRxBus.post(tag,event);
+    }
+
 }

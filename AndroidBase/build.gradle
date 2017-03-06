@@ -36,10 +36,10 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.android.support:support-v4:25.1.0'
-    compile 'com.android.support:design:25.1.0'
-    compile 'com.android.support:recyclerview-v7:25.1.0'
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:support-v4:25.2.0'
+    compile 'com.android.support:design:25.2.0'
+    compile 'com.android.support:recyclerview-v7:25.2.0'
     //自动布局
     compile 'com.zhy:autolayout:1.4.5'
     //注入工具
@@ -47,37 +47,39 @@ dependencies {
     //缓存
     compile 'com.jakewharton:disklrucache:2.0.2'
     //Rxjava
-    compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'io.reactivex:rxjava:1.2.5'
+//    compile 'io.reactivex:rxandroid:1.2.1'
+//    compile 'io.reactivex:rxjava:1.2.7'
     //RxLifecycle
-    compile 'com.trello:rxlifecycle:1.0'
-    compile 'com.trello:rxlifecycle-android:1.0'
+    compile 'com.trello.rxlifecycle2:rxlifecycle:2.0.1'
+    compile 'com.trello.rxlifecycle2:rxlifecycle-android:2.0.1'
     //RxBinding
-    compile 'com.jakewharton.rxbinding:rxbinding:1.0.0'
+//    compile 'com.jakewharton.rxbinding:rxbinding:1.0.0'
     //下面3个视情况增加
 //    compile 'com.jakewharton.rxbinding:rxbinding-support-v4:1.0.0'
 //    compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:1.0.0'
 //    compile 'com.jakewharton.rxbinding:rxbinding-design:1.0.0'
     //Json解析库
-    compile 'com.alibaba:fastjson:1.1.55.android'
+    compile 'com.alibaba:fastjson:1.1.56.android'
     //图片加载、缓存库
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'jp.wasabeef:glide-transformations:2.0.1'
     //6.0权限处理库
-    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.1@aar'
+    compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.2@aar'
     //Retrofit网络请求
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+//    compile 'com.squareup.retrofit2:retrofit:2.2.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
     compile 'org.ligboy.retrofit2:converter-fastjson-android:2.1.0'
     //Fragment解决库
-    compile 'me.yokeyword:fragmentation:0.9.3'
+    compile 'me.yokeyword:fragmentation:0.10.1'
     //db数据库
     compile 'com.j256.ormlite:ormlite-core:5.0'
     compile 'com.j256.ormlite:ormlite-android:5.0'
     //动画
     compile 'jp.wasabeef:recyclerview-animators:2.2.5'
     //应用发生错误时,自动重启
-    compile 'com.zxy.android:recovery:0.0.8'
+    compile 'com.zxy.android:recovery:0.1.2'
+
+//    compile 'zlc.season:rxdownload:1.2.8'
 
     //Log工具类,目前的版本1.4.2,在com.ljz.base.common.logutils
 //    compile 'com.apkfuns.logutils:library:1.4.2'
@@ -89,31 +91,31 @@ dependencies {
 }
 
 //编译命令：gradle clean build bintrayupload
-ext {
-    //bintrayUserOrg = 'jianzhaoandroid'//bintray.com用户名
-    bintrayRepo = 'maven'////bintray上的仓库名，一般为maven
-    bintrayName = 'androidbase'//bintray上的项目名
-
-    publishedGroupId = 'com.ljz.base'//JCenter的GroupId
-    artifact = 'androidbase'//JCenter的ArtifactId
-
-    siteUrl = 'https://github.com/lujianzhao/AndroidBase'
-    gitUrl = 'https://github.com/lujianzhao/AndroidBase.git'
-
-    libraryVersion = version//版本号
-    libraryName = 'androidbase'//项目名字，没什么用
-    libraryDescription = 'A Base for Android'//项目描述，没什么用
-
-    //开发者信息
-    developerId = 'lujianzhao'
-    developerName = 'lujianzhao'
-    developerEmail = 'q1062932288@gmail.com'
-
-    //以上所有信息自行修改，以下不变
-
-    licenseName = 'The Apache Software License, Version 2.0'
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    allLicenses = ["Apache-2.0"]
-}
-apply from:'../install.gradle'
-apply from:'../bintray.gradle'
+//ext {
+//    //bintrayUserOrg = 'jianzhaoandroid'//bintray.com用户名
+//    bintrayRepo = 'maven'////bintray上的仓库名，一般为maven
+//    bintrayName = 'androidbase'//bintray上的项目名
+//
+//    publishedGroupId = 'com.ljz.base'//JCenter的GroupId
+//    artifact = 'androidbase'//JCenter的ArtifactId
+//
+//    siteUrl = 'https://github.com/lujianzhao/AndroidBase'
+//    gitUrl = 'https://github.com/lujianzhao/AndroidBase.git'
+//
+//    libraryVersion = version//版本号
+//    libraryName = 'androidbase'//项目名字，没什么用
+//    libraryDescription = 'A Base for Android'//项目描述，没什么用
+//
+//    //开发者信息
+//    developerId = 'lujianzhao'
+//    developerName = 'lujianzhao'
+//    developerEmail = 'q1062932288@gmail.com'
+//
+//    //以上所有信息自行修改，以下不变
+//
+//    licenseName = 'The Apache Software License, Version 2.0'
+//    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+//    allLicenses = ["Apache-2.0"]
+//}
+//apply from:'../install.gradle'
+//apply from:'../bintray.gradle'

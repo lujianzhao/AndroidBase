@@ -1,8 +1,10 @@
 package com.ljz.base.frame.activity.impl;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.CheckResult;
@@ -10,26 +12,30 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 
+import com.bumptech.glide.Glide;
+import com.ljz.base.common.utils.DensityUtil;
 import com.ljz.base.common.utils.InputMethodUtils;
 import com.ljz.base.frame.AppManager;
 import com.ljz.base.frame.BaseApplication;
 import com.ljz.base.frame.activity.IBaseActivity;
 import com.ljz.base.netstate.NetworkStateReceiver;
-import com.bumptech.glide.Glide;
-import com.trello.rxlifecycle.LifecycleProvider;
-import com.trello.rxlifecycle.LifecycleTransformer;
-import com.trello.rxlifecycle.RxLifecycle;
-import com.trello.rxlifecycle.android.ActivityEvent;
-import com.trello.rxlifecycle.android.RxLifecycleAndroid;
+import com.trello.rxlifecycle2.LifecycleProvider;
+import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.trello.rxlifecycle2.RxLifecycle;
+import com.trello.rxlifecycle2.android.ActivityEvent;
+import com.trello.rxlifecycle2.android.RxLifecycleAndroid;
 import com.zhy.autolayout.AutoFrameLayout;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
 
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
 import me.yokeyword.fragmentation.SupportActivity;
-import rx.Observable;
-import rx.subjects.BehaviorSubject;
 
 /**
  * 作者: lujianzhao
@@ -54,7 +60,7 @@ public abstract class SuperActivity extends SupportActivity implements IBaseActi
     @NonNull
     @CheckResult
     public final Observable<ActivityEvent> lifecycle() {
-        return mLifecycleSubject.asObservable();
+        return mLifecycleSubject.hide();
     }
 
     @Override
@@ -98,10 +104,18 @@ public abstract class SuperActivity extends SupportActivity implements IBaseActi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppManager.getAppManager().addActivity(this);
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            //新版本的转场动画
+            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        }
+        onBeforeSetContentView();
         setContentView(getContentViewId());
         ButterKnife.bind(this);
         NetworkStateReceiver.registerNetworkStateReceiver(this);
         mLifecycleSubject.onNext(ActivityEvent.CREATE);
+    }
+
+    protected void onBeforeSetContentView() {
     }
 
     @Override
@@ -123,29 +137,28 @@ public abstract class SuperActivity extends SupportActivity implements IBaseActi
     @CallSuper
     protected void onPause() {
         InputMethodUtils.hideSoftInput(this);
-        super.onPause();
         mLifecycleSubject.onNext(ActivityEvent.PAUSE);
+        super.onPause();
+
     }
 
     @Override
     @CallSuper
     protected void onStop() {
-        super.onStop();
         mLifecycleSubject.onNext(ActivityEvent.STOP);
+        super.onStop();
     }
 
     @Override
     @CallSuper
     protected void onDestroy() {
-        super.onDestroy();
         mLifecycleSubject.onNext(ActivityEvent.DESTROY);
         NetworkStateReceiver.unRegisterNetworkStateReceiver(this);
-
         ButterKnife.unbind(this);
-
         Glide.get(this).clearMemory();
-
         AppManager.getAppManager().finishActivity(this);
+        super.onDestroy();
+
         if (isFinishing()) {
             if (!AppManager.getAppManager().has()) {
                 if (getApplication() instanceof BaseApplication) {
@@ -223,6 +236,60 @@ public abstract class SuperActivity extends SupportActivity implements IBaseActi
 
     public boolean isOnTaskTop() {
         return AppManager.getAppManager().getTopActivity() == this;
+    }
+
+
+    /**
+     * 沉浸式，必须在setContentView调用该方法
+     */
+    protected void initTranslucent() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT && android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //设置虚拟导航栏为透明
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
+    }
+
+    /**
+     * 沉浸式
+     *
+     * @param toolbar                 ToolBar的view
+     * @param bottomNavigationBar     自定义BottomNavigationBar的View
+     * @param translucentPrimaryColor 颜色
+     */
+    @SuppressLint("NewApi")
+    protected void setOrChangeTranslucentColor(View toolbar, View bottomNavigationBar, int translucentPrimaryColor) {
+        //判断版本,如果[4.4,5.0)就设置状态栏和导航栏为透明
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT && android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
+            if (toolbar != null) {
+                //1.先设置toolbar的高度
+                ViewGroup.LayoutParams params = toolbar.getLayoutParams();
+                int statusBarHeight = DensityUtil.getSystemComponentDimen(this, DensityUtil.STATUS_BAR_HEIGHT);
+                params.height += statusBarHeight;
+                toolbar.setLayoutParams(params);
+                //2.设置paddingTop，以达到状态栏不遮挡toolbar的内容。
+                toolbar.setPadding(toolbar.getPaddingLeft(), toolbar.getPaddingTop() + statusBarHeight, toolbar.getPaddingRight(), toolbar.getPaddingBottom());
+                //设置顶部的颜色
+                toolbar.setBackgroundColor(translucentPrimaryColor);
+            }
+            if (bottomNavigationBar != null) {
+                //解决低版本4.4+的虚拟导航栏的
+                if (DensityUtil.hasNavigationBarShow(getWindowManager())) {
+                    ViewGroup.LayoutParams p = bottomNavigationBar.getLayoutParams();
+                    p.height += DensityUtil.getSystemComponentDimen(this, DensityUtil.NAVIGATION_BAR_HEIGHT);
+                    bottomNavigationBar.setLayoutParams(p);
+                    //设置底部导航栏的颜色
+                    bottomNavigationBar.setBackgroundColor(translucentPrimaryColor);
+                } else {
+                    ViewGroup.LayoutParams p = bottomNavigationBar.getLayoutParams();
+                    p.height = 0;
+                    bottomNavigationBar.setLayoutParams(p);
+                }
+            }
+        } else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(translucentPrimaryColor);
+            getWindow().setStatusBarColor(translucentPrimaryColor);
+        }
     }
 
 }

@@ -6,11 +6,13 @@ import com.ljz.androidbasedemo.R;
 import com.ljz.androidbasedemo.db.contract.DBContract;
 import com.ljz.androidbasedemo.db.model.DBModel;
 import com.ljz.androidbasedemo.db.model.domains.City;
-import com.ljz.base.callback.DBCallBack;
+import com.ljz.base.callback.ExecutorCallBack;
 import com.ljz.base.frame.model.factory.RequiresModel;
 
 import java.util.List;
 import java.util.UUID;
+
+import io.reactivex.disposables.Disposable;
 
 /**
  * 作者: lujianzhao
@@ -39,7 +41,12 @@ public class DBPresenter extends DBContract.Presenter {
     }
 
     public void clear() {
-        getModel().clearTableDataSync(new DBCallBack<Boolean>() {
+        getModel().clearTableDataSync(new ExecutorCallBack<Boolean>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                getRxManager().add(d);
+            }
+
             @Override
             public void onNext(Boolean data) {
                 getView().clearView();
@@ -49,7 +56,12 @@ public class DBPresenter extends DBContract.Presenter {
     }
 
     public void query() {
-        getModel().queryForAllSync(new DBCallBack<List<City>>() {
+        getModel().queryForAllSync(new ExecutorCallBack<List<City>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                getRxManager().add(d);
+            }
+
             @Override
             public void onNext(List<City> data) {
                 queryFinish(data);
@@ -81,7 +93,12 @@ public class DBPresenter extends DBContract.Presenter {
         city.setCityName("东莞市");
         city.setCityNo(cityUuid);
 
-        getModel().insertSync(city, new DBCallBack<Boolean>() {
+        getModel().insertSync(city, new ExecutorCallBack<Boolean>() {
+
+            @Override
+            public void onSubscribe(Disposable d) {
+                getRxManager().add(d);
+            }
 
             @Override
             public void onNext(Boolean data) {
