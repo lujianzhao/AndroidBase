@@ -34,7 +34,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onInitView(Bundle savedInstanceState) {
 
-        TelephoneUtil.getDeviceId(this, new Observer<String>() {
+        TelephoneUtil.getDeviceId(this).subscribe(new Observer<String>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 

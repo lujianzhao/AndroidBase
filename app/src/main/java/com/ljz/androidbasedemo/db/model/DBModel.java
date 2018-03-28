@@ -2,10 +2,11 @@ package com.ljz.androidbasedemo.db.model;
 
 import com.ljz.androidbasedemo.db.contract.DBContract;
 import com.ljz.androidbasedemo.db.model.domains.City;
-import com.ljz.base.callback.ExecutorCallBack;
 import com.ljz.base.db.BaseRxDao;
 
 import java.util.List;
+
+import io.reactivex.Observable;
 
 /**
  * 作者: lujianzhao
@@ -28,17 +29,17 @@ public class DBModel extends DBContract.Model {
     }
 
     @Override
-    public void insertSync(City city, ExecutorCallBack<Boolean> dbCallBack) {
-        mCityDao.insert(city, dbCallBack);
+    public Observable<Boolean> insertSync(City city) {
+       return mCityDao.insertWithRx(city);
     }
 
     @Override
-    public void queryForAllSync(ExecutorCallBack<List<City>> dbCallBack) {
-        mCityDao.queryForAll(dbCallBack);
+    public Observable<List<City>> queryForAllSync() {
+        return mCityDao.queryForAllWithRx();
     }
 
     @Override
-    public void clearTableDataSync(ExecutorCallBack<Boolean> dbCallBack) {
-        mCityDao.clearTableData(dbCallBack);
+    public Observable<Boolean> clearTableDataSync() {
+        return mCityDao.clearTableDataWithRx();
     }
 }

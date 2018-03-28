@@ -6,12 +6,12 @@ import com.ljz.androidbasedemo.R;
 import com.ljz.androidbasedemo.db.contract.DBContract;
 import com.ljz.androidbasedemo.db.model.DBModel;
 import com.ljz.androidbasedemo.db.model.domains.City;
-import com.ljz.base.callback.ExecutorCallBack;
 import com.ljz.base.frame.model.factory.RequiresModel;
 
 import java.util.List;
 import java.util.UUID;
 
+import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -41,7 +41,7 @@ public class DBPresenter extends DBContract.Presenter {
     }
 
     public void clear() {
-        getModel().clearTableDataSync(new ExecutorCallBack<Boolean>() {
+        getModel().clearTableDataSync().subscribe(new Observer<Boolean>() {
             @Override
             public void onSubscribe(Disposable d) {
                 getRxManager().add(d);
@@ -52,11 +52,21 @@ public class DBPresenter extends DBContract.Presenter {
                 getView().clearView();
             }
 
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+
         });
     }
 
     public void query() {
-        getModel().queryForAllSync(new ExecutorCallBack<List<City>>() {
+        getModel().queryForAllSync().subscribe(new Observer<List<City>>() {
             @Override
             public void onSubscribe(Disposable d) {
                 getRxManager().add(d);
@@ -65,6 +75,16 @@ public class DBPresenter extends DBContract.Presenter {
             @Override
             public void onNext(List<City> data) {
                 queryFinish(data);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
             }
 
         });
@@ -93,7 +113,7 @@ public class DBPresenter extends DBContract.Presenter {
         city.setCityName("东莞市");
         city.setCityNo(cityUuid);
 
-        getModel().insertSync(city, new ExecutorCallBack<Boolean>() {
+        getModel().insertSync(city).subscribe(new Observer<Boolean>() {
 
             @Override
             public void onSubscribe(Disposable d) {
@@ -103,6 +123,16 @@ public class DBPresenter extends DBContract.Presenter {
             @Override
             public void onNext(Boolean data) {
                 //                Toastor.showToast(mActivity, "插入完成");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
             }
 
         });

@@ -1,12 +1,13 @@
 package com.ljz.androidbasedemo.db.contract;
 
 import com.ljz.androidbasedemo.db.model.domains.City;
-import com.ljz.base.callback.ExecutorCallBack;
 import com.ljz.base.frame.model.BaseModel;
 import com.ljz.base.frame.presenter.BasePresenter;
 import com.ljz.base.frame.view.IBaseView;
 
 import java.util.List;
+
+import io.reactivex.Observable;
 
 /**
  * Created by Administrator on 2016/4/27.
@@ -17,21 +18,18 @@ public interface DBContract {
         /**
          * 插入一条数据
          * @param city 需要插入的数据
-         * @param dbCallBack 完成的回调
          */
-        public abstract void insertSync(City city, ExecutorCallBack<Boolean> dbCallBack);
+        public abstract Observable<Boolean> insertSync(City city);
 
         /**
          * 查询所有数据
-         * @param dbCallBack
          */
-        public abstract void queryForAllSync(ExecutorCallBack<List<City>> dbCallBack);
+        public abstract Observable<List<City>> queryForAllSync();
 
         /**
          * 删除数据
-         * @param dbCallBack
          */
-        public abstract void clearTableDataSync(ExecutorCallBack<Boolean> dbCallBack);
+        public abstract Observable<Boolean> clearTableDataSync();
     }
 
     interface View extends IBaseView {

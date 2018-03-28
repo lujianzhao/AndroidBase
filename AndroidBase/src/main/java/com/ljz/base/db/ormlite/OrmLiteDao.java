@@ -1,8 +1,5 @@
 package com.ljz.base.db.ormlite;
 
-import com.ljz.base.common.logutils.LogUtils;
-import com.ljz.base.frame.Base;
-import com.ljz.base.frame.BaseApplication;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.misc.TransactionManager;
@@ -12,6 +9,9 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.UpdateBuilder;
 import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.support.ConnectionSource;
+import com.ljz.base.common.logutils.LogUtils;
+import com.ljz.base.frame.Base;
+import com.ljz.base.frame.BaseApplication;
 
 import java.lang.reflect.Field;
 import java.sql.SQLException;
@@ -52,8 +52,7 @@ public class OrmLiteDao<T> {
      * @param batchType 操作类型
      * @return
      */
-    private boolean doBatchInTransaction(final List<T> list, final int batchType) {
-        boolean doBatch = false;
+    private boolean doBatchInTransaction(final List<T> list, final int batchType) throws SQLException {
         ConnectionSource connectionSource = ormLiteDao.getConnectionSource();
         TransactionManager transactionManager = new TransactionManager(connectionSource);
         Callable<Boolean> callable = new Callable<Boolean>() {
@@ -62,12 +61,7 @@ public class OrmLiteDao<T> {
                 return doBatch(list, batchType);
             }
         };
-        try {
-            doBatch = transactionManager.callInTransaction(callable);
-        } catch (SQLException e) {
-            LogUtils.e(e);
-        }
-        return doBatch;
+        return transactionManager.callInTransaction(callable);
     }
 
     /**
@@ -77,27 +71,23 @@ public class OrmLiteDao<T> {
      * @param batchType 操作类型
      * @return
      */
-    private boolean doBatch(List<T> list, int batchType) {
+    private boolean doBatch(List<T> list, int batchType) throws SQLException, IllegalAccessException {
         int result = 0;
-        try {
-            for (T t : list) {
-                switch (batchType) {
-                    case DaoOperation.INSERT:
-                        result += ormLiteDao.create(t);
-                        break;
-                    case DaoOperation.DELETE:
-                        result += ormLiteDao.delete(t);
-                        break;
-                    case DaoOperation.UPDATE:
-                        result += updateIfValueNotNull(t);
-                        break;
-                    default:
-                        LogUtils.w("no this type.");
-                        break;
-                }
+        for (T t : list) {
+            switch (batchType) {
+                case DaoOperation.INSERT:
+                    result += ormLiteDao.create(t);
+                    break;
+                case DaoOperation.DELETE:
+                    result += ormLiteDao.delete(t);
+                    break;
+                case DaoOperation.UPDATE:
+                    result += updateIfValueNotNull(t);
+                    break;
+                default:
+                    LogUtils.w("no this type.");
+                    break;
             }
-        } catch (SQLException e) {
-            LogUtils.e(e);
         }
         return result == list.size();
     }
@@ -108,14 +98,8 @@ public class OrmLiteDao<T> {
      * @param t 新增或更新数据实体
      * @return
      */
-    public Dao.CreateOrUpdateStatus createOrUpdate(T t) {
-        Dao.CreateOrUpdateStatus result = null;
-        try {
-            result = ormLiteDao.createOrUpdate(t);
-        } catch (SQLException e) {
-            LogUtils.e(e);
-        }
-        return result;
+    public Dao.CreateOrUpdateStatus createOrUpdate(T t) throws SQLException {
+        return ormLiteDao.createOrUpdate(t);
     }
 
 
@@ -125,14 +109,8 @@ public class OrmLiteDao<T> {
      * @param t
      * @return
      */
-    public boolean insert(T t) {
-        int result = 0;
-        try {
-            result = ormLiteDao.create(t);
-        } catch (SQLException e) {
-            LogUtils.e(e);
-        }
-        return result > 0;
+    public boolean insert(T t) throws SQLException {
+        return ormLiteDao.create(t) > 0;
     }
 
     /**
@@ -141,7 +119,7 @@ public class OrmLiteDao<T> {
      * @param list
      * @return
      */
-    public boolean insertForBatch(List<T> list) {
+    public boolean insertForBatch(List<T> list) throws SQLException {
         return doBatchInTransaction(list, DaoOperation.INSERT);
     }
 
@@ -150,25 +128,14 @@ public class OrmLiteDao<T> {
      *
      * @return
      */
-    public boolean clearTableData() {
-        long count = 0;
-        try {
-            count = ormLiteDao.countOf();
-        } catch (SQLException e) {
-            LogUtils.e(e);
-        }
+    public boolean clearTableData() throws SQLException {
+        long count = ormLiteDao.countOf();
         if (count == 0) {
             return true;
         }
-        int result = 0;
         DeleteBuilder deleteBuilder = ormLiteDao.deleteBuilder();
-        try {
-            deleteBuilder.where().isNotNull("id");
-            result = deleteBuilder.delete();
-        } catch (SQLException e) {
-            LogUtils.e(e);
-        }
-        return result > 0;
+        deleteBuilder.where().isNotNull("id");
+        return deleteBuilder.delete() > 0;
     }
 
     /**
@@ -177,18 +144,8 @@ public class OrmLiteDao<T> {
      * @param id
      * @return
      */
-    public boolean deleteById(Integer id) {
-        if (checkIdIsNull(id)) {
-            return false;
-        }
-        int result;
-        try {
-            result = ormLiteDao.deleteById(id);
-        } catch (SQLException e) {
-            LogUtils.e(e);
-            return false;
-        }
-        return result > 0;
+    public boolean deleteById(Integer id) throws SQLException {
+        return  ormLiteDao.deleteById(id) > 0;
     }
 
     /**
@@ -198,17 +155,10 @@ public class OrmLiteDao<T> {
      * @param value      删除条件对应的值
      * @return
      */
-    public boolean deleteByColumnName(String columnName, Object value) {
-        int result = 0;
+    public boolean deleteByColumnName(String columnName, Object value) throws SQLException {
         DeleteBuilder deleteBuilder = ormLiteDao.deleteBuilder();
-        try {
-            deleteBuilder.where().eq(columnName, value);
-            result = deleteBuilder.delete();
-        } catch (SQLException e) {
-            LogUtils.e("delete error, columnName: " + columnName + ", value: " + value + ", result: " + result, e);
-            return false;
-        }
-        return result > 0;
+        deleteBuilder.where().eq(columnName, value);
+        return deleteBuilder.delete() > 0;
     }
 
     /**
@@ -217,21 +167,14 @@ public class OrmLiteDao<T> {
      * @param map key是列名,value是列对应的值
      * @return
      */
-    public boolean deleteByColumnName(Map<String, Object> map) {
-        int result = 0;
+    public boolean deleteByColumnName(Map<String, Object> map) throws SQLException {
         DeleteBuilder deleteBuilder = ormLiteDao.deleteBuilder();
         Where where = deleteBuilder.where();
-        try {
-            where.isNotNull("id");
-            for (Map.Entry<String, Object> entry : map.entrySet()) {
-                where.and().eq(entry.getKey(), entry.getValue());
-            }
-            result = deleteBuilder.delete();
-        } catch (SQLException e) {
-            LogUtils.e("delete error,delete line:" + result, e);
-            return false;
+        where.isNotNull("id");
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            where.and().eq(entry.getKey(), entry.getValue());
         }
-        return result > 0;
+        return deleteBuilder.delete() > 0;
     }
 
     /**
@@ -241,17 +184,10 @@ public class OrmLiteDao<T> {
      * @param value      指定数值，小于该值的数据将被删除
      * @return 删除的条数
      */
-    public int deleteLtValue(String columnName, Object value) {
-        int result = 0;
+    public int deleteLtValue(String columnName, Object value) throws SQLException {
         DeleteBuilder deleteBuilder = ormLiteDao.deleteBuilder();
-        try {
-            deleteBuilder.where().lt(columnName, value);
-            result = deleteBuilder.delete();
-        } catch (SQLException e) {
-            LogUtils.e("delete error, columnName: " + columnName + ", value: " + value + ", result: " + result, e);
-            return result;
-        }
-        return result;
+        deleteBuilder.where().lt(columnName, value);
+        return deleteBuilder.delete();
     }
 
     /**
@@ -259,7 +195,7 @@ public class OrmLiteDao<T> {
      *
      * @param list
      */
-    public boolean deleteForBatch(List<T> list) {
+    public boolean deleteForBatch(List<T> list) throws SQLException {
         return doBatchInTransaction(list, DaoOperation.DELETE);
     }
 
@@ -269,37 +205,25 @@ public class OrmLiteDao<T> {
      * @param map 查询条件键值组合
      * @return
      */
-    public long getCount(Map<String, Object> map) {
-        long count = 0;
+    public long getCount(Map<String, Object> map) throws SQLException {
         QueryBuilder queryBuilder = ormLiteDao.queryBuilder();
         queryBuilder.setCountOf(true);
         Where where = queryBuilder.where();
-        try {
-            where.isNotNull("id");
-            for (Map.Entry<String, Object> entry : map.entrySet()) {
-                where.and().eq(entry.getKey(), entry.getValue());
-            }
-            PreparedQuery<T> preparedQuery = queryBuilder.prepare();
-            count = ormLiteDao.countOf(preparedQuery);
-        } catch (SQLException e) {
-            LogUtils.e(e);
+        where.isNotNull("id");
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            where.and().eq(entry.getKey(), entry.getValue());
         }
-        return count;
+        PreparedQuery<T> preparedQuery = queryBuilder.prepare();
+        return ormLiteDao.countOf(preparedQuery);
     }
 
-    public long getCount() {
-        long count = 0;
+    public long getCount() throws SQLException {
         QueryBuilder queryBuilder = ormLiteDao.queryBuilder();
         queryBuilder.setCountOf(true);
         Where where = queryBuilder.where();
-        try {
-            where.isNotNull("id");
-            PreparedQuery<T> preparedQuery = queryBuilder.prepare();
-            count = ormLiteDao.countOf(preparedQuery);
-        } catch (SQLException e) {
-            LogUtils.e(e);
-        }
-        return count;
+        where.isNotNull("id");
+        PreparedQuery<T> preparedQuery = queryBuilder.prepare();
+        return ormLiteDao.countOf(preparedQuery);
     }
 
     /**
@@ -307,14 +231,8 @@ public class OrmLiteDao<T> {
      *
      * @return
      */
-    public List<T> queryForAll() {
-        List<T> list = null;
-        try {
-            list = ormLiteDao.queryForAll();
-        } catch (SQLException e) {
-            LogUtils.e(e);
-        }
-        return list;
+    public List<T> queryForAll() throws SQLException {
+        return ormLiteDao.queryForAll();
     }
 
 
@@ -324,17 +242,8 @@ public class OrmLiteDao<T> {
      * @param id
      * @return
      */
-    public T queryById(Integer id) {
-        if (checkIdIsNull(id)) {
-            return null;
-        }
-        T t = null;
-        try {
-            t = ormLiteDao.queryForId(id);
-        } catch (SQLException e) {
-            LogUtils.e(e);
-        }
-        return t;
+    public T queryById(Integer id) throws SQLException {
+        return ormLiteDao.queryForId(id);
     }
 
     /**
@@ -343,14 +252,8 @@ public class OrmLiteDao<T> {
      * @param map
      * @return
      */
-    public List<T> queryByColumnName(Map<String, Object> map) {
-        List<T> list = null;
-        try {
-            list = ormLiteDao.queryForFieldValuesArgs(map);
-        } catch (SQLException e) {
-            LogUtils.e(e);
-        }
-        return list;
+    public List<T> queryByColumnName(Map<String, Object> map) throws SQLException {
+        return ormLiteDao.queryForFieldValuesArgs(map);
     }
 
 
@@ -361,16 +264,11 @@ public class OrmLiteDao<T> {
      * @param value
      * @return
      */
-    public List<T> queryByColumnName(String columnName, Object value) {
-        List<T> list = null;
+    public List<T> queryByColumnName(String columnName, Object value) throws SQLException {
         QueryBuilder queryBuilder = ormLiteDao.queryBuilder();
-        try {
-            queryBuilder.where().eq(columnName, value);
-            list = queryBuilder.query();
-        } catch (SQLException e) {
-            LogUtils.e(e);
-        }
-        return list;
+        queryBuilder.where().eq(columnName, value);
+        return queryBuilder.query();
+
     }
 
     /**
@@ -379,16 +277,10 @@ public class OrmLiteDao<T> {
      * @param selectColumns 指定列名
      * @return
      */
-    public List<T> queryAllBySelectColumns(String[] selectColumns) {
-        List<T> list = null;
+    public List<T> queryAllBySelectColumns(String[] selectColumns) throws SQLException {
         QueryBuilder queryBuilder = ormLiteDao.queryBuilder();
-        try {
-            queryBuilder.selectColumns(selectColumns);
-            list = queryBuilder.query();
-        } catch (SQLException e) {
-            LogUtils.e(e);
-        }
-        return list;
+        queryBuilder.selectColumns(selectColumns);
+        return queryBuilder.query();
     }
 
     /**
@@ -398,17 +290,11 @@ public class OrmLiteDao<T> {
      * @param value       某个值
      * @return 大于某个值的记录
      */
-    public List<T> queryAllByGt(String orderColumn, Object value) {
-        List<T> list = null;
+    public List<T> queryAllByGt(String orderColumn, Object value) throws SQLException {
         QueryBuilder queryBuilder = ormLiteDao.queryBuilder();
         Where where = queryBuilder.where();
-        try {
-            where.gt(orderColumn, value);
-            list = queryBuilder.query();
-        } catch (SQLException e) {
-            LogUtils.e(e);
-        }
-        return list;
+        where.gt(orderColumn, value);
+        return queryBuilder.query();
     }
 
     /**
@@ -418,18 +304,12 @@ public class OrmLiteDao<T> {
      * @param ascending   true为升序,false为降序
      * @return
      */
-    public List<T> queryAllByOrder(String orderColumn, boolean ascending) {
-        List<T> list = null;
+    public List<T> queryAllByOrder(String orderColumn, boolean ascending) throws SQLException {
         QueryBuilder queryBuilder = ormLiteDao.queryBuilder();
         Where where = queryBuilder.where();
-        try {
-            where.isNotNull(orderColumn);
-            queryBuilder.orderBy(orderColumn, ascending);
-            list = queryBuilder.query();
-        } catch (SQLException e) {
-            LogUtils.e(e);
-        }
-        return list;
+        where.isNotNull(orderColumn);
+        queryBuilder.orderBy(orderColumn, ascending);
+        return queryBuilder.query();
     }
 
 
@@ -442,18 +322,13 @@ public class OrmLiteDao<T> {
      * @param ascending   true为升序,false为降序
      * @return
      */
-    public List<T> queryByOrder(String orderColumn, String columnName, Object value, boolean ascending) {
-        List<T> list = null;
+    public List<T> queryByOrder(String orderColumn, String columnName, Object value, boolean ascending) throws SQLException {
         QueryBuilder queryBuilder = ormLiteDao.queryBuilder();
         Where where = queryBuilder.where();
-        try {
-            where.eq(columnName, value);
-            queryBuilder.orderBy(orderColumn, ascending);
-            list = queryBuilder.query();
-        } catch (SQLException e) {
-            LogUtils.e(e);
-        }
-        return list;
+        where.eq(columnName, value);
+        queryBuilder.orderBy(orderColumn, ascending);
+        return queryBuilder.query();
+
 
     }
 
@@ -467,20 +342,13 @@ public class OrmLiteDao<T> {
      * @param ascending   true为升序,false为降序
      * @return
      */
-    public List<T> queryGeByOrder(String orderColumn, Object limitValue, String columnName, Object value, boolean ascending) {
-        List<T> list = null;
+    public List<T> queryGeByOrder(String orderColumn, Object limitValue, String columnName, Object value, boolean ascending) throws SQLException {
         QueryBuilder queryBuilder = ormLiteDao.queryBuilder();
         Where where = queryBuilder.where();
-        try {
-            where.eq(columnName, value);
-            where.and().ge(orderColumn, limitValue);
-            queryBuilder.orderBy(orderColumn, ascending);
-            list = queryBuilder.query();
-        } catch (SQLException e) {
-            LogUtils.e(e);
-        }
-        return list;
-
+        where.eq(columnName, value);
+        where.and().ge(orderColumn, limitValue);
+        queryBuilder.orderBy(orderColumn, ascending);
+        return queryBuilder.query();
     }
 
     /**
@@ -491,18 +359,13 @@ public class OrmLiteDao<T> {
      * @param ascending   true为升序,false为降序
      * @return 查询结果
      */
-    public List<T> queryLeByOrder(String orderColumn, Object limitValue, boolean ascending) {
+    public List<T> queryLeByOrder(String orderColumn, Object limitValue, boolean ascending) throws SQLException {
         List<T> list = null;
         QueryBuilder queryBuilder = ormLiteDao.queryBuilder();
         Where where = queryBuilder.where();
-        try {
-            where.le(orderColumn, limitValue);
-            queryBuilder.orderBy(orderColumn, ascending);
-            list = queryBuilder.query();
-        } catch (SQLException e) {
-            LogUtils.e(e);
-        }
-        return list;
+        where.le(orderColumn, limitValue);
+        queryBuilder.orderBy(orderColumn, ascending);
+        return queryBuilder.query();
     }
 
     /**
@@ -514,20 +377,14 @@ public class OrmLiteDao<T> {
      * @param count       搜索条数
      * @return 分页查询后的数据集
      */
-    public List<T> queryForPagesByOrder(String orderColumn, boolean ascending, Long offset, Long count) {
-        List<T> list = null;
+    public List<T> queryForPagesByOrder(String orderColumn, boolean ascending, Long offset, Long count) throws SQLException {
         QueryBuilder queryBuilder = ormLiteDao.queryBuilder();
         Where where = queryBuilder.where();
-        try {
-            where.isNotNull(orderColumn);
-            queryBuilder.orderBy(orderColumn, ascending);
-            queryBuilder.offset(offset);
-            queryBuilder.limit(count);
-            list = queryBuilder.query();
-        } catch (SQLException e) {
-            LogUtils.e(e);
-        }
-        return list;
+        where.isNotNull(orderColumn);
+        queryBuilder.orderBy(orderColumn, ascending);
+        queryBuilder.offset(offset);
+        queryBuilder.limit(count);
+        return queryBuilder.query();
     }
 
 
@@ -542,20 +399,15 @@ public class OrmLiteDao<T> {
      * @param count       搜索条数
      * @return 分页查询后的数据集
      */
-    public List<T> queryForPagesByOrder(String columnName, Object value, String orderColumn, boolean ascending, Long offset, Long count) {
-        List<T> list = null;
+    public List<T> queryForPagesByOrder(String columnName, Object value, String orderColumn, boolean ascending, Long offset, Long count) throws SQLException {
         QueryBuilder queryBuilder = ormLiteDao.queryBuilder();
         Where where = queryBuilder.where();
-        try {
-            where.eq(columnName, value);
-            queryBuilder.orderBy(orderColumn, ascending);
-            queryBuilder.offset(offset);
-            queryBuilder.limit(count);
-            list = queryBuilder.query();
-        } catch (SQLException e) {
-            LogUtils.e(e);
-        }
-        return list;
+        where.eq(columnName, value);
+        queryBuilder.orderBy(orderColumn, ascending);
+        queryBuilder.offset(offset);
+        queryBuilder.limit(count);
+        return queryBuilder.query();
+
     }
 
 
@@ -569,23 +421,18 @@ public class OrmLiteDao<T> {
      * @param ascending   升序或降序,true为升序,false为降序
      * @return
      */
-    public List<T> queryForPagesByOrder(Map<String, Object> map, String orderColumn, boolean ascending, Long offset, Long count) {
+    public List<T> queryForPagesByOrder(Map<String, Object> map, String orderColumn, boolean ascending, Long offset, Long count) throws SQLException {
         List<T> list = null;
         QueryBuilder queryBuilder = ormLiteDao.queryBuilder();
         Where where = queryBuilder.where();
-        try {
-            queryBuilder.orderBy(orderColumn, ascending);
-            queryBuilder.offset(offset);
-            queryBuilder.limit(count);
-            where.isNotNull("id");
-            for (Map.Entry<String, Object> entry : map.entrySet()) {
-                where.and().eq(entry.getKey(), entry.getValue());
-            }
-            list = queryBuilder.query();
-        } catch (SQLException e) {
-            LogUtils.e(e);
+        queryBuilder.orderBy(orderColumn, ascending);
+        queryBuilder.offset(offset);
+        queryBuilder.limit(count);
+        where.isNotNull("id");
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            where.and().eq(entry.getKey(), entry.getValue());
         }
-        return list;
+        return queryBuilder.query();
     }
 
     /**
@@ -595,16 +442,10 @@ public class OrmLiteDao<T> {
      * @param value      查询条件值
      * @return
      */
-    public T queryForFirst(String columnName, Object value) {
-        T t = null;
+    public T queryForFirst(String columnName, Object value) throws SQLException {
         QueryBuilder<T, Integer> queryBuilder = ormLiteDao.queryBuilder();
-        try {
-            queryBuilder.where().eq(columnName, value);
-            t = queryBuilder.queryForFirst();
-        } catch (SQLException e) {
-            LogUtils.e(e);
-        }
-        return t;
+        queryBuilder.where().eq(columnName, value);
+        return queryBuilder.queryForFirst();
     }
 
     /**
@@ -613,20 +454,14 @@ public class OrmLiteDao<T> {
      * @param map
      * @return
      */
-    public T queryForFirst(Map<String, Object> map) {
-        T t = null;
+    public T queryForFirst(Map<String, Object> map) throws SQLException {
         QueryBuilder<T, Integer> queryBuilder = ormLiteDao.queryBuilder();
         Where where = queryBuilder.where();
-        try {
-            where.isNotNull("id");
-            for (Map.Entry<String, Object> entry : map.entrySet()) {
-                where.and().eq(entry.getKey(), entry.getValue());
-            }
-            t = queryBuilder.queryForFirst();
-        } catch (SQLException e) {
-            LogUtils.e(e);
+        where.isNotNull("id");
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            where.and().eq(entry.getKey(), entry.getValue());
         }
-        return t;
+        return queryBuilder.queryForFirst();
     }
 
     /**
@@ -637,21 +472,15 @@ public class OrmLiteDao<T> {
      * @param ascending   是否升序
      * @return
      */
-    public T queryForFirstByOrder(Map<String, Object> map, String orderColumn, boolean ascending) {
-        T t = null;
+    public T queryForFirstByOrder(Map<String, Object> map, String orderColumn, boolean ascending) throws SQLException {
         QueryBuilder<T, Integer> queryBuilder = ormLiteDao.queryBuilder();
         Where where = queryBuilder.where();
-        try {
-            queryBuilder.orderBy(orderColumn, ascending);
-            where.isNotNull("id");
-            for (Map.Entry<String, Object> entry : map.entrySet()) {
-                where.and().eq(entry.getKey(), entry.getValue());
-            }
-            t = queryBuilder.queryForFirst();
-        } catch (SQLException e) {
-            LogUtils.e(e);
+        queryBuilder.orderBy(orderColumn, ascending);
+        where.isNotNull("id");
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            where.and().eq(entry.getKey(), entry.getValue());
         }
-        return t;
+        return queryBuilder.queryForFirst();
     }
 
     /**
@@ -663,17 +492,11 @@ public class OrmLiteDao<T> {
      * @param ascending   是否升序
      * @return
      */
-    public T queryForFirstByOrder(String columnName, Object value, String orderColumn, boolean ascending) {
-        T t = null;
+    public T queryForFirstByOrder(String columnName, Object value, String orderColumn, boolean ascending) throws SQLException {
         QueryBuilder<T, Integer> queryBuilder = ormLiteDao.queryBuilder();
-        try {
-            queryBuilder.orderBy(orderColumn, ascending);
-            queryBuilder.where().eq(columnName, value);
-            t = queryBuilder.queryForFirst();
-        } catch (SQLException e) {
-            LogUtils.e(e);
-        }
-        return t;
+        queryBuilder.orderBy(orderColumn, ascending);
+        queryBuilder.where().eq(columnName, value);
+        return queryBuilder.queryForFirst();
     }
 
     /**
@@ -682,17 +505,11 @@ public class OrmLiteDao<T> {
      * @param columnName 列名
      * @param value      指定值
      */
-    public List<T> queryNotEqualsByColumnName(String columnName, Object value) {
-        List<T> list = null;
+    public List<T> queryNotEqualsByColumnName(String columnName, Object value) throws SQLException {
         QueryBuilder queryBuilder = ormLiteDao.queryBuilder();
         Where where = queryBuilder.where();
-        try {
-            where.or(where.gt(columnName, value), where.lt(columnName, value));
-            list = queryBuilder.query();
-        } catch (SQLException e) {
-            LogUtils.e(e);
-        }
-        return list;
+        where.or(where.gt(columnName, value), where.lt(columnName, value));
+        return queryBuilder.query();
     }
 
 
@@ -702,9 +519,8 @@ public class OrmLiteDao<T> {
      * @param t 更新的数据对象
      * @return 是否更新成功
      */
-    public boolean update(T t) {
-        int result = updateIfValueNotNull(t);
-        return result > 0;
+    public boolean update(T t) throws SQLException, IllegalAccessException {
+        return updateIfValueNotNull(t) > 0;
     }
 
     /**
@@ -713,20 +529,13 @@ public class OrmLiteDao<T> {
      * @param value      数据库中columnName的value
      * @return 是否更新成功
      */
-    public boolean updateBy(T t, String columnName, Object value) {
-        int result = 0;
+    public boolean updateBy(T t, String columnName, Object value) throws SQLException, NoSuchFieldException, IllegalAccessException {
         T t1 = queryForFirst(columnName, value);
         if (t1 == null) {
-            LogUtils.e("no find this data in database:" + t);
-            return false;
+            throw new SQLException("no find this data in database:" + t);
         }
-        try {
-            setObjectValueIfNotNull(t1, t);
-            result = ormLiteDao.update(t1);
-        } catch (IllegalAccessException | SQLException | NoSuchFieldException e) {
-            LogUtils.e(e);
-        }
-        return result > 0;
+        setObjectValueIfNotNull(t1, t);
+        return ormLiteDao.update(t1) > 0;
     }
 
     /**
@@ -734,20 +543,13 @@ public class OrmLiteDao<T> {
      * @param value 数据库中的Map<columnName,value>
      * @return 是否更新成功
      */
-    public boolean updateBy(T t, Map<String, Object> value) {
-        int result = 0;
+    public boolean updateBy(T t, Map<String, Object> value) throws SQLException, NoSuchFieldException, IllegalAccessException {
         T t1 = queryForFirst(value);
         if (t1 == null) {
-            LogUtils.e("no find this data in database:" + t);
-            return false;
+            throw new SQLException("no find this data in database:" + t);
         }
-        try {
-            setObjectValueIfNotNull(t1, t);
-            result = ormLiteDao.update(t1);
-        } catch (IllegalAccessException | NoSuchFieldException | SQLException e) {
-            LogUtils.e("update error,update line:" + result, e);
-        }
-        return result > 0;
+        setObjectValueIfNotNull(t1, t);
+        return ormLiteDao.update(t1) > 0;
     }
 
     /**
@@ -756,7 +558,7 @@ public class OrmLiteDao<T> {
      * @param list
      * @return
      */
-    public boolean updateForBatch(List<T> list) {
+    public boolean updateForBatch(List<T> list) throws SQLException {
         return doBatchInTransaction(list, DaoOperation.UPDATE);
     }
 
@@ -766,31 +568,23 @@ public class OrmLiteDao<T> {
      * @param t
      * @return
      */
-    private int updateIfValueNotNull(T t) {
-        int result = 0;
+    private int updateIfValueNotNull(T t) throws SQLException, IllegalAccessException {
         UpdateBuilder updateBuilder = ormLiteDao.updateBuilder();
         Map<String, Object> map = getFieldsIfValueNotNull(t);
         if (map.isEmpty()) {
-            LogUtils.w("all field value is null.");
-            return 0;
+            throw new SQLException("all field value is null.");
         }
         if (map.get("id") == null) {
-            LogUtils.w("id is null.");
-            return 0;
+            throw new SQLException("id is null.");
         }
-        try {
-            updateBuilder.where().idEq(map.get("id"));
-            for (Map.Entry<String, Object> entry : map.entrySet()) {
-                if (entry.getKey().equals("id")) {
-                    continue;
-                }
-                updateBuilder.updateColumnValue(entry.getKey(), entry.getValue());
+        updateBuilder.where().idEq(map.get("id"));
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            if (entry.getKey().equals("id")) {
+                continue;
             }
-            result = updateBuilder.update();
-        } catch (SQLException e) {
-            LogUtils.e(e);
+            updateBuilder.updateColumnValue(entry.getKey(), entry.getValue());
         }
-        return result;
+        return updateBuilder.update();
     }
 
     /**
@@ -798,8 +592,6 @@ public class OrmLiteDao<T> {
      *
      * @param t   过滤后不包含null字段的数据
      * @param obj 被过滤的数据
-     * @throws IllegalAccessException
-     * @throws NoSuchFieldException
      */
     private void setObjectValueIfNotNull(T t, Object obj) throws IllegalAccessException, NoSuchFieldException {
         Field[] fields = obj.getClass().getDeclaredFields();
@@ -811,19 +603,14 @@ public class OrmLiteDao<T> {
                 continue;
             }
 
-            Object valueObj = null;
-            try {
-                valueObj = field.get(obj);
-            } catch (IllegalAccessException e) {
-                LogUtils.e(e);
-            }
+            Object valueObj = field.get(obj);
             if (valueObj != null) {
                 Field f = cls.getDeclaredField(field.getName());
                 if (f != null) {
                     f.setAccessible(true);
                     f.set(t, valueObj);
                 } else {
-                    LogUtils.e("no this field:" + field.getName());
+                    throw new IllegalAccessException("no this field:" + field.getName());
                 }
             }
         }
@@ -835,7 +622,7 @@ public class OrmLiteDao<T> {
      * @param obj 数据实体对象
      * @return 属性名称和属性值键值对集合
      */
-    private Map<String, Object> getFieldsIfValueNotNull(Object obj) {
+    private Map<String, Object> getFieldsIfValueNotNull(Object obj) throws IllegalAccessException {
         Map<String, Object> map = new HashMap<>();
         Field[] fields = obj.getClass().getDeclaredFields();
         for (Field field : fields) {
@@ -845,26 +632,13 @@ public class OrmLiteDao<T> {
                 continue;
             }
 
-            Object valueObj = null;
-            try {
-                valueObj = field.get(obj);
-            } catch (IllegalAccessException e) {
-                LogUtils.e(e);
-            }
+            Object valueObj = field.get(obj);
+
             if (valueObj != null) {
                 map.put(field.getName(), valueObj);
             }
         }
         return map;
     }
-
-    private boolean checkIdIsNull(Integer id) {
-        if (id == null) {
-            LogUtils.w("id is null.");
-            return true;
-        }
-        return false;
-    }
-
 
 }

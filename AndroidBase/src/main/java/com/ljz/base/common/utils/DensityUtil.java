@@ -1,20 +1,30 @@
 package com.ljz.base.common.utils;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Point;
 import android.os.Build;
 import android.support.annotation.StringDef;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.ViewConfiguration;
 import android.view.WindowManager;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import static com.ljz.base.common.utils.DisplayUtil.getDisplayMetrics;
+
 
 public final class DensityUtil {
+
+    private static Boolean _hasBigScreen = null;
+    private static Boolean _hasCamera = null;
+    public static float displayDensity = 0.0F;
 
     /**
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
@@ -117,4 +127,115 @@ public final class DensityUtil {
         int h = heightPixels - heightPixels2;
         return  h > 0;
     }
+
+
+    /**
+     * 获取activity尺寸
+     *
+     * @param activity
+     * @return
+     */
+    public static int[] getRealScreenSize(Activity activity) {
+        int[] size = new int[2];
+        int screenWidth = 0, screenHeight = 0;
+        WindowManager w = activity.getWindowManager();
+        Display d = w.getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        d.getMetrics(metrics);
+        // since SDK_INT = 1;
+        screenWidth = metrics.widthPixels;
+        screenHeight = metrics.heightPixels;
+        // includes window decorations (statusbar bar/menu bar)
+        if (Build.VERSION.SDK_INT >= 14 && Build.VERSION.SDK_INT < 17)
+            try {
+                screenWidth = (Integer) Display.class.getMethod("getRawWidth")
+                        .invoke(d);
+                screenHeight = (Integer) Display.class
+                        .getMethod("getRawHeight").invoke(d);
+            } catch (Exception ignored) {
+            }
+        // includes window decorations (statusbar bar/menu bar)
+        if (Build.VERSION.SDK_INT >= 17)
+            try {
+                Point realSize = new Point();
+                Display.class.getMethod("getRealSize", Point.class).invoke(d,
+                        realSize);
+                screenWidth = realSize.x;
+                screenHeight = realSize.y;
+            } catch (Exception ignored) {
+            }
+        size[0] = screenWidth;
+        size[1] = screenHeight;
+        return size;
+    }
+
+
+
+
+    public static boolean hasBigScreen(Context context) {
+        boolean flag = true;
+        if (_hasBigScreen == null) {
+            boolean flag1;
+            if ((0xf & context.getResources()
+                    .getConfiguration().screenLayout) >= 3)
+                flag1 = flag;
+            else
+                flag1 = false;
+            Boolean boolean1 = Boolean.valueOf(flag1);
+            _hasBigScreen = boolean1;
+            if (!boolean1.booleanValue()) {
+                if (getDensity(context) <= 1.5F)
+                    flag = false;
+                _hasBigScreen = Boolean.valueOf(flag);
+            }
+        }
+        return _hasBigScreen.booleanValue();
+    }
+
+    public static float getDensity(Context context) {
+        if (displayDensity == 0.0)
+            displayDensity = getDisplayMetrics(context).density;
+        return displayDensity;
+    }
+
+    /**
+     * 设备是否有相机
+     *
+     * @param context
+     * @return
+     */
+    public static final boolean hasCamera(Context context) {
+        if (_hasCamera == null) {
+            PackageManager pckMgr = context
+                    .getPackageManager();
+            boolean flag = pckMgr
+                    .hasSystemFeature("android.hardware.camera.front");
+            boolean flag1 = pckMgr.hasSystemFeature("android.hardware.camera");
+            boolean flag2;
+            if (flag || flag1)
+                flag2 = true;
+            else
+                flag2 = false;
+            _hasCamera = Boolean.valueOf(flag2);
+        }
+        return _hasCamera.booleanValue();
+    }
+
+    /**
+     * 设备是否有实体菜单
+     *
+     * @param context
+     * @return
+     */
+    public static boolean hasHardwareMenuKey(Context context) {
+        boolean flag = false;
+        if (Build.VERSION.SDK_INT < 11)
+            flag = true;
+        else if (Build.VERSION.SDK_INT >= 14) {
+            flag = ViewConfiguration.get(context).hasPermanentMenuKey();
+        } else
+            flag = false;
+        return flag;
+    }
+
 }

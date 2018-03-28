@@ -4,10 +4,10 @@ import android.os.Bundle;
 
 import com.ljz.androidbasedemo.http.contract.GetAndPostContract;
 import com.ljz.androidbasedemo.http.model.GetAndPostModel;
-import com.ljz.base.callback.ExecutorCallBack;
 import com.ljz.base.common.logutils.LogUtils;
 import com.ljz.base.frame.model.factory.RequiresModel;
 
+import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -66,7 +66,7 @@ public class GetAndPostPresenter extends GetAndPostContract.Presenter {
      * 单独的请求.每次请求完毕都会回调
      */
     public void test1() {
-        getModel().getRequest(new ExecutorCallBack<String>() {
+        getModel().getRequest().subscribe(new Observer<String>() {
 
 //            @Override
 //            public void onStart() {
@@ -105,7 +105,7 @@ public class GetAndPostPresenter extends GetAndPostContract.Presenter {
             }
         });
 
-        getModel().getPost(new ExecutorCallBack<String>() {
+        getModel().getPost().subscribe(new Observer<String>() {
 
             @Override
             public void onSubscribe(Disposable d) {

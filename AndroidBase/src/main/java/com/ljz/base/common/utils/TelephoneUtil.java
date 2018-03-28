@@ -21,7 +21,6 @@ import java.util.regex.Pattern;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
 import io.reactivex.functions.Function;
 
 import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
@@ -44,8 +43,8 @@ public class TelephoneUtil {
      * @param activity
      * @return
      */
-    public static void getDeviceId(final Activity activity, Observer<String> observer) {
-        new RxPermissions(activity)
+    public static Observable<String> getDeviceId(final Activity activity) {
+       return new RxPermissions(activity)
                 .request(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE)
                 .flatMap(new Function<Boolean, ObservableSource<String>>() {
                     @Override
@@ -61,7 +60,7 @@ public class TelephoneUtil {
                         String deviceId = readAndWriteDeviceId(activity, path);
                         return Observable.just(deviceId);
                     }
-                }).subscribe(observer);
+                });
     }
 
     private static String readAndWriteDeviceId(Context context,String path) {
